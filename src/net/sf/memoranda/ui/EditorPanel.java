@@ -567,7 +567,9 @@ public class EditorPanel extends JPanel {
 				.getPath());
 
 		File f = chooser.getSelectedFile();
-		new HTMLFileImport(f, editor);
+		
+		if (f.exists())
+			new HTMLFileImport(f, editor);
 	}
 
 	void newB_actionPerformed(ActionEvent e) {
