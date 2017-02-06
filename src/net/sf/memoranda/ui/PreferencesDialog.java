@@ -1,12 +1,9 @@
 package net.sf.memoranda.ui;
 
-import java.io.File;
 import java.util.Vector;
 
 import net.sf.memoranda.util.Configuration;
-import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
-import net.sf.memoranda.util.MimeTypesList;
 import java.awt.*;
 
 import javax.swing.*;
@@ -82,12 +79,6 @@ public class PreferencesDialog extends JDialog {
 	JButton cancelB = new JButton();
 
 	JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-
-	JLabel jLabel5 = new JLabel();
-
-	JTextField browserPath = new JTextField();
-
-	JButton browseB = new JButton();
 
 	JLabel lblExit = new JLabel();
 
@@ -422,37 +413,23 @@ public class PreferencesDialog extends JDialog {
 		rstPanelBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		resourceTypePanel.setBorder(rstPanelBorder);
 		resourcePanel.add(resourceTypePanel, BorderLayout.CENTER);
-		rsbpBorder = new TitledBorder(BorderFactory.createEmptyBorder(5, 5, 5,
-				5), Local.getString("Web browser executable"));
-		rsBottomPanel.setBorder(rsbpBorder);
-		jLabel5.setText(Local.getString("Path") + ":");
+		
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.insets = new Insets(0, 5, 0, 5);
 		gbc.anchor = GridBagConstraints.WEST;
-		rsBottomPanel.add(jLabel5, gbc);
-		browserPath.setPreferredSize(new Dimension(250, 25));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.insets = new Insets(0, 5, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		rsBottomPanel.add(browserPath, gbc);
-		browseB.setText(Local.getString("Browse"));
-		browseB.setPreferredSize(new Dimension(110, 25));
-		browseB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				browseB_actionPerformed(e);
-			}
-		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		// gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.anchor = GridBagConstraints.EAST;
-		rsBottomPanel.add(browseB, gbc);
 
 		resourcePanel.add(rsBottomPanel, BorderLayout.SOUTH);
 		
@@ -560,9 +537,6 @@ public class PreferencesDialog extends JDialog {
 		String onmin = Configuration.get("ON_MINIMIZE").toString();
 		this.minTaskbarRB.setSelected(true);
 
-		if (!System.getProperty("os.name").startsWith("Win"))
-			this.browserPath.setText(MimeTypesList.getAppList()
-					.getBrowserExec());
 		if (Configuration.get("NOTIFY_SOUND").equals("")) {
 			Configuration.put("NOTIFY_SOUND", "DEFAULT");
 		}
@@ -680,11 +654,6 @@ public class PreferencesDialog extends JDialog {
 						"Make sure that specified look-and-feel library classes are on the CLASSPATH.");
 			}
 		}
-		String brPath = this.browserPath.getText();
-		if (new java.io.File(brPath).isFile()) {
-			MimeTypesList.getAppList().setBrowserExec(brPath);
-			CurrentStorage.get().storeMimeTypesList();
-		}
 
 		if (!this.enableSoundCB.isSelected())
 			Configuration.put("NOTIFY_SOUND", "DISABLED");
@@ -787,45 +756,6 @@ public class PreferencesDialog extends JDialog {
 
 	void enL10nChB_actionPerformed(ActionEvent e) {
 
-	}
-
-	void browseB_actionPerformed(ActionEvent e) {
-		// Fix until Sun's JVM supports more locales...
-		UIManager.put("FileChooser.lookInLabelText", Local
-				.getString("Look in:"));
-		UIManager.put("FileChooser.upFolderToolTipText", Local
-				.getString("Up One Level"));
-		UIManager.put("FileChooser.newFolderToolTipText", Local
-				.getString("Create New Folder"));
-		UIManager.put("FileChooser.listViewButtonToolTipText", Local
-				.getString("List"));
-		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-				.getString("Details"));
-		UIManager.put("FileChooser.fileNameLabelText", Local
-				.getString("File Name:"));
-		UIManager.put("FileChooser.filesOfTypeLabelText", Local
-				.getString("Files of Type:"));
-		UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-		UIManager.put("FileChooser.openButtonToolTipText", Local
-				.getString("Open selected file"));
-		UIManager
-				.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-		UIManager.put("FileChooser.cancelButtonToolTipText", Local
-				.getString("Cancel"));
-
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileHidingEnabled(false);
-		chooser.setDialogTitle(Local
-				.getString("Select the web-browser executable"));
-		chooser.setAcceptAllFileFilterUsed(true);
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setPreferredSize(new Dimension(550, 375));
-		if (System.getProperty("os.name").startsWith("Win")) {
-			chooser.setFileFilter(new AllFilesFilter(AllFilesFilter.EXE));
-			chooser.setCurrentDirectory(new File("C:\\Program Files"));
-		}
-		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-			this.browserPath.setText(chooser.getSelectedFile().getPath());
 	}
 
 	void enableSoundCB_actionPerformed(ActionEvent e) {
