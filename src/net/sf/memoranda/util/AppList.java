@@ -161,26 +161,4 @@ public class AppList {
             }
         addApp(appId, fp, exec, clp);
     }
-    
-    public String getBrowserExec() {
-        Elements els = _root.getChildElements("browser");        
-        if (els.size() < 1) return null;
-        Element el = els.get(0);
-        return (el.getAttribute("path").getValue());
-    }
-    
-    public void setBrowserExec(String path) {
-        Element el = null;
-        Elements els = _root.getChildElements("browser");    
-        if (els.size() < 1) {
-            el = new Element("browser");
-            _root.appendChild(el);
-        }
-        else
-            el = els.get(0);
-        if (el.getAttribute("path") != null)
-            el.getAttribute("path").setValue(path);
-        else 
-            el.addAttribute(new Attribute("path", path));
-    }
 }

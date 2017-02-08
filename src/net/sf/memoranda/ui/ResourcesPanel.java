@@ -216,8 +216,6 @@ public class ResourcesPanel extends JPanel {
             resourcesTable.tableChanged();
         }
         else {
-            if (!Util.checkBrowser())
-                return;
             CurrentProject.getResourcesList().addResource(dlg.urlField.getText(), true, false);
             resourcesTable.tableChanged();
         }

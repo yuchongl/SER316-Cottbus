@@ -7,10 +7,13 @@
  * Copyright (c) 2003 Memoranda team: http://memoranda.sf.net
  */
 package net.sf.memoranda.util;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -94,40 +97,22 @@ public class Util {
     }
     
     public static void runBrowser(String url) {
-        if (!checkBrowser())
-            return;
-        String commandLine = MimeTypesList.getAppList().getBrowserExec()+" "+url;
-        System.out.println("Run: " + commandLine);
-        try {
-            /*DEBUG*/
-            Runtime.getRuntime().exec(commandLine);
-        }
-        catch (Exception ex) {
-            new ExceptionDialog(ex, "Failed to run an external web-browser application with commandline<br><code>"
-                    +commandLine+"</code>", "Check the application path and command line parameters " +
-                    		"(File-&gt;Preferences-&gt;Resource types).");
-        }
-    }
-    
-    public static boolean checkBrowser() {
-        AppList appList = MimeTypesList.getAppList();
-        String bpath = appList.getBrowserExec();
-        if (bpath != null)
-            if (new File(bpath).isFile())
-                return true;
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileHidingEnabled(false);
-        chooser.setDialogTitle(Local.getString("Select the web-browser executable"));
-        chooser.setAcceptAllFileFilterUsed(true);
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        /*java.io.File lastSel = (java.io.File) Context.get("LAST_SELECTED_RESOURCE_FILE");
-        if (lastSel != null)
-            chooser.setCurrentDirectory(lastSel);*/
-        if (chooser.showOpenDialog(App.getFrame()) != JFileChooser.APPROVE_OPTION)
-            return false;
-        appList.setBrowserExec(chooser.getSelectedFile().getPath());
-        CurrentStorage.get().storeMimeTypesList();
-        return true;
+    	if (Desktop.isDesktopSupported()){
+    		try {
+				Desktop.getDesktop().browse(new URI(url));
+			} catch (Exception ex) {
+				new ExceptionDialog(ex, "Failed to open default web browser", 
+						"Make sure you have a default web browser set");
+			}
+    	} else{
+    		Runtime runtime = Runtime.getRuntime();
+    		try{
+    			runtime.exec("xdg-open " + url);
+    		}catch(IOException ex){
+    			new ExceptionDialog(ex, "Could not open web browser", 
+						"Make sure you have a default web browser set");
+    		}
+    	}
     }
     
     public static String getHoursFromMillis(long ms) {
