@@ -49,6 +49,8 @@ public class EditorPanel extends JPanel {
 
 	JButton importB = new JButton();
 
+	JButton saveB = new JButton();
+
 	JButton exportB = new JButton();
 
 	JButton redoB = new JButton();
@@ -85,6 +87,9 @@ public class EditorPanel extends JPanel {
 	JButton previewB = new JButton();
 
 	DailyItemsPanel parentPanel = null;
+
+	// task 10 save note
+	String noteFile = "";
 
 	public EditorPanel(DailyItemsPanel parent) {
 		try {
@@ -145,6 +150,19 @@ public class EditorPanel extends JPanel {
 		}
 	};
 
+	
+	// task 10 add save function
+	public Action saveAction = new AbstractAction(Local
+			.getString("Save note"), new ImageIcon(
+			net.sf.memoranda.ui.AppFrame.class
+					.getResource("resources/icons/import.png"))) {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("save note");
+			noteSaveAsHtml(noteFile);
+		}
+	};
+
+
 	public Action previewAction = new AbstractAction(Local
 			.getString("Preview note in browser"), new ImageIcon(
 			net.sf.memoranda.ui.AppFrame.class
@@ -183,6 +201,19 @@ public class EditorPanel extends JPanel {
 		importB.setMinimumSize(new Dimension(24, 24));
 		importB.setMaximumSize(new Dimension(24, 24));
 		importB.setText("");
+
+
+		// task 10
+		saveB.setAction(saveAction);
+		saveB.setBorderPainted(false);
+		saveB.setFocusable(false);
+		saveB.setPreferredSize(new Dimension(24, 24));
+		saveB.setRequestFocusEnabled(false);
+		saveB.setToolTipText(Local.getString("Save note"));
+		saveB.setMinimumSize(new Dimension(24, 24));
+		saveB.setMaximumSize(new Dimension(24, 24));
+		saveB.setText("");
+
 
 		exportB.setAction(exportAction);
 		exportB.setMaximumSize(new Dimension(24, 24));
@@ -329,6 +360,7 @@ public class EditorPanel extends JPanel {
 		editorToolBar.addSeparator(new Dimension(8, 24));
 		editorToolBar.add(importB, null);
 		editorToolBar.add(exportB, null);
+		editorToolBar.add(saveB, null);
 		editorToolBar.addSeparator(new Dimension(8, 24));
 		editorToolBar.add(previewB, null);
 		// editorToolBar.add(printB, null);
@@ -354,6 +386,11 @@ public class EditorPanel extends JPanel {
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
+
+		// init file path
+		//noteFile = JN_DOCPATH + editor.getProject().getID() + File.separator;
+		//System.out.println("path: " + Util.getEnvDir());
+		noteFile = Util.getEnvDir() + "saved_note.html";
 	}
 
 	public void initCSS() {
@@ -393,8 +430,7 @@ public class EditorPanel extends JPanel {
 			} catch (Exception ex) {
 				System.out.println("***[DEBUG] Failed to open: " + usercss);
 				ex.printStackTrace();
-			}
-
+			}	
 	}
 
 	void insDateB_actionPerformed(ActionEvent e) {
@@ -405,6 +441,39 @@ public class EditorPanel extends JPanel {
 		java.util.Date d = new java.util.Date();
 		editor.editor.replaceSelection(DateFormat.getTimeInstance(
 				DateFormat.SHORT, Local.getCurrentLocale()).format(d));
+	}
+
+	public boolean restoreNote()
+	{
+		noteLoadHtml(noteFile);
+		return true;
+	}
+
+	void noteLoadHtml(String path)
+	{
+		System.out.println("note: load file " + path);
+		// load the saved file
+		File file = new File(path);
+		if (file.exists())
+		{
+			new HTMLFileImport(file, editor);
+		}
+
+	}
+
+	void noteSaveAsHtml(String path)
+	{
+		String template = "";
+		String enc = "UTF-8";
+		File f = new File(path);
+
+		// save file as HTML
+		new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
+				false, template, true);
+
+		// clear current text
+		this.editor.editor.setText("");
+		noteLoadHtml(path);
 	}
 
 	void exportB_actionPerformed(ActionEvent e) {

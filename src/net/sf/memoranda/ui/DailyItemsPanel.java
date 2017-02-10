@@ -303,6 +303,9 @@ public class DailyItemsPanel extends JPanel {
 		mainTabsPanel.add(agendaTabbedPane, "AGENDATAB");
         updateIndicators(CurrentDate.get(), CurrentProject.getTaskList());
         mainPanel.setBorder(null);
+
+	// task 10 save note
+	editorPanel.restoreNote();
     }
 
    
