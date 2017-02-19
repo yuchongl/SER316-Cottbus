@@ -81,11 +81,12 @@ public class Local {
     public static Locale getCurrentLocale() {
         return currentLocale;
     }
-
+    
+  //changed Jan to January and Feb to February
     static String monthnames[] =
         {
-            "Jan",
-            "Feb",
+            "January",
+            "February",
             "March",
             "April",
             "May",
