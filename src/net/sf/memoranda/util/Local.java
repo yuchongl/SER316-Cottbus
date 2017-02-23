@@ -82,7 +82,7 @@ public class Local {
         return currentLocale;
     }
     
-  //changed Jan to January and Feb to February
+   //changed Jan to January and Feb to February
     static String monthnames[] =
         {
             "January",
@@ -99,7 +99,7 @@ public class Local {
             "December" };
 
     static String weekdaynames[] =
-        { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+        { "S", "M", "T", "W", "T", "F", "S" };
 
     public static String getString(String key) {
         if ((messages == null) || (disabled)) {
