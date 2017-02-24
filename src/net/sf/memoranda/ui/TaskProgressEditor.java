@@ -41,6 +41,9 @@ public class TaskProgressEditor extends JPanel implements TableCellEditor{
 				}else{
 					current.setProgress( current.getProgress()-5 );
 				}
+				//forces a repaint of the other progress bars (task 47)
+				e.getComponent().getParent().repaint();
+				
 				repaint();
 			}
 		});

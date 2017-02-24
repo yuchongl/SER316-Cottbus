@@ -267,8 +267,20 @@ public class TaskImpl implements Task, Comparable {
      * @see net.sf.memoranda.Task#setProgress(int)
      */
     public void setProgress(int p) {
+    	int prev = getProgress();
+    	
         if ((p >= 0) && (p <= 100))
             setAttr("progress", new Integer(p).toString());
+        if (getParentTask() != null && getParentTask().getProgress() >= 100){
+        	if (p < prev && getParentTask().getProgress() == 100){
+        		//progress bar set to 95 if it is at 100 and a child task
+        		//has had its progress lowered (task 47)
+        		getParentTask().setProgress(95);
+        	}else{
+        		//Progress set to 100 if parent task is completed (Task 47)
+            	setAttr("progress", new Integer(100).toString());
+        	}
+        }
     }
     /**
      * @see net.sf.memoranda.Task#getPriority()

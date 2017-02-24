@@ -53,6 +53,9 @@ class TaskProgressLabel extends JLabel{
     public void setColumn(int col){ column = col;}
     
     public void paintComponent(Graphics g) {
+    	//forces an update to child task when parent is completed (task 47)
+    	task.setProgress(task.getProgress()); 
+    	
         int val = task.getProgress();
         int width = table.getColumnModel().getColumn(column).getWidth();
         int height = table.getRowHeight();
