@@ -35,13 +35,13 @@ public class TaskProgressEditor extends JPanel implements TableCellEditor{
 						return;
 					}
 				}
-				
 				int w = getWidth()/2;
 				if(e.getX() > w){
 					current.setProgress( current.getProgress()+5 );
 				}else{
 					current.setProgress( current.getProgress()-5 );
 				}
+				repaint();
 			}
 		});
 		setLayout(new java.awt.BorderLayout());
@@ -72,9 +72,7 @@ public class TaskProgressEditor extends JPanel implements TableCellEditor{
 		label.setText("+");
 		label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		label.paint(g);
-		
-		//updates the table to reflect changes (task 50)
-		table.updateUI();
+				
 	}
 	
 	private void stopEditing(){
