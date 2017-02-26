@@ -9,7 +9,6 @@
 package net.sf.memoranda;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Vector;
 import java.util.Calendar;
 
@@ -268,40 +267,8 @@ public class TaskImpl implements Task, Comparable {
      * @see net.sf.memoranda.Task#setProgress(int)
      */
     public void setProgress(int p) {
-    	int prev = getProgress();
-    	
-    	//determines if all subtasks of the current task are completed
-    	boolean allSubTasksCompleted = true;
-    	Iterator<Task> it = getSubTasks().iterator();
-        while (it.hasNext()){
-        	Task t = it.next();
-        	if (((TaskImpl)t).getProgress() < 100){
-        		allSubTasksCompleted = false;
-        	}
-        	System.out.println(t);
-        }
-    	
-        //sets the progress to p
-        if ((p >= 0) && (p <= 100)){
+        if ((p >= 0) && (p <= 100))
             setAttr("progress", new Integer(p).toString());
-        }
-        
-        if (getParentTask() != null && getParentTask().getProgress() >= 100){
-        	if (p < prev){
-        		//progress bar set to 95 for parent if it is at 100 and the current task
-        		//has had its progress lowered (task 47)
-        		getParentTask().setProgress(95);
-        	}else{
-        		//Progress set to 100 if parent task is completed (Task 47)
-            	setAttr("progress", new Integer(100).toString());
-        	}
-        }
-        //sets progress to 100 if all subtasks are completed and the user hits +, 
-        //regardless of what progress the bar is currently at. Does not occur for leaf tasks (Task 49).
-        if (allSubTasksCompleted && getSubTasks().size() > 0 && p > prev){
-        	setAttr("progress", new Integer(100).toString()); 
-        }
-        
     }
     /**
      * @see net.sf.memoranda.Task#getPriority()
