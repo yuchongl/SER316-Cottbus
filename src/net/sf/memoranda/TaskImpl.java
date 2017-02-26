@@ -297,10 +297,11 @@ public class TaskImpl implements Task, Comparable {
         	}
         }
         //sets progress to 100 if all subtasks are completed and the user hits +, 
-        //regardless of what progress the bar is currently at. Does not occur for leaf tasks.
+        //regardless of what progress the bar is currently at. Does not occur for leaf tasks (Task 49).
         if (allSubTasksCompleted && getSubTasks().size() > 0 && p > prev){
         	setAttr("progress", new Integer(100).toString()); 
         }
+        
     }
     /**
      * @see net.sf.memoranda.Task#getPriority()
