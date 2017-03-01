@@ -23,6 +23,7 @@
  * -----------------------------------------------------------------------------
  */
 
+
 package net.sf.memoranda.ui;
 
 import net.sf.memoranda.Task;
@@ -35,51 +36,39 @@ import javax.swing.JLabel;
  * 
  * Component showing task progress as colorful bar>
  * 
- * @version $Name: $ $Revision: 1.1 $
+ * @version $Name:  $ $Revision: 1.1 $
  * @author Alex Alishevskikh, alexeya(at)gmail.com
  * 
  */
 
-class TaskProgressLabel extends JLabel {
-  
-  private static final long serialVersionUID = 1L;
-  TaskTable table;
-  int column;
-  Task task;
+class TaskProgressLabel extends JLabel{
+    TaskTable table;
+    int column;
+    Task task;
+    public TaskProgressLabel( TaskTable table ){
+        this.table = table;
+        setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    }
+    public void setTask(Task t){ task = t;}
+    public void setColumn(int col){ column = col;}
+    
+    public void paintComponent(Graphics g) {
+        int val = task.getProgress();
+        int width = table.getColumnModel().getColumn(column).getWidth();
+        int height = table.getRowHeight();
+        int p = width * val / 100;
+        
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0,width, height);
 
-  TaskProgressLabel(TaskTable table) {
-    this.table = table;
-    setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-  }
-
-  public void setTask(Task tsk) {
-    task = tsk;
-  }
-
-  public void setColumn(int col) {
-    column = col;
-  }
-
-  public void paintComponent(Graphics gr) {
-    // forces an update to child task when parent is completed (task 47)
-    task.setProgress(task.getProgress());
-
-    int val = task.getProgress();
-    int width = table.getColumnModel().getColumn(column).getWidth();
-    int height = table.getRowHeight();
-    int pr = width * val / 100;
-
-    gr.setColor(Color.WHITE);
-    gr.fillRect(0, 0, width, height);
-
-    gr.setColor(TaskTreeTableCellRenderer.getColorForTaskStatus(task, true));
-    gr.fillRect(1, 1, pr, height - 2);
-    gr.setColor(Color.LIGHT_GRAY);
-    gr.drawRect(1, 1, width, height - 2);
-
-    setText(val + "%");
-    setBounds(0, 0, width, height);
-
-    super.paintComponent(gr);
-  }
+        g.setColor( TaskTreeTableCellRenderer.getColorForTaskStatus(task, true) );
+        g.fillRect(1, 1, p, height - 2);
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawRect(1, 1, width, height - 2);
+        
+        setText(val + "%");
+        setBounds(0, 0, width, height);
+        
+        super.paintComponent(g);
+    }
 }
