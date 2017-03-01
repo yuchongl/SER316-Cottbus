@@ -377,9 +377,18 @@ public class AgendaGenerator {
 				.class
 				.getResource("resources/agenda/removesticker.gif")
 				.toExternalForm();
-		 String s = "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:importstickers\"><b>"+Local.getString("Import Sticker")+"</b></a></td><td><a href=\"memoranda:exportstickerst\"><b>"+Local.getString("Export sticker as .txt")+"</b></a><td><a href=\"memoranda:exportstickersh\"><b>"+Local.getString("Export sticker as .html")+"</b></a></td></tr></table>"
-				 +   "<table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:addsticker\"><img align=\"left\" width=\"22\" height=\"22\" src=\""				
-				 + iurl
+
+		String arrowDown = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/downarrow.png")
+				.toExternalForm();
+		//String editButton = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/editButton.png")
+			//	.toExternalForm();
+		String s = "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:importstickers\"><b>"
+				+ Local.getString("Import Sticker") + "</b></a></td><td><a href=\"memoranda:exportstickerst\"><b>"
+				+ Local.getString("Export sticker as .txt") + "</b></a><td><a href=\"memoranda:exportstickersh\"><b>"
+				+ Local.getString("Export sticker as .html") + "</b></a></td></tr></table>"
+				+ "<table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:addsticker\"><img align=\"left\" width=\"22\" height=\"22\" src=\""
+				+ iurl
+
 				+ "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"New sticker\"></a></td><td width=\"100%\"><a href=\"memoranda:addsticker\"><b>&nbsp;"
 				+Local.getString("Add sticker")+"</b></a></td></tr></table>";
 		PriorityQueue pQ = sortStickers();
