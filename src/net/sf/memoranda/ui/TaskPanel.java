@@ -61,6 +61,9 @@ public class TaskPanel extends JPanel {
 	JMenuItem ppRemoveTask = new JMenuItem();
 	JMenuItem ppNewTask = new JMenuItem();
 	JMenuItem ppCompleteTask = new JMenuItem();
+	
+	JMenuItem ppResumeTask = new JMenuItem();
+
 	//JMenuItem ppSubTasks = new JMenuItem();
 	//JMenuItem ppParentTask = new JMenuItem();
 	JMenuItem ppAddSubTask = new JMenuItem();
@@ -290,6 +293,18 @@ public class TaskPanel extends JPanel {
     ppParentTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
     */
 
+
+	ppResumeTask.setFont(new java.awt.Font("Dialog", 1, 11));
+	ppResumeTask.setText(Local.getString("Resume task"));
+
+	ppResumeTask.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("resume task");
+                ppResumeTask_actionPerformed(e);
+			}
+		});
+
+
 	ppCompleteTask.setFont(new java.awt.Font("Dialog", 1, 11));
 	ppCompleteTask.setText(Local.getString("Complete task"));
 	ppCompleteTask.addActionListener(new java.awt.event.ActionListener() {
@@ -390,7 +405,9 @@ public class TaskPanel extends JPanel {
 		//ppSubTasks.setEnabled(false);
 		//ppParentTask.setEnabled(false);
     taskPPMenu.add(ppEditTask);
-    
+	
+    taskPPMenu.add(ppResumeTask);   
+ 
     taskPPMenu.addSeparator();
     taskPPMenu.add(ppNewTask);
     taskPPMenu.add(ppAddSubTask);
@@ -676,6 +693,26 @@ public class TaskPanel extends JPanel {
         parentPanel.updateIndicators();
         //taskTable.updateUI();
 
+    }
+
+    void ppResumeTask_actionPerformed(ActionEvent e) {
+        String msg;
+        Vector tocomplete = new Vector();
+        for (int i = 0; i < taskTable.getSelectedRows().length; i++) {
+            Task t =
+            CurrentProject.getTaskList().getTask(
+                taskTable.getModel().getValueAt(taskTable.getSelectedRows()[i], TaskTable.TASK_ID).toString());
+            if (t != null)
+                tocomplete.add(t);
+        }
+        for (int i = 0; i < tocomplete.size(); i++) {
+            Task t = (Task)tocomplete.get(i);
+            t.setProgress(0);
+        }
+        taskTable.tableChanged();
+        CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
+        parentPanel.updateIndicators();
+        //taskTable.updateUI();
     }
 
 	void ppCompleteTask_actionPerformed(ActionEvent e) {
