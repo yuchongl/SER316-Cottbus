@@ -276,7 +276,7 @@ public class AgendaGenerator {
 				+ "<table border=\"0\" width=\"100%\" cellpadding=\"2\" bgcolor=\"#EFEFEF\"><tr><td>" 
 				+ Local.getString("Start date")+": <i>"+p.getStartDate().getMediumDateString()+"</i>\n";
 		if (p.getEndDate() != null)
-			s += "<br>" + Local.getString("End date")+": <i>"+p.getEndDate().getMediumDateString()
+			s += "<br>" + Local.getString("Due date")+": <i>"+p.getEndDate().getMediumDateString()
 			+"</i>\n";        
 		return s + generateTasksInfo(p, date,expandedTasks);        
 	}
