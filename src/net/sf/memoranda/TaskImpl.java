@@ -104,7 +104,7 @@ public class TaskImpl implements Task, Comparable<Object> {
   public String getParentId() {
     Task parent = this.getParentTask();
     if (parent != null) {
-      return parent.getId();
+      return parent.getID();
     }
     return null;
   }
@@ -183,7 +183,7 @@ public class TaskImpl implements Task, Comparable<Object> {
   /**
    * @see net.sf.memoranda.Task#getID()
    */
-  public String getId() {
+  public String getID() {
     return element.getAttribute("id").getValue();
   }
 
@@ -243,7 +243,7 @@ public class TaskImpl implements Task, Comparable<Object> {
    */
   public void addDependsFrom(Task task) {
     Element dep = new Element("dependsFrom");
-    dep.addAttribute(new Attribute("idRef", task.getId()));
+    dep.addAttribute(new Attribute("idRef", task.getID()));
     element.appendChild(dep);
   }
 
@@ -254,7 +254,7 @@ public class TaskImpl implements Task, Comparable<Object> {
     Elements deps = element.getChildElements("dependsFrom");
     for (int i = 0; i < deps.size(); i++) {
       String id = deps.get(i).getAttribute("idRef").getValue();
-      if (id.equals(task.getId())) {
+      if (id.equals(task.getID())) {
         element.removeChild(deps.get(i));
         return;
       }
@@ -385,7 +385,7 @@ public class TaskImpl implements Task, Comparable<Object> {
   }
 
   public boolean equals(Object obj) {
-    return ((obj instanceof Task) && (((Task) obj).getId().equals(this.getId())));
+    return ((obj instanceof Task) && (((Task) obj).getID().equals(this.getID())));
   }
 
   /*
