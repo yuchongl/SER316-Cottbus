@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Toolkit;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -59,7 +60,7 @@ import javax.swing.undo.UndoManager;
 import net.sf.memoranda.ui.htmleditor.util.Local;
 
 /**
- *  
+ *
  */
 public class HTMLEditor extends JPanel {
 	public HTMLEditorPane editor = new HTMLEditorPane("");
@@ -322,7 +323,7 @@ public class HTMLEditor extends JPanel {
 	 * new AbstractAction() { public void actionPerformed(ActionEvent e) { if
 	 * (editor.getSelectedText() == null) return; doCopy();
 	 * editor.replaceSelection(""); }
-	 *  
+	 *
 	 */
 
 	public Action styleCopyAction = new HTMLEditorKit.CopyAction();
@@ -548,7 +549,7 @@ public class HTMLEditor extends JPanel {
 			new ImageIcon(cl.getResource("resources/icons/cut.png")));
 		cutAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		cutAction.putValue(Action.NAME, Local.getString("Cut"));
 		cutAction.putValue(Action.SHORT_DESCRIPTION, Local.getString("Cut"));
 
@@ -557,7 +558,7 @@ public class HTMLEditor extends JPanel {
 			new ImageIcon(cl.getResource("resources/icons/copy.png")));
 		copyAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		copyAction.putValue(Action.NAME, Local.getString("Copy"));
 		copyAction.putValue(Action.SHORT_DESCRIPTION, Local.getString("Copy"));
 
@@ -566,7 +567,7 @@ public class HTMLEditor extends JPanel {
 			new ImageIcon(cl.getResource("resources/icons/paste.png")));
 		pasteAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		pasteAction.putValue(Action.NAME, Local.getString("Paste"));
 		pasteAction.putValue(
 			Action.SHORT_DESCRIPTION,
@@ -576,7 +577,7 @@ public class HTMLEditor extends JPanel {
 			Action.ACCELERATOR_KEY,
 			KeyStroke.getKeyStroke(
 				KeyEvent.VK_V,
-				KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() + KeyEvent.SHIFT_MASK));
 		stylePasteAction.putValue(
 			Action.NAME,
 			Local.getString("Paste special"));
@@ -586,17 +587,17 @@ public class HTMLEditor extends JPanel {
 
 		selectAllAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
 		boldAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		italicAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		underAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_U, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		breakAction.putValue(
 			Action.ACCELERATOR_KEY,
 			KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_MASK));
@@ -607,7 +608,7 @@ public class HTMLEditor extends JPanel {
 
 		findAction.putValue(
 			Action.ACCELERATOR_KEY,
-			KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
 		document = (HTMLDocument) editorKit.createDefaultDocument();
 
@@ -850,56 +851,56 @@ public class HTMLEditor extends JPanel {
 
 		/*
 		 * editor.getKeymap().addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_B,
-		 * KeyEvent.CTRL_MASK), boldAction);
+		 * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), boldAction);
 		 * editor.getKeymap().addActionForKeyStroke(
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_MASK),
+		 * KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 		 * italicAction); editor.getKeymap().addActionForKeyStroke(
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_MASK),
+		 * KeyStroke.getKeyStroke(KeyEvent.VK_U, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 		 */
 
 		/*
 		 * editor.getKeymap().addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-		 * KeyEvent.CTRL_MASK), undoAction);
+		 * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), undoAction);
 		 * editor.getKeymap().addActionForKeyStroke(
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK +
+		 * KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() +
 		 * KeyEvent.SHIFT_MASK), redoAction);
 		 * editor.getKeymap().addActionForKeyStroke(
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.CTRL_MASK +
+		 * KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() +
 		 * KeyEvent.SHIFT_MASK), insertTableCellAction);
 		 * editor.getKeymap().addActionForKeyStroke(
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.CTRL_MASK),
+		 * KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 		 */
 
 		editor.getKeymap().removeKeyStrokeBinding(
-			KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		editor.getKeymap().removeKeyStrokeBinding(
-			KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		editor.getKeymap().removeKeyStrokeBinding(
-			KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
 		editor.getKeymap().addActionForKeyStroke(
-			KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK),
+			KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 			copyAction);
 		editor.getKeymap().addActionForKeyStroke(
-			KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK),
+			KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 			pasteAction);
 		editor.getKeymap().addActionForKeyStroke(
 			KeyStroke.getKeyStroke(
 				KeyEvent.VK_V,
-				KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK),
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() + KeyEvent.SHIFT_MASK),
 			stylePasteAction);
 		editor.getKeymap().addActionForKeyStroke(
-			KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK),
+			KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 			cutAction);
 
 		editor.getKeymap().addActionForKeyStroke(
-			KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK),
+			KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 			findAction);
 		/*
 		 * editor.getKeymap().addActionForKeyStroke(
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, KeyEvent.CTRL_MASK),
+		 * KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 		 * zoomInAction); editor.getKeymap().addActionForKeyStroke(
-		 * KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, KeyEvent.CTRL_MASK),
+		 * KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 		 */
 
 		/* POPUP MENUs */
@@ -907,31 +908,31 @@ public class HTMLEditor extends JPanel {
 		/*
 		 * jMenuItemUndo.setAction(undoAction); jMenuItemUndo.setText("Undo");
 		 * jMenuItemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-		 * KeyEvent.CTRL_MASK)); jMenuItemUndo.setIcon( new
+		 * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); jMenuItemUndo.setIcon( new
 		 * ImageIcon(net.sf.memoranda.ui.htmleditor.AppFrame.class.getResource("resources/icons/undo16.png")));
-		 * 
+		 *
 		 * jMenuItemRedo.setAction(redoAction); jMenuItemRedo.setText("Redo");
 		 * jMenuItemRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-		 * KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK)); jMenuItemRedo.setIcon(
+		 * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() + KeyEvent.SHIFT_MASK)); jMenuItemRedo.setIcon(
 		 * new
 		 * ImageIcon(net.sf.memoranda.ui.htmleditor.AppFrame.class.getResource("resources/icons/redo16.png")));
-		 * 
+		 *
 		 * jMenuItemCut.setAction(cutAction); jMenuItemCut.setText("Cut");
 		 * jMenuItemCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,
-		 * KeyEvent.CTRL_MASK)); jMenuItemCut.setIcon( new
+		 * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); jMenuItemCut.setIcon( new
 		 * ImageIcon(net.sf.memoranda.ui.htmleditor.AppFrame.class.getResource("resources/icons/cut.png")));
-		 * 
+		 *
 		 * jMenuItemCopy.setAction(copyAction); jMenuItemCopy.setText("Copy");
 		 * jMenuItemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
-		 * KeyEvent.CTRL_MASK)); jMenuItemCopy.setIcon( new
+		 * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); jMenuItemCopy.setIcon( new
 		 * ImageIcon(net.sf.memoranda.ui.htmleditor.AppFrame.class.getResource("resources/icons/copy.png")));
-		 * 
+		 *
 		 * jMenuItemPaste.setAction(pasteAction);
 		 * jMenuItemPaste.setText("Paste");
 		 * jMenuItemPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,
-		 * KeyEvent.CTRL_MASK)); jMenuItemPaste.setIcon( new
+		 * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); jMenuItemPaste.setIcon( new
 		 * ImageIcon(net.sf.memoranda.ui.htmleditor.AppFrame.class.getResource("resources/icons/paste.png")));
-		 * 
+		 *
 		 * jMenuItemProp.setAction(propsAction);
 		 * jMenuItemProp.setText("Properties"); jMenuItemProp.setIcon(
 		 */
@@ -948,7 +949,7 @@ public class HTMLEditor extends JPanel {
 		/*
 		 * jMenuItemInsCell.setAction(new InsertTableCellAction());
 		 * jMenuItemInsCell.setText(Local.getString("Insert table cell"));
-		 * 
+		 *
 		 * jMenuItemInsRow.setAction(new InsertTableRowAction());
 		 */
 
@@ -1033,7 +1034,7 @@ public class HTMLEditor extends JPanel {
 				new ImageIcon(cl.getResource("resources/icons/undo16.png")));
 			putValue(
 				Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK));
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -1071,7 +1072,7 @@ public class HTMLEditor extends JPanel {
 				Action.ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(
 					KeyEvent.VK_Z,
-					KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() + KeyEvent.SHIFT_MASK));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -1293,7 +1294,7 @@ public class HTMLEditor extends JPanel {
 		 * String ppName =
 		 * document.getParagraphElement(editor.getCaretPosition()).getParentElement().getName().toUpperCase();
 		 * System.out.print(ppName+"->"+pName+":");
-		 * 
+		 *
 		 * AbstractDocument.BranchElement pEl =
 		 * (AbstractDocument.BranchElement)document.getParagraphElement(editor.getCaretPosition());
 		 * Element el = pEl.positionToElement(editor.getCaretPosition());
@@ -1528,7 +1529,7 @@ public class HTMLEditor extends JPanel {
 			super(Local.getString("Insert table row"));
 			this.putValue(
 				Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.CTRL_MASK));
+				KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		}
 		public void actionPerformed(ActionEvent e) {
 			String trTag = "<tr>";
@@ -1579,7 +1580,7 @@ public class HTMLEditor extends JPanel {
 				Action.ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(
 					KeyEvent.VK_ENTER,
-					KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() + KeyEvent.SHIFT_MASK));
 		}
 		public void actionPerformed(ActionEvent e) {
 			String tdTag = "<td><p></p></td>";
@@ -1664,7 +1665,7 @@ public class HTMLEditor extends JPanel {
 		 * net.sf.memoranda.ui.htmleditor.filechooser.ImageFilter());
 		 * chooser.setAccessory(new
 		 * net.sf.memoranda.ui.htmleditor.filechooser.ImagePreview(chooser));
-		 *  
+		 *
 		 */
 		ImageDialog dlg = new ImageDialog(null);
 		Dimension dlgSize = dlg.getPreferredSize();
@@ -1854,7 +1855,7 @@ public class HTMLEditor extends JPanel {
 		 * HTMLEditorKit.InsertHTMLTextAction insertTableAction = new
 		 * HTMLEditorKit.InsertHTMLTextAction("insertTABLE",tableTag,
 		 * HTML.Tag.BODY, HTML.Tag.TABLE);
-		 *  
+		 *
 		 */
 		//insertHTML(tableTag, editor.getCaretPosition());
 
@@ -2368,7 +2369,7 @@ public class HTMLEditor extends JPanel {
 		 * HTML.Tag.H4; tagText=" <h4></h4> ";break; case T_H5: tag =
 		 * HTML.Tag.H5; tagText=" <h5></h5> ";break; case T_H6: tag =
 		 * HTML.Tag.H6; tagText=" <h6></h6> ";break; }
-		 * 
+		 *
 		 * HTMLEditorKit.InsertHTMLTextAction iAction = new
 		 * HTMLEditorKit.InsertHTMLTextAction("insertTag",tagText, parentTag,
 		 * tag); iAction.actionPerformed(e);
@@ -2567,7 +2568,7 @@ public class HTMLEditor extends JPanel {
 	 * editor.replaceSelection(""); try { editorKit.insertHTML(document,
 	 * editor.getCaretPosition(), tag, 0, 0, HTML.Tag.CODE); } catch (Exception
 	 * ex) { ex.printStackTrace(); } }
-	 * 
+	 *
 	 * void dotestClearStyle(ActionEvent e) { Element el =
 	 * document.getCharacterElement(editor.getCaretPosition());
 	 * SimpleAttributeSet attrs = new SimpleAttributeSet();
@@ -2718,7 +2719,7 @@ public class HTMLEditor extends JPanel {
 		 * if (in && (currentFontSize < 7)) currentFontSize++; else if (!in &&
 		 * (currentFontSize > 1)) currentFontSize--; else return;
 		 * editorKit.getStyleSheet().setBaseFontSize(currentFontSize);
-		 *  
+		 *
 		 */
 
 	}
@@ -2755,9 +2756,9 @@ public class HTMLEditor extends JPanel {
 		}
 		editorKit.setStyleSheet(css);
 	}
-	
-	public void reload() {	
-		
+
+	public void reload() {
+
 	}
 
 	void doFind() {
