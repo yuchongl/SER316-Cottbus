@@ -378,8 +378,8 @@ public class AgendaGenerator {
 				.getResource("resources/agenda/removesticker.gif")
 				.toExternalForm();
 
-		String arrowDown = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/downarrow.png")
-				.toExternalForm();
+		//String arrowDown = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/downarrow.png")
+		//		.toExternalForm();
 		//String editButton = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/editButton.png")
 			//	.toExternalForm();
 		String s = "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:importstickers\"><b>"
