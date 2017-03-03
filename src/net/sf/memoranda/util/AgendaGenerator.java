@@ -299,9 +299,9 @@ public class AgendaGenerator {
 				.toExternalForm();
 		String iurl2 = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/removesticker.gif")
 				.toExternalForm();
-		String arrowUp = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/uparrow.png")
+		String arrowUp = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/arrow.gif")
 				.toExternalForm();
-		String arrowDown = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/downarrow.png")
+		String arrowDown = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/arrow.gif")
 				.toExternalForm();
 
 		String s = "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:importstickers\"><b>"
