@@ -29,11 +29,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
+import net.sf.memoranda.CurrentNote;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.History;
 import net.sf.memoranda.Note;
@@ -137,6 +139,52 @@ public class AppFrame extends JFrame {
                         p1Import_actionPerformed(e);
                 }
         };
+        
+        public Action newAction = new AbstractAction(Local.getString("New note"),
+    			new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+    					.getResource("resources/icons/filenew.png"))) {
+    		public void actionPerformed(ActionEvent e) {
+    			newB_actionPerformed(e);
+    		}
+    	};
+        
+    	void newB_actionPerformed(ActionEvent e) {
+    		CurrentNote.set(null, true);
+    		setDocument(null);
+    		this.titleField.requestFocus();
+    	}
+    	
+    	String initialTitle = "";
+    	public JTextField titleField = new JTextField();
+
+    	public void setDocument(Note note) {
+    		// Note note = CurrentProject.getNoteList().getActiveNote();
+    		// try {
+    		// this.editor.editor.setPage(CurrentStorage.get().getNoteURL(note));
+    		editor.document = (HTMLDocument) CurrentStorage.get().openNote(note);
+    		editor.initEditor();
+    		if (note != null)
+    			titleField.setText(note.getTitle());
+    		else
+    			titleField.setText("");
+    		initialTitle = titleField.getText();
+    		/*
+    		 * } catch (Exception ex) { new ExceptionDialog(ex); }
+    		 */
+    		/*
+    		 * Document doc = CurrentStorage.get().openNote(note); try {
+    		 * this.editor.editor.setText(doc.getText(0, doc.getLength())); } catch
+    		 * (Exception ex){ ex.printStackTrace(); }
+    		 */
+    		// .setDocument(CurrentStorage.get().openNote(note));
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+        
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
         JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
@@ -144,6 +192,7 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
     JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
     JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
+  
     JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
     JMenuItem jMenuFileExportNote = new JMenuItem(
             workPanel.dailyItemsPanel.editorPanel.exportAction);
@@ -175,11 +224,13 @@ public class AppFrame extends JFrame {
     		workPanel.dailyItemsPanel.editorPanel.insertTimeAction);
     JMenuItem jMenuInsertFile = new JMenuItem(
             workPanel.dailyItemsPanel.editorPanel.importAction);
+    JMenuItem jMenuInsertFile1 = new JMenuItem(
+            workPanel.dailyItemsPanel.editorPanel.newAction);
 
     JMenu jMenuFormatPStyle = new JMenu();
     JMenuItem jMenuFormatP = new JMenuItem(editor.new BlockAction(editor.T_P,
-            ""));
-    JMenuItem jMenuFormatH1 = new JMenuItem(editor.new BlockAction(editor.T_H1,
+      ""));
+   JMenuItem jMenuFormatH1 = new JMenuItem(editor.new BlockAction(editor.T_H1,
             ""));
     JMenuItem jMenuFormatH2 = new JMenuItem(editor.new BlockAction(editor.T_H2,
             ""));
@@ -508,7 +559,7 @@ public class AppFrame extends JFrame {
         jMenuInsert.add(jMenuInsertTime);
         jMenuInsert.addSeparator();
         jMenuInsert.add(jMenuInsertFile);
-
+    
         jMenuFormat.add(jMenuFormatPStyle);
         jMenuFormat.add(jjMenuFormatChStyle);
         jMenuFormat.add(jMenuFormatAlign);
@@ -574,7 +625,7 @@ public class AppFrame extends JFrame {
 
         java.awt.event.ActionListener setMenusDisabled = new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                setEnabledEditorMenus(false);
+                setEnabledEditorMenus(true);
             }
         };
 
@@ -591,7 +642,8 @@ public class AppFrame extends JFrame {
         this.workPanel.notesB.addActionListener(
                 new java.awt.event.ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        setEnabledEditorMenus(true);
+                        //change this 
+                    	setEnabledEditorMenus(true);
                     }
                 });
 

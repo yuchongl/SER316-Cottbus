@@ -137,7 +137,7 @@ public class JNCalendarPanel extends JPanel {
     
     monthsCB.setRequestFocusEnabled(false);
     monthsCB.setMaximumRowCount(12);
-    monthsCB.setPreferredSize(new Dimension(70 , 20));
+    monthsCB.setPreferredSize(new Dimension(50 , 20));
     border1 = BorderFactory.createEmptyBorder(0,0,5,0);
     border2 = BorderFactory.createEmptyBorder();
     this.setLayout(new BorderLayout());
@@ -226,6 +226,7 @@ public class JNCalendarPanel extends JPanel {
     
     yearSpin.setPreferredSize(new Dimension(50, 20));
     yearSpin.setRequestFocusEnabled(false);
+
     yearSpin.setEditor(yearSpinner);
     navbPanel.setMinimumSize(new Dimension(202, 30));
     navbPanel.setOpaque(false);
@@ -237,7 +238,9 @@ public class JNCalendarPanel extends JPanel {
     jnCalendar.setFont(new java.awt.Font("Dialog", 0, 10));
     jnCalendar.setGridColor(Color.lightGray);
     jnCalendarPanel.setLayout(borderLayout5);
+
     navb2Panel.setLayout(borderLayout4);
+
     todayBPanel.setMinimumSize(new Dimension(68, 24));
     todayBPanel.setOpaque(false);
     todayBPanel.setPreferredSize(new Dimension(51, 24));
@@ -252,8 +255,10 @@ public class JNCalendarPanel extends JPanel {
     this.add(mntyPanel,  BorderLayout.AFTER_LINE_ENDS);
     mntyPanel.add(monthsCB, BorderLayout.WEST);
     mntyPanel.add(yearSpin,  BorderLayout.EAST);
+
     this.add(jnCalendarPanel,  BorderLayout.AFTER_LAST_LINE);
     jnCalendar.getTableHeader().setPreferredSize(new Dimension(300, 20));
+
     jnCalendarPanel.add(jnCalendar.getTableHeader(), BorderLayout.NORTH);
     jnCalendarPanel.add(jnCalendar, BorderLayout.CENTER);
     
@@ -370,6 +375,7 @@ public class JNCalendarPanel extends JPanel {
   }
 
   void monthForwardB_actionPerformed(ActionEvent e) {
+
 	    Calendar cal = _date.getCalendar();
 	    cal.add(Calendar.DATE, 30); cal.getTime();
 	    _date = new CalendarDate(cal);
