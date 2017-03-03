@@ -494,7 +494,7 @@ public class EventDialog extends JDialog implements WindowListener {
     void setEndDateB_actionPerformed(ActionEvent e) {
         //endCalFrame.setLocation(setEndDateB.getLocation());
         endCalFrame.setSize(200, 190);
-        endCalFrame.setTitle(Local.getString("End date"));
+        endCalFrame.setTitle(Local.getString("Due date"));
         this.getLayeredPane().add(endCalFrame);
         endCalFrame.show();
     }
