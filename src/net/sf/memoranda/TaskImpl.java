@@ -58,7 +58,7 @@ public class TaskImpl implements Task, Comparable<Object> {
     if (pr.getEndDate() != null) {
       return pr.getEndDate();
     }
-    return this.getStartDate();
+    return this.getStartDate(); 
 
   }
 
