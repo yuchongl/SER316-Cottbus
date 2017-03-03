@@ -40,6 +40,7 @@ public class AgendaGenerator {
 			+ "<tr>\n";
 	static String FOOTER = "</td></tr></table></body></html>";
 
+	@SuppressWarnings("unchecked")
 	static String generateTasksInfo(Project p, CalendarDate date, Collection expandedTasks) {
 		TaskList tl;
 		if (p.getID().equals(CurrentProject.get().getID())) {
@@ -60,8 +61,7 @@ public class AgendaGenerator {
 		} else {
 			s += Local.getString("Actual tasks") + ":<br>\n<ul>\n";
 
-			// TaskSorter.sort(tasks, date, TaskSorter.BY_IMP_RATE); // TODO:
-			// configurable method
+		
 			Collections.sort(tasks);
 			for (Iterator i = tasks.iterator(); i.hasNext();) {
 				Task t = (Task) i.next();
@@ -108,17 +108,11 @@ public class AgendaGenerator {
 
 		for (Iterator iter = st.iterator(); iter.hasNext();) {
 			Task subTask = (Task) iter.next();
-			// if(Context.get("SHOW_ACTIVE_TASKS_ONLY").equals(new
-			// Boolean(true))) {
-			// if (!((subTask.getStatus() == Task.ACTIVE) ||
-			// (subTask.getStatus() == Task.DEADLINE) || (subTask.getStatus() ==
-			// Task.FAILED))) {
-			// continue;
-			// }
-			// }
+		
 			s = s + renderTask(p, date, tl, subTask, level, expandedTasks);
 			if (expandedTasks.contains(subTask.getID())) {
-				s = s + expandRecursively(p, date, tl, subTask, expandedTasks, level + 1);
+				s = s + expandRecursively(p, date, tl, subTask, 
+						expandedTasks, level + 1);
 			}
 		}
 		s += "\n</ul>\n";
@@ -299,9 +293,9 @@ public class AgendaGenerator {
 				.toExternalForm();
 		String iurl2 = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/removesticker.gif")
 				.toExternalForm();
-		String arrowUp = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/arrow.gif")
+		String arrowUp = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/uparrow.png")
 				.toExternalForm();
-		String arrowDown = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/arrow.gif")
+		String arrowDown = net.sf.memoranda.ui.AppFrame.class.getResource("resources/agenda/downarrow.png")
 				.toExternalForm();
 
 		String s = "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:importstickers\"><b>"
@@ -340,7 +334,7 @@ public class AgendaGenerator {
 	private static PriorityQueue sortStickers() {
 		Map stickers = EventsManager.getStickers();
 		PriorityQueue pQ = new PriorityQueue(stickers.size());
-		for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
+		for (Iterator<?> i = stickers.keySet().iterator(); i.hasNext();) {
 			String id = (String) i.next();
 			Element el = (Element) stickers.get(id);
 			int j = 2;
@@ -359,16 +353,7 @@ public class AgendaGenerator {
 		return ret;
 	}
 
-	private static String addEditHyperLink(String txt, String id) {
-		String ret = "";
-		int first = txt.indexOf(">");
-		int last = txt.lastIndexOf("<");
-		ret = txt.substring(0, first + 1) + "<a href=\"memoranda:editsticker#" + id + "\">"
-				+ txt.substring(first + 1, last) + "</a>" + txt.substring(last);
-		return ret;
-	}
-
-	public static String getAgenda(CalendarDate date, Collection expandedTasks) {
+	public static String getAgenda(CalendarDate date, Collection<?> expandedTasks) {
 		String s = HEADER;
 		s += generateAllProjectsInfo(date, expandedTasks);
 		s += generateEventsInfo(date);
