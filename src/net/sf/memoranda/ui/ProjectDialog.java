@@ -156,7 +156,7 @@ public class ProjectDialog extends JDialog {
         centerPanel.add(sdButton, gbc);
         
         endDateChB.setForeground(Color.gray);
-        endDateChB.setText(Local.getString("End date"));
+        endDateChB.setText(Local.getString("Due date"));
         endDateChB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 endDateChB_actionPerformed(e);
@@ -302,7 +302,7 @@ public class ProjectDialog extends JDialog {
         endCalFrame.setSize((this.getContentPane().getWidth() / 2), 
             this.getContentPane().getHeight());
         this.getLayeredPane().add(endCalFrame);
-        endCalFrame.setTitle(Local.getString("End date"));
+        endCalFrame.setTitle(Local.getString("Due date"));
         endCalFrame.show();
     }
     

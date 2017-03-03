@@ -133,7 +133,7 @@ public class ProjectsTablePanel extends JPanel {
             {
                 Local.getString("Project title"),
                 Local.getString("Start date"),
-                Local.getString("End date"),
+                Local.getString("Due date"),
                 //Local.getString("Execution"),
                 Local.getString("Status")};
 
