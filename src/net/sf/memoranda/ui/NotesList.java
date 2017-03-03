@@ -84,10 +84,10 @@ public class NotesList extends JList {
     }
 
     public void update(NoteList nl) {
-        if (_type == ALL){
-            notes = (Vector) nl.getAllNotes();}
-        else{
-            notes = (Vector) nl.getMarkedNotes();}
+        if (_type == ALL)
+            notes = (Vector) nl.getAllNotes();
+        else
+            notes = (Vector) nl.getMarkedNotes();
         
 //        Util.debug("No. of notes in noteList " + notes.size());
         //NotesVectorSorter.sort(notes);
@@ -135,7 +135,7 @@ public class NotesListModel extends AbstractListModel {
 
     }
 
-ImageIcon bookmarkIcon = new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/star8.png"));
+    ImageIcon bookmarkIcon = new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/star8.png"));
 
     public ListCellRenderer getCellRenderer() {
         return new DefaultListCellRenderer()  {
@@ -145,20 +145,19 @@ ImageIcon bookmarkIcon = new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getRes
        Object value,            // value to display
        int index,               // cell index
        boolean isSelected,      // is the cell selected
-       boolean cellHasFocus){    // the list and the cell have the focus
-
-         JLabel label = (JLabel)super.getListCellRendererComponent(list,
-        		 value, index, isSelected, cellHasFocus);
+       boolean cellHasFocus)    // the list and the cell have the focus
+     {
+         JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
          String s = value.toString();
          label.setText(s);
          //Note currentNote = CurrentProject.getNoteList().getActiveNote();
 		 Note currentNote = CurrentNote.get();
          if (currentNote != null) {
-            if (getNote(index).getId().equals(currentNote.getId())){
-                label.setFont(label.getFont().deriveFont(Font.BOLD));}
+            if (getNote(index).getId().equals(currentNote.getId()))
+                label.setFont(label.getFont().deriveFont(Font.BOLD));
          }
-         if (getNote(index).isMarked()){
-            label.setIcon(bookmarkIcon);}
+         if (getNote(index).isMarked())
+            label.setIcon(bookmarkIcon);
          //setIcon();
        /*if (isSelected) {
              setBackground(list.getSelectionBackground());
