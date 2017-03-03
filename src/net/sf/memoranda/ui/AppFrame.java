@@ -121,30 +121,30 @@ public class AppFrame extends JFrame {
                 new AbstractAction(Local.getString("Export notes") + "...") {
 
                 public void actionPerformed(ActionEvent e) {
-          ppExport_actionPerformed(e);
+                        ppExport_actionPerformed(e);
                 }
         };
         
         public Action importNotesAction =
-          new AbstractAction(Local.getString("Import multiple notes")) {
+                        new AbstractAction(Local.getString("Import multiple notes")) {
 
                         public void actionPerformed(ActionEvent e) {
-          ppImport_actionPerformed(e);
+                                ppImport_actionPerformed(e);
                         }
                 };
         public Action importOneNoteAction =
-          new AbstractAction(Local.getString("Import one note")) {
+                new AbstractAction(Local.getString("Import one note")) {
 
                 public void actionPerformed(ActionEvent e) {
-          p1Import_actionPerformed(e);
+                        p1Import_actionPerformed(e);
                 }
         };
         
         public Action newAction = new AbstractAction(Local.getString("New note"),
-    		new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+    			new ImageIcon(net.sf.memoranda.ui.AppFrame.class
     					.getResource("resources/icons/filenew.png"))) {
     		public void actionPerformed(ActionEvent e) {
-    	  newB_actionPerformed(e);
+    			newB_actionPerformed(e);
     		}
     	};
         
@@ -613,12 +613,12 @@ public class AppFrame extends JFrame {
         projectsPanel.AddExpandListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (prPanelExpanded) {
-                  prPanelExpanded = false;
-                  splitPane.setDividerLocation(28);
+                    prPanelExpanded = false;
+                    splitPane.setDividerLocation(28);
                 }
                 else {
-                  prPanelExpanded = true;
-                  splitPane.setDividerLocation(0.2);
+                    prPanelExpanded = true;
+                    splitPane.setDividerLocation(0.2);
                 }
             }
         });
@@ -643,7 +643,7 @@ public class AppFrame extends JFrame {
                 new java.awt.event.ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         //change this 
-                   setEnabledEditorMenus(true);
+                    	setEnabledEditorMenus(true);
                     }
                 });
 
@@ -703,8 +703,7 @@ public class AppFrame extends JFrame {
                         Point loc = this.getLocation();
                         
                         ExitConfirmationDialog dlg = new ExitConfirmationDialog(this,Local.getString("Exit"));
-                        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
-                        		(frmSize.height - dlg.getSize().height) / 2 + loc.y);
+                        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
                         dlg.setVisible(true);
                         if(dlg.CANCELLED) return;
         }
@@ -978,9 +977,7 @@ public class AppFrame extends JFrame {
                         chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
                  CurrentProject.save();
                  ProjectExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, 
-                                 dlg.splitChB.isSelected(), true, nument,
-                                 dlg.titlesAsHeadersChB.isSelected(),
-                                 false); 
+                                 dlg.splitChB.isSelected(), true, nument, dlg.titlesAsHeadersChB.isSelected(), false); 
                 }
             
             protected void ppImport_actionPerformed(ActionEvent e) {
