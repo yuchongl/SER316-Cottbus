@@ -264,7 +264,7 @@ public class TaskDialog extends JDialog {
         jLabel2.setMaximumSize(new Dimension(270, 16));
         //jLabel2.setPreferredSize(new Dimension(60, 16));
         jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel2.setText(Local.getString("End date"));
+        jLabel2.setText(Local.getString("Due date"));
         endDate.setBorder(border8);
         endDate.setPreferredSize(new Dimension(80, 24));
         
