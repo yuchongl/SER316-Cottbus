@@ -102,6 +102,7 @@ public class TaskTable extends JTable {
         ListToTreeSelectionModelWrapper selectionWrapper = new ListToTreeSelectionModelWrapper();
         tree.setSelectionModel(selectionWrapper);
         setSelectionModel(selectionWrapper.getListSelectionModel());
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         CurrentDate.addDateListener(new DateListener() {
             public void dateChange(CalendarDate d) {
@@ -200,6 +201,11 @@ public class TaskTable extends JTable {
 		model.fireTreeStructureChanged();
 		expansion.expand(tree);
 		updateUI();
+		//task 84 top task selected by default
+		if (getSelectedRow() == -1 && getRowCount() > 0){
+			//selects first task if none are selected 
+			setRowSelectionInterval(0, 0);
+		}
     }
     
     /**
