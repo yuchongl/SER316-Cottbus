@@ -515,7 +515,14 @@ public class TaskPanel extends JPanel {
 		// dlg.endDate.getModel().getValue());
 		CalendarDate ed;
 		if (dlg.chkEndDate.isSelected()) {
-			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			//task 73
+			if (((Date)(dlg.startDate.getModel().getValue())).after((Date)(dlg.endDate.getModel().getValue()))){
+				ed = new CalendarDate((Date)dlg.startDate.getModel().getValue());
+				JOptionPane.showMessageDialog(this, "Due date can't be before Start Date", "Error", 
+						JOptionPane.ERROR_MESSAGE);
+			}else{
+				ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			}
 		} else {
 			ed = null;
 		}
@@ -555,7 +562,14 @@ public class TaskPanel extends JPanel {
 		// dlg.endDate.getModel().getValue());
 		CalendarDate ed;
 		if (dlg.chkEndDate.isSelected()) {
-			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			//task 73
+			if (((Date)(dlg.startDate.getModel().getValue())).after((Date)(dlg.endDate.getModel().getValue()))){
+				ed = new CalendarDate((Date)dlg.startDate.getModel().getValue());
+				JOptionPane.showMessageDialog(this, "Due date can't be before Start Date", "Error", 
+						JOptionPane.ERROR_MESSAGE);
+			}else{
+				ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			}
 		} else {
 			ed = null;
 		}
@@ -594,8 +608,6 @@ public class TaskPanel extends JPanel {
 		} else {
 			dlg.setEndDate(CurrentProject.get().getEndDate());
 		}
-		dlg.setStartDateLimit(parent.getStartDate(), parent.getEndDate());
-		dlg.setEndDateLimit(parent.getStartDate(), parent.getEndDate());
 		dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
 				(frmSize.height - dlg.getSize().height) / 2 + loc.y);
 		dlg.setVisible(true);
@@ -607,7 +619,14 @@ public class TaskPanel extends JPanel {
 		// dlg.endDate.getModel().getValue());
 		CalendarDate ed;
 		if (dlg.chkEndDate.isSelected()) {
-			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			//task 73
+			if (((Date)(dlg.startDate.getModel().getValue())).after((Date)(dlg.endDate.getModel().getValue()))){
+				ed = new CalendarDate((Date)dlg.startDate.getModel().getValue());
+				JOptionPane.showMessageDialog(this, "Due date can't be before Start Date", "Error", 
+						JOptionPane.ERROR_MESSAGE);
+			}else{
+				ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			}
 		} else {
 			ed = null;
 		}

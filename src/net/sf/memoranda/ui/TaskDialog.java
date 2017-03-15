@@ -100,12 +100,6 @@ public class TaskDialog extends JDialog {
 	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	JLabel jLabelProgress = new JLabel();
 	JSpinner progress = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
-	
-	//Forbid to set dates outside the bounds
-	CalendarDate startDateMin = CurrentProject.get().getStartDate();
-	CalendarDate startDateMax = CurrentProject.get().getEndDate();
-	CalendarDate endDateMin = startDateMin;
-	CalendarDate endDateMax = startDateMax;
     
     public TaskDialog(Frame frame, String title) {
         super(frame, title, true);
@@ -230,18 +224,7 @@ public class TaskDialog extends JDialog {
                 ignoreStartChanged = true;
                 Date sd = (Date) startDate.getModel().getValue();
                 Date ed = (Date) endDate.getModel().getValue();
-                if (sd.after(ed) && chkEndDate.isSelected()) {
-                    startDate.getModel().setValue(ed);
-                    sd = ed;
-                }
-				if ((startDateMax != null) && sd.after(startDateMax.getDate())) {
-					startDate.getModel().setValue(startDateMax.getDate());
-                    sd = startDateMax.getDate();
-				}
-                if ((startDateMin != null) && sd.before(startDateMin.getDate())) {
-                    startDate.getModel().setValue(startDateMin.getDate());
-                    sd = startDateMin.getDate();
-                }
+				
                 startCalFrame.cal.set(new CalendarDate(sd));
                 ignoreStartChanged = false;
             }
@@ -286,14 +269,7 @@ public class TaskDialog extends JDialog {
                     endDate.getModel().setValue(ed);
                     ed = sd;
                 }
-				if ((endDateMax != null) && ed.after(endDateMax.getDate())) {
-					endDate.getModel().setValue(endDateMax.getDate());
-                    ed = endDateMax.getDate();
-				}
-                if ((endDateMin != null) && ed.before(endDateMin.getDate())) {
-                    endDate.getModel().setValue(endDateMin.getDate());
-                    ed = endDateMin.getDate();
-                }
+				
 				endCalFrame.cal.set(new CalendarDate(ed));
                 ignoreEndChanged = false;
             }
@@ -388,15 +364,6 @@ public class TaskDialog extends JDialog {
 			this.endDate.getModel().setValue(d.getDate());
 	}
 	
-	public void setStartDateLimit(CalendarDate min, CalendarDate max) {
-		this.startDateMin = min;
-		this.startDateMax = max;
-	}
-	
-	public void setEndDateLimit(CalendarDate min, CalendarDate max) {
-		this.endDateMin = min;
-		this.endDateMax = max;
-	}
 	
     void okB_actionPerformed(ActionEvent e) {
 	CANCELLED = false;
