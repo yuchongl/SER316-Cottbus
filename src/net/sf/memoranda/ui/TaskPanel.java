@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -811,11 +812,12 @@ public class TaskPanel extends JPanel {
 	class PopupListener extends MouseAdapter {
 
 		public void mouseClicked(MouseEvent ev) {
-			if ((ev.getClickCount() == 2) && (taskTable.getSelectedRow() > -1)) {
-				// ignore "tree" column
-				// if(taskTable.getSelectedColumn() == 1) return;
-
-				editTaskB_actionPerformed(null);
+			if (SwingUtilities.isLeftMouseButton(ev) && (ev.getClickCount() == 2) && (taskTable.getSelectedRow() > -1)) {
+				
+				int r = taskTable.rowAtPoint(ev.getPoint());
+				if (r > -1 && r < taskTable.getRowCount()){
+					editTaskB_actionPerformed(null);
+				}
 			}
 		}
 
@@ -829,7 +831,12 @@ public class TaskPanel extends JPanel {
 
 		private void maybeShowPopup(MouseEvent ev) {
 			if (ev.isPopupTrigger()) {
-				taskPpMenu.show(ev.getComponent(), ev.getX(), ev.getY());
+				//task 83. Selects the task that is right clicked on
+				int r = taskTable.rowAtPoint(ev.getPoint());
+				if (r > -1 && r < taskTable.getRowCount()){
+					taskTable.setRowSelectionInterval(r, r);
+					taskPpMenu.show(ev.getComponent(), ev.getX(), ev.getY());
+				}
 			}
 		}
 
