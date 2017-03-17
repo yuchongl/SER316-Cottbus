@@ -87,7 +87,10 @@ public class AppFrame extends JFrame {
     JMenu jMenuEdit = new JMenu();
     JMenu jMenuFormat = new JMenu();
     JMenu jMenuInsert = new JMenu();
-
+    
+    JMenu jPreference = new JMenu();
+    
+    
     public WorkPanel workPanel = new WorkPanel();
     HTMLEditor editor = workPanel.dailyItemsPanel.editorPanel.editor;
 
@@ -111,9 +114,33 @@ public class AppFrame extends JFrame {
         }
     };
 
-    public Action preferencesAction = new AbstractAction("Preferences") {
+    public Action preferencesActionGeneral = new AbstractAction("General") {
         public void actionPerformed(ActionEvent e) {
-            showPreferences();
+            showPreferences("General");
+        }
+    };
+    
+    public Action preferencesActionRT = new AbstractAction("Resource Types") {
+        public void actionPerformed(ActionEvent e) {
+            showPreferences("Resource Types");
+        }
+    };
+    
+    public Action preferencesActionTheme = new AbstractAction("Theme") {
+        public void actionPerformed(ActionEvent e) {
+            showPreferences("Theme");
+        }
+    };
+    
+    public Action preferencesActionSound = new AbstractAction("Sound") {
+        public void actionPerformed(ActionEvent e) {
+            showPreferences("Sound");
+        }
+    };
+    
+    public Action preferencesActionEditor = new AbstractAction("Editor") {
+        public void actionPerformed(ActionEvent e) {
+            showPreferences("Editor");
         }
     };
     
@@ -178,16 +205,10 @@ public class AppFrame extends JFrame {
     		 */
     		// .setDocument(CurrentStorage.get().openNote(note));
     	}
-    	
-    	
-    	
-    	
-    	
-    	
-        
+
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
-        JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
+    JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
     JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
     JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
     JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
@@ -284,8 +305,14 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuGoToday = new JMenuItem(
             workPanel.dailyItemsPanel.calendar.todayAction);
 
-    JMenuItem jMenuEditPref = new JMenuItem(preferencesAction);
+ //   JMenu jPreferenceGeneral = new JMenu();
+    JMenuItem jMenuGeneral = new JMenuItem(preferencesActionGeneral);
+    JMenuItem jMenuRT = new JMenuItem(preferencesActionRT);
+    JMenuItem jMenuTheme = new JMenuItem(preferencesActionTheme);
+    JMenuItem jMenuSound = new JMenuItem(preferencesActionSound);
+    JMenuItem jMenuEditor = new JMenuItem(preferencesActionEditor);
 
+    
     JMenu jMenuInsertSpecial = new JMenu();
     
     JMenu jMenuHelp = new JMenu();
@@ -325,6 +352,17 @@ public class AppFrame extends JFrame {
                 doExit();
             }
         });
+        
+        jPreference.setText(Local.getString("Preference"));
+
+        
+        /*jPreferenceGeneral.setText(Local.getString("General"));
+        jPreferenceGeneral.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	showPreferences();
+            }
+        });*/
+        
         jMenuHelp.setText(Local.getString("Help"));
         
         jMenuHelpGuide.setText(Local.getString("Online user's guide"));
@@ -369,8 +407,8 @@ public class AppFrame extends JFrame {
         //projectsPanel.setMaximumSize(new Dimension(2147483647, 200));
         projectsPanel.setMinimumSize(new Dimension(10, 28));
         projectsPanel.setPreferredSize(new Dimension(10, 28));
-        /*workPanel.setMinimumSize(new Dimension(734, 300));
-         workPanel.setPreferredSize(new Dimension(1073, 300));*/
+        workPanel.setMinimumSize(new Dimension(734, 300));
+         workPanel.setPreferredSize(new Dimension(1073, 300));
         splitPane.setDividerLocation(28);
 
         /* jMenuFileNewPrj.setText(Local.getString("New project") + "...");
@@ -410,7 +448,7 @@ public class AppFrame extends JFrame {
 
         jMenuEditFind.setText(Local.getString("Find & replace") + "...");
 
-        jMenuEditPref.setText(Local.getString("Preferences") + "...");
+        //jMenuEditPref.setText(Local.getString("Preferences") + "...");
 
         jMenuInsert.setText(Local.getString("Insert"));
 
@@ -497,7 +535,7 @@ public class AppFrame extends JFrame {
 
         toolBar.add(jButton3);
         jMenuFile.add(jMenuFileNewPrj);
-                jMenuFile.add(jMenuFileNewNote);
+        jMenuFile.add(jMenuFileNewNote);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFilePackPrj);
         jMenuFile.add(jMenuFileUnpackPrj);
@@ -507,11 +545,17 @@ public class AppFrame extends JFrame {
         jMenuFile.add(jMenuFileImportNote);
         jMenuFile.add(jMenuFileImportPrj);
         jMenuFile.addSeparator();
-        jMenuFile.add(jMenuEditPref);
+       // jMenuFile.add(jMenuEditPref);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFileMin);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFileExit);
+        
+        jPreference.add(jMenuGeneral);
+        jPreference.add(jMenuRT);
+        jPreference.add(jMenuTheme);
+        jPreference.add(jMenuSound);
+        jPreference.add(jMenuEditor);
         
         jMenuHelp.add(jMenuHelpGuide);
         jMenuHelp.add(jMenuHelpWeb);
@@ -524,6 +568,7 @@ public class AppFrame extends JFrame {
         menuBar.add(jMenuInsert);
         menuBar.add(jMenuFormat);
         menuBar.add(jMenuGo);
+        menuBar.add(jPreference);
         menuBar.add(jMenuHelp);
         this.setJMenuBar(menuBar);
         //contentPane.add(toolBar, BorderLayout.NORTH);
@@ -849,6 +894,7 @@ public class AppFrame extends JFrame {
         UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString(
                 "Cancel"));
 
+        
         JFileChooser chooser = new JFileChooser();
         chooser.setFileHidingEnabled(false);
         chooser.setDialogTitle(Local.getString("Unpack project"));
@@ -882,8 +928,8 @@ public class AppFrame extends JFrame {
         projectsPanel.prjTablePanel.updateUI();
     }
 
-    public void showPreferences() {
-        PreferencesDialog dlg = new PreferencesDialog(this);
+   public void showPreferences(String optSelected) {
+        PreferencesDialog dlg = new PreferencesDialog(this, optSelected);
         dlg.pack();
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);

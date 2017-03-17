@@ -42,15 +42,15 @@ public class PreferencesDialog extends JDialog {
 
 	ButtonGroup lfGroup = new ButtonGroup();
 
-	JRadioButton lfSystemRB = new JRadioButton();
+	//JRadioButton lfSystemRB = new JRadioButton();
 
-	JRadioButton lfJavaRB = new JRadioButton();
+	//JRadioButton lfJavaRB = new JRadioButton();
 
-	JRadioButton lfCustomRB = new JRadioButton();
+	//JRadioButton lfCustomRB = new JRadioButton();
 
 	JLabel classNameLabel = new JLabel();
 
-	JTextField lfClassName = new JTextField();
+	//JTextField lfClassName = new JTextField();
 
 	JLabel jLabel4 = new JLabel();
 
@@ -63,7 +63,7 @@ public class PreferencesDialog extends JDialog {
 	JCheckBox enL10nChB = new JCheckBox();
 
 	JCheckBox firstdow = new JCheckBox();
-
+	
 	JPanel resourcePanel = new JPanel(new BorderLayout());
 
 	ResourceTypePanel resourceTypePanel = new ResourceTypePanel();
@@ -81,9 +81,29 @@ public class PreferencesDialog extends JDialog {
 	JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
 
 	JLabel lblExit = new JLabel();
+	
+	JPanel PanelThemeMain = new JPanel();
+	
+	BorderLayout borderLayoutTheme = new BorderLayout();
 
+	TitledBorder titledBorderTheme;
+	
+	ButtonGroup themeGroup = new ButtonGroup();
+	
+	JPanel jPanelTheme2 = new JPanel();
+	
+	JPanel jPanelTheme3 = new JPanel();
+	
+	GridLayout gridLayoutTheme = new GridLayout();
+	
+	JRadioButton themeDefaultRB = new JRadioButton();
+
+	JRadioButton themeOP1RB = new JRadioButton();
+	
+	JRadioButton themeOP2RB = new JRadioButton();
+	
 	JPanel soundPanel = new JPanel();
-
+	
 	JCheckBox enableSoundCB = new JCheckBox();
 
 	BorderLayout borderLayout1 = new BorderLayout();
@@ -128,24 +148,31 @@ public class PreferencesDialog extends JDialog {
 	JLabel headerFontLabel = new JLabel();
 	JLabel monoFontLabel = new JLabel();
 	JLabel baseFontSizeLabel = new JLabel();
+	
+	
+	static String optionSelected;
 
-	public PreferencesDialog(Frame frame) {
+	public PreferencesDialog(Frame frame, String optSelec) {
 		super(frame, Local.getString("Preferences"), true);
 		try {
-			jbInit();
+			jbInit(optSelec);
 		} catch (Exception ex) {
 			new ExceptionDialog(ex);
 		}
 	}
 
 	public PreferencesDialog() {
-		this(null);
+		this(null, optionSelected);
 	}
 
-	void jbInit() throws Exception {
+	void jbInit(String optSelc) throws Exception {
 		titledBorder1 = new TitledBorder(BorderFactory.createEtchedBorder(
 				Color.white, new Color(156, 156, 158)), Local
 				.getString("Sound"));
+		
+		titledBorderTheme = new TitledBorder(BorderFactory.createEtchedBorder(
+				Color.white, new Color(156, 156, 158)), Local
+				.getString("Theme"));
 		this.setResizable(false);
 		// Build Tab1
 		jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -155,6 +182,31 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 10, 0, 15);
 		gbc.anchor = GridBagConstraints.EAST;
+		
+		gridLayoutTheme.setRows(8);
+		PanelThemeMain.setLayout(gridLayoutTheme);
+		PanelThemeMain.setBorder(titledBorderTheme);
+		themeDefaultRB.setText(Local.getString("Default"));
+		/*soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				soundDefaultRB_actionPerformed(e);
+			}
+		});*/
+		
+		themeOP1RB.setText(Local.getString("COMING SOON"));
+		/*soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				soundDefaultRB_actionPerformed(e);
+			}
+		});*/
+		
+		themeOP2RB.setText(Local.getString("COMING SOON"));
+		/*soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				soundDefaultRB_actionPerformed(e);
+			}
+		});*/
+		
 		enableSoundCB.setText(Local.getString("Enable sound notifications"));
 		enableSoundCB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -178,12 +230,14 @@ public class PreferencesDialog extends JDialog {
 			}
 		});
 		jLabel6.setText(Local.getString("Sound file") + ":");
+		
 		soundDefaultRB.setText(Local.getString("Default"));
 		soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				soundDefaultRB_actionPerformed(e);
 			}
 		});
+		
 		jPanel3.setLayout(borderLayout3);
 		soundCustomRB.setText(Local.getString("Custom"));
 		soundCustomRB.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +245,14 @@ public class PreferencesDialog extends JDialog {
 				soundCustomRB_actionPerformed(e);
 			}
 		});
+		jPanelTheme2.setLayout(borderLayoutTheme);
+		PanelThemeMain.add(themeDefaultRB, null);
+		PanelThemeMain.add(themeOP1RB, null);
+		PanelThemeMain.add(themeOP2RB, null);
+		this.themeGroup.add(themeDefaultRB);
+		this.themeGroup.add(themeOP1RB);
+		this.themeGroup.add(themeOP2RB);
+		
 		jPanel2.setLayout(borderLayout2);
 		soundPanel.add(jPanel2, BorderLayout.CENTER);
 		jPanel2.add(jPanel1, BorderLayout.NORTH);
@@ -269,7 +331,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(closeHideRB, gbc);
 		jLabel3.setHorizontalAlignment(SwingConstants.RIGHT);
-		jLabel3.setText(Local.getString("Look and feel:"));
+		//jLabel3.setText(Local.getString("Look and feel:"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 4;
@@ -283,48 +345,50 @@ public class PreferencesDialog extends JDialog {
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 
-		gbc = new GridBagConstraints();
+		/*gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 5;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfSystemRB, gbc);
+		GeneralPanel.add(lfSystemRB, gbc);*/
 
-		gbc = new GridBagConstraints();
+		/*gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 6;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfJavaRB, gbc);
-		lfGroup.add(lfCustomRB);
+		GeneralPanel.add(lfJavaRB, gbc);*/
+		/*lfGroup.add(lfCustomRB);
 		lfCustomRB.setText(Local.getString("Custom"));
 		lfCustomRB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lfCustomRB_actionPerformed(e);
 			}
-		});
+		});*/
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 7;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfCustomRB, gbc);
-		classNameLabel.setEnabled(false);
-		classNameLabel.setText(Local.getString("L&F class name:"));
+		///GeneralPanel.add(lfCustomRB, gbc);
+		
+		//classNameLabel.setEnabled(false);
+		//classNameLabel.setText(Local.getString("L&F class name:"));
+		
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 8;
 		gbc.insets = new Insets(2, 20, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(classNameLabel, gbc);
-		lfClassName.setEnabled(false);
+		//lfClassName.setEnabled(false);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 9;
 		gbc.insets = new Insets(7, 20, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		GeneralPanel.add(lfClassName, gbc);
+		//GeneralPanel.add(lfClassName, gbc);
 		jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLabel4.setText(Local.getString("Startup:"));
 		gbc = new GridBagConstraints();
@@ -458,11 +522,48 @@ public class PreferencesDialog extends JDialog {
 		((GridLayout)econfPanel.getLayout()).setHgap(10);
 		((GridLayout)econfPanel.getLayout()).setVgap(5);
 		editorConfigPanel.add(econfPanel, BorderLayout.NORTH);
+		
 		// Build TabbedPanel
-		tabbedPanel.add(GeneralPanel, Local.getString("General"));
-		tabbedPanel.add(resourcePanel, Local.getString("Resource types"));
-		tabbedPanel.add(soundPanel, Local.getString("Sound"));
-		tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+		if(optSelc.equals("General")){
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+		}
+		
+		else if(optSelc.equals("Resource Types")){
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+		}
+		
+		else if(optSelc.equals("Theme")){
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+		}
+		
+		else if(optSelc.equals("Sound")){
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+		}
+		
+		else if(optSelc.equals("Editor")){
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+
+		}
 
 		// Build TopPanel
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
@@ -510,7 +611,7 @@ public class PreferencesDialog extends JDialog {
 		firstdow.setSelected(Configuration.get("FIRST_DAY_OF_WEEK").toString()
 				.equalsIgnoreCase("mon"));
 
-		enableCustomLF(false);
+		/* enableCustomLF(false);
 		String lf = Configuration.get("LOOK_AND_FEEL").toString();
 		if (lf.equalsIgnoreCase("system"))
 			lfSystemRB.setSelected(true);
@@ -523,6 +624,7 @@ public class PreferencesDialog extends JDialog {
 		} else
 			lfJavaRB.setSelected(true);
 
+		*/
 		askConfirmChB.setSelected(!Configuration.get("ASK_ON_EXIT").toString()
 				.equalsIgnoreCase("no"));
 		String onclose = Configuration.get("ON_CLOSE").toString();
@@ -621,7 +723,7 @@ public class PreferencesDialog extends JDialog {
 
 		Configuration.put("ON_MINIMIZE", "normal");
 
-		String lf = Configuration.get("LOOK_AND_FEEL").toString();
+		/*String lf = Configuration.get("LOOK_AND_FEEL").toString();
 		String newlf = "";
 
 		if (this.lfSystemRB.isSelected())
@@ -631,7 +733,7 @@ public class PreferencesDialog extends JDialog {
 		else if (this.lfCustomRB.isSelected())
 			newlf = this.lfClassName.getText();
 
-		if (!lf.equalsIgnoreCase(newlf)) {
+	/*	if (!lf.equalsIgnoreCase(newlf)) {
 			Configuration.put("LOOK_AND_FEEL", newlf);
 			try {
 				if (Configuration.get("LOOK_AND_FEEL").equals("system"))
@@ -654,7 +756,7 @@ public class PreferencesDialog extends JDialog {
 						"Make sure that specified look-and-feel library classes are on the CLASSPATH.");
 			}
 		}
-
+*/
 		if (!this.enableSoundCB.isSelected())
 			Configuration.put("NOTIFY_SOUND", "DISABLED");
 		else if (this.soundDefaultRB.isSelected())
@@ -684,7 +786,7 @@ public class PreferencesDialog extends JDialog {
 
 	void enableCustomLF(boolean is) {
 		this.classNameLabel.setEnabled(is);
-		this.lfClassName.setEnabled(is);
+		//this.lfClassName.setEnabled(is);
 	}
 
 	void enableCustomSound(boolean is) {
