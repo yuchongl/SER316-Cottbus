@@ -41,7 +41,7 @@ import java.util.Hashtable;
  */
 public class TaskTableModel extends AbstractTreeTableModel implements TreeTableModel {
 
-    String[] columnNames = {"", Local.getString("To-do"),
+    String[] columnNames = {"", Local.getString("Task Name"), Local.getString("Description"), 
             Local.getString("Start date"), Local.getString("Due date"),
             Local.getString("Priority"), Local.getString("Status"),
             "% " + Local.getString("done") };
@@ -86,18 +86,20 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
             return "";
         case 1:
             return t;
-        case 2:
-            return t.getStartDate().getDate();
+        case 2: 
+        	return t.getDescription();
         case 3:
+            return t.getStartDate().getDate();
+        case 4:
             if (t.getEndDate() == null)
                 return null;
             else
                 return t.getEndDate().getDate();        
-        case 4:
-            return getPriorityString(t.getPriority());
         case 5:
+            return getPriorityString(t.getPriority());
+        case 6:
             return getStatusString(t.getStatus(CurrentDate.get()));
-        case 6:            
+        case 7:            
             //return new Integer(t.getProgress());
 			return t;
         case TaskTable.TASK_ID:
@@ -181,14 +183,16 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
                 return TreeTableModel.class;
             case 0:
                 return TaskTable.class;
-            case 4:
             case 5:
-                return Class.forName("java.lang.String");
-            case 2:
-            case 3:
-                return Class.forName("java.util.Date");
             case 6:
+                return Class.forName("java.lang.String");
+            case 3:
+            case 4:
+                return Class.forName("java.util.Date");
+            case 7:
                 return Class.forName("java.lang.Integer");
+            case 2:
+            	return Class.forName("java.lang.String");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -223,7 +227,7 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
     }
     
     public boolean isCellEditable(Object node, int column) {
-		if(column == 6) return true; 
+		if(column == 7) return true; 
         return super.isCellEditable(node, column); 
     }
 
