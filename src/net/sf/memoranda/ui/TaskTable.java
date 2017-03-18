@@ -200,7 +200,12 @@ public class TaskTable extends JTable {
     
     public void tableChanged() {
 		model.fireUpdateCache();
-		//model.fireTreeStructureChanged();
+		//task 98/90 have to call this when the table is empty or else the table won't update
+		//if it is called when the table is not empty, it will reset the selection to 
+		//the first row when a task is edited or created
+		if (getRowCount() <= 0){
+			model.fireTreeStructureChanged();
+		}
 		expansion.expand(tree);
 		updateUI();
 		//task 84 top task selected by default
