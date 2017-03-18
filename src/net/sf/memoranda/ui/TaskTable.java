@@ -200,7 +200,7 @@ public class TaskTable extends JTable {
     
     public void tableChanged() {
 		model.fireUpdateCache();
-		model.fireTreeStructureChanged();
+		//model.fireTreeStructureChanged();
 		expansion.expand(tree);
 		updateUI();
 		//task 84 top task selected by default

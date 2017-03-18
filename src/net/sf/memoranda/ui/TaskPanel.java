@@ -587,6 +587,13 @@ public class TaskPanel extends JPanel {
 		taskTable.tableChanged();
 		parentPanel.updateIndicators();
 		// taskTable.updateUI();
+		
+		//task 90 highlight created task
+		for (int i = 0; i < taskTable.getRowCount(); i++){
+			if (taskTable.getValueAt(i, 1).equals(newTask)){
+				taskTable.setRowSelectionInterval(i, i);
+			}
+		}
 	}
 
 	void addSubTask_actionPerformed(ActionEvent ev) {
@@ -640,6 +647,7 @@ public class TaskPanel extends JPanel {
 		CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
 		taskTable.tableChanged();
 		parentPanel.updateIndicators();
+		
 		// taskTable.updateUI();
 	}
 
@@ -700,25 +708,6 @@ public class TaskPanel extends JPanel {
 	void listSubTasks_actionPerformed(ActionEvent ev) {
 		// taskTable.setCurrentRootTask(parentTaskId);
 		taskTable.tableChanged();
-
-		// parentPanel.updateIndicators();
-		// //taskTable.updateUI();
-	}
-
-	void parentTask_actionPerformed(ActionEvent ev) {
-		// String taskId =
-		// taskTable.getModel().getValueAt(taskTable.getSelectedRow(),
-		// TaskTable.TASK_ID).toString();
-		//
-		// Task t = CurrentProject.getTaskList().getTask(taskId);
-		/*
-		 * Task t2 =
-		 * CurrentProject.getTaskList().getTask(taskTable.getCurrentRootTask());
-		 * 
-		 * String parentTaskId = t2.getParent(); if((parentTaskId == null) ||
-		 * (parentTaskId.equals(""))) { parentTaskId = null; }
-		 * taskTable.setCurrentRootTask(parentTaskId); taskTable.tableChanged();
-		 */
 
 		// parentPanel.updateIndicators();
 		// //taskTable.updateUI();
@@ -860,10 +849,6 @@ public class TaskPanel extends JPanel {
 
 	void ppListSubTasks_actionPerformed(ActionEvent ev) {
 		listSubTasks_actionPerformed(ev);
-	}
-
-	void ppParentTask_actionPerformed(ActionEvent ev) {
-		parentTask_actionPerformed(ev);
 	}
 
 	void ppCalcTask_actionPerformed(ActionEvent ev) {
