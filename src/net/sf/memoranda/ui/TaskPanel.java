@@ -376,6 +376,8 @@ public class TaskPanel extends JPanel {
 				}
 
 				boolean enbl = (taskTable.getRowCount() > 0);
+				//task 97
+				subTaskB.setEnabled(enbl); 
 				editTaskB.setEnabled(enbl);
 				ppEditTask.setEnabled(enbl);
 				removeTaskB.setEnabled(enbl);
@@ -418,11 +420,15 @@ public class TaskPanel extends JPanel {
 		//only matters when program first starts
 		//decides what should be enabled based on if there are any tasks selected
 		if (taskTable.getSelectedRow() <= -1){
+			//task 97
+			subTaskB.setEnabled(false);
 			editTaskB.setEnabled(false);
 			removeTaskB.setEnabled(false);
 			completeTaskB.setEnabled(false);
 			ppAddSubTask.setEnabled(false);
 		}else{
+			//task 97
+			subTaskB.setEnabled(true);
 			editTaskB.setEnabled(true);
 			ppEditTask.setEnabled(true);
 			removeTaskB.setEnabled(true);
