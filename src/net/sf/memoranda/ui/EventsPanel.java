@@ -231,11 +231,9 @@ public class EventsPanel extends JPanel {
                 EventsTable.EVENT);
         
         dlg.timeSpin.getModel().setValue(ev.getTime());
-        /*if (new CalendarDate(ev.getTime()).equals(CalendarDate.today())) 
-            ((SpinnerDateModel)dlg.timeSpin.getModel()).setStart(new Date());
-        else
-        ((SpinnerDateModel)dlg.timeSpin.getModel()).setStart(CalendarDate.today().getDate());
-        ((SpinnerDateModel)dlg.timeSpin.getModel()).setEnd(CalendarDate.tomorrow().getDate());*/    
+        if (new CalendarDate(ev.getTime()).equals(CalendarDate.today())) 
+        	System.out.println(getUIClassID());//notification must go here
+        
         dlg.textField.setText(ev.getText());
         int rep = ev.getRepeat();
         if (rep > 0) {
