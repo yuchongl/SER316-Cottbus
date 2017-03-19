@@ -283,8 +283,9 @@ public class TaskImpl implements Task, Comparable<Object> {
       Task tsk = it.next();
       if (((TaskImpl) tsk).getProgress() < 100) {
         allSubTasksCompleted = false;
+        break;
       }
-      System.out.println(tsk);
+     // System.out.println(tsk);
     }
 
     // sets the progress to p
@@ -296,7 +297,7 @@ public class TaskImpl implements Task, Comparable<Object> {
       if (pr < prev) {
         // progress bar set to 95 for parent if it is at 100 and the current task
         // has had its progress lowered (task 47)
-        getParentTask().setProgress(95);
+        ((TaskImpl) getParentTask()).setAttr("progress", new Integer(95).toString());
       } else {
         // Progress set to 100 if parent task is completed (Task 47)
         setAttr("progress", new Integer(100).toString());
