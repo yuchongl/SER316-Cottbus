@@ -639,6 +639,7 @@ public class PreferencesDialog extends JDialog {
 		String onmin = Configuration.get("ON_MINIMIZE").toString();
 		this.minTaskbarRB.setSelected(true);
 
+		
 		if (Configuration.get("NOTIFY_SOUND").equals("")) {
 			Configuration.put("NOTIFY_SOUND", "DEFAULT");
 		}
@@ -664,6 +665,17 @@ public class PreferencesDialog extends JDialog {
 			this.enableCustomSound(true);
 		}
 		this.enableSound(enableSnd);
+		
+		if (Configuration.get("THEME_SETTING").equals("")) {
+			Configuration.put("THEME_SETTING", "DEFAULT");
+		}
+		
+
+		if(Configuration.get("THEME_SETTING").toString().equals("DEFAULT")){
+			this.themeDefaultRB.setSelected(true);
+			this.themeOP1RB.setSelected(false);
+			this.themeOP2RB.setSelected(false);
+		}
 		
 		antialiasChB.setSelected(Configuration.get("ANTIALIAS_TEXT")
 				.toString().equalsIgnoreCase("yes"));
@@ -788,6 +800,10 @@ public class PreferencesDialog extends JDialog {
 		this.classNameLabel.setEnabled(is);
 		//this.lfClassName.setEnabled(is);
 	}
+	
+	void enableThemes(boolean is){
+		this.themeDefaultRB.setEnabled(is);
+	}
 
 	void enableCustomSound(boolean is) {
 		this.soundFile.setEnabled(is);
@@ -863,6 +879,8 @@ public class PreferencesDialog extends JDialog {
 	void enableSoundCB_actionPerformed(ActionEvent e) {
 		enableSound(enableSoundCB.isSelected());
 	}
+	
+	
 
 	void soundFileBrowseB_actionPerformed(ActionEvent e) {
 		// Fix until Sun's JVM supports more locales...
