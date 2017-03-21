@@ -448,18 +448,32 @@ public class TaskPanel extends JPanel {
 		if (dlg.CANCELLED) {
 			return;
 		}
+		
+		//TASK 88
 		CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
-		// CalendarDate ed = new CalendarDate((Date)
-		// dlg.endDate.getModel().getValue());
-		CalendarDate ed;
+		if (task.getParentTask() != null){
+			if (sd.getDate().before(task.getParentTask().getStartDate().getDate())){
+				sd = new CalendarDate(task.getParentTask().getStartDate().getDate());
+				JOptionPane.showMessageDialog(this, "Start date can't be before parent task's start date", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		//TASK 88
+		CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
 		if (dlg.chkEndDate.isSelected()) {
 			// task 73
-			if (((Date) (dlg.startDate.getModel().getValue())).after((Date) (dlg.endDate.getModel().getValue()))) {
-				ed = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+			if (sd.getDate().after(ed.getDate())) {
+				ed = new CalendarDate(sd.getDate());
 				JOptionPane.showMessageDialog(this, "Due date can't be before Start Date", "Error",
 						JOptionPane.ERROR_MESSAGE);
-			} else {
-				ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			}
+			if (task.getParentTask() != null){
+				if (ed.getDate().after(task.getParentTask().getEndDate().getDate())){
+					ed = new CalendarDate(task.getParentTask().getEndDate().getDate());
+					JOptionPane.showMessageDialog(this, "Due date can't be after parent task's due date", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		} else {
 			ed = null;
@@ -495,18 +509,16 @@ public class TaskPanel extends JPanel {
 		if (dlg.CANCELLED) {
 			return;
 		}
+		
+		//TASK 88
 		CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
-		// CalendarDate ed = new CalendarDate((Date)
-		// dlg.endDate.getModel().getValue());
-		CalendarDate ed;
+		CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());;
 		if (dlg.chkEndDate.isSelected()) {
 			// task 73
-			if (((Date) (dlg.startDate.getModel().getValue())).after((Date) (dlg.endDate.getModel().getValue()))) {
-				ed = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+			if (sd.getDate().after(ed.getDate())) {
+				ed = new CalendarDate(sd.getDate());
 				JOptionPane.showMessageDialog(this, "Due date can't be before Start Date", "Error",
 						JOptionPane.ERROR_MESSAGE);
-			} else {
-				ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
 			}
 		} else {
 			ed = null;
@@ -551,16 +563,30 @@ public class TaskPanel extends JPanel {
 		if (dlg.CANCELLED) {
 			return;
 		}
+		
+		//TASK 88
 		CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
-		CalendarDate ed;
+		Task parentTask = (Task) taskTable.getModel().getValueAt(taskTable.getSelectedRow(), 1);
+		if (sd.getDate().before(parentTask.getStartDate().getDate())){
+			sd = new CalendarDate(parentTask.getStartDate().getDate());
+			JOptionPane.showMessageDialog(this, "Start date can't be before parent task's start date", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		
+		//TASK 88
+		CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
 		if (dlg.chkEndDate.isSelected()) {
 			// task 73
-			if (((Date) (dlg.startDate.getModel().getValue())).after((Date) (dlg.endDate.getModel().getValue()))) {
-				ed = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+			if (sd.getDate().after(ed.getDate())) {
+				ed = new CalendarDate(sd.getDate());
 				JOptionPane.showMessageDialog(this, "Due date can't be before Start Date", "Error",
 						JOptionPane.ERROR_MESSAGE);
-			} else {
-				ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+			} 
+			//Task parentTask = (Task) taskTable.getModel().getValueAt(taskTable.getSelectedRow(), 1);
+			if (ed.getDate().after(parentTask.getEndDate().getDate())){
+				ed = new CalendarDate(parentTask.getEndDate().getDate());
+				JOptionPane.showMessageDialog(this, "Due date can't be after parent task's due date", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
 			ed = null;
