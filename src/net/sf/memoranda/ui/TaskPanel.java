@@ -310,8 +310,6 @@ public class TaskPanel extends JPanel {
 		taskTable.tableChanged();
 		taskTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent ev) {
-				//task 89/82
-				if (taskTable.getRowCount() > 0);
 				// task 97
 				subTaskB.setEnabled(true);
 				editTaskB.setEnabled(true);

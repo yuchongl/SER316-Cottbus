@@ -223,7 +223,7 @@ public class TaskTable extends JTable {
     public void updateUI() {
 		super.updateUI();
 			if (tree != null) { 
-			tree.updateUI();
+				tree.updateUI();
 			}
 
 
