@@ -38,7 +38,7 @@ public class EventNotificationDialog extends JFrame {
 
   public EventNotificationDialog(String title, String time, String text) {
     super();
-    this.setTitle(title);
+    this.setTitle("Memoranda Notification");
     try {
       jbInit();
       pack();
@@ -49,7 +49,7 @@ public class EventNotificationDialog extends JFrame {
     timeLabel.setText(time);
     timeLabel.setIcon(new ImageIcon(net.sf.memoranda.ui.TaskDialog.class.getResource(
             "resources/icons/event48.png")));
-    textLabel.setText(text);
+    textLabel.setText(text + " task is due soon.");
     this.setSize(300,200);
     this.setLocationRelativeTo(null);
     this.setVisible(true);    

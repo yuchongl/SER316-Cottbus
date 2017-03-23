@@ -7,9 +7,14 @@
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 package net.sf.memoranda;
+import net.sf.memoranda.ui.EventNotificationDialog;
+
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -93,6 +98,7 @@ class SLThread extends Thread {
             "Make sure that other software does not use the port "+Start.DEFAULT_PORT+" and examine your security settings.");
         }
     }
+    
     
     
     public static void infoBox(String infoMessage, String titleBar)
