@@ -46,7 +46,7 @@ public class TaskProgressEditor extends JPanel implements TableCellEditor {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						// updates the table to reflect changes (task 50)
-						table.updateUI();
+						((TaskTable)table).tableChanged();
 					}
 				});
 			}

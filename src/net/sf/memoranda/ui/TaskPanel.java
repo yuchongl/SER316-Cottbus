@@ -531,12 +531,17 @@ public class TaskPanel extends JPanel {
 		taskTable.tableChanged();
 		parentPanel.updateIndicators();
 
-		// task 90 highlight created task
-		for (int i = 0; i < taskTable.getRowCount(); i++) {
-			if (taskTable.getValueAt(i, 1).equals(newTask)) {
-				taskTable.setRowSelectionInterval(i, i);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				// task 90 highlight created task
+				for (int i = 0; i < taskTable.getRowCount(); i++) {
+					if (taskTable.getValueAt(i, 1).equals(newTask)) {
+						taskTable.setRowSelectionInterval(i, i);
+					}
+				}
 			}
-		}
+		});
+		
 	}
 
 	void addSubTask_actionPerformed(ActionEvent ev) {
