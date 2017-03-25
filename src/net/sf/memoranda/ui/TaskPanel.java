@@ -437,11 +437,7 @@ public class TaskPanel extends JPanel {
 		dlg.endDate.getModel().setValue(task.getEndDate().getDate());
 		dlg.priorityCB.setSelectedIndex(task.getPriority());
 		dlg.effortField.setText(Util.getHoursFromMillis(task.getEffort()));
-		if ((task.getStartDate().getDate()).after(task.getEndDate().getDate())) {
-			dlg.chkEndDate.setSelected(false);
-		} else {
-			dlg.chkEndDate.setSelected(true);
-		}
+		dlg.chkEndDate.setSelected(true);
 		dlg.progress.setValue(new Integer(task.getProgress()));
 		dlg.chkEndDate_actionPerformed(null);
 		dlg.setVisible(true);
@@ -475,6 +471,9 @@ public class TaskPanel extends JPanel {
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if (sd.getDate().after(ed.getDate())) {
+				sd = new CalendarDate(task.getParentTask().getStartDate().getDate());
+			}
 		} else {
 			ed = null;
 		}
@@ -485,6 +484,15 @@ public class TaskPanel extends JPanel {
 		task.setPriority(dlg.priorityCB.getSelectedIndex());
 		task.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
 		task.setProgress(((Integer) dlg.progress.getValue()).intValue());
+		
+		for (int i = 0; i < task.getSubTasks().size(); i++){
+			if (((Task)task.getSubTasks().toArray()[i]).getEndDate().after(task.getEndDate())){
+				((Task)task.getSubTasks().toArray()[i]).setEndDate(task.getEndDate()); 
+			}
+			if (((Task)task.getSubTasks().toArray()[i]).getStartDate().before(task.getStartDate())){
+				((Task)task.getSubTasks().toArray()[i]).setStartDate(task.getStartDate()); 
+			}
+		}
 
 		// CurrentProject.getTaskList().adjustParentTasks(t);
 
@@ -592,6 +600,9 @@ public class TaskPanel extends JPanel {
 				ed = new CalendarDate(parentTask.getEndDate().getDate());
 				JOptionPane.showMessageDialog(this, "Due date can't be after parent task's due date", "Error",
 						JOptionPane.ERROR_MESSAGE);
+			}
+			if (sd.getDate().after(ed.getDate())) {
+				sd = new CalendarDate(parentTask.getStartDate().getDate());
 			}
 		} else {
 			ed = null;
@@ -746,11 +757,15 @@ public class TaskPanel extends JPanel {
 	class PopupListener extends MouseAdapter {
 
 		public void mouseClicked(MouseEvent ev) {
+			int r = taskTable.rowAtPoint(ev.getPoint());
+			if (r > -1 && r < taskTable.getRowCount()) {
+				taskTable.setRowSelectionInterval(r, r);
+			}
+			
 			if (SwingUtilities.isLeftMouseButton(ev) && (ev.getClickCount() == 2)
 					&& (taskTable.getSelectedRow() > -1)) {
-
-				int r = taskTable.rowAtPoint(ev.getPoint());
-				if (r > -1 && r < taskTable.getRowCount()) {
+				int r2 = taskTable.rowAtPoint(ev.getPoint());
+				if (r2 > -1 && r2 < taskTable.getRowCount()) {
 					editTaskB_actionPerformed(null);
 				}
 			}
