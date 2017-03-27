@@ -63,6 +63,8 @@ public class Start {
                 // e.printStackTrace();
             }
             new SLThread().start();
+          
+
         }
         
         //System.out.println(EventsScheduler.isEventScheduled());
@@ -72,6 +74,13 @@ public class Start {
         else
             app = new App(false);
     }
+
+	private static void infoBox(String infoMessage, String titleBar) {
+		net.sf.memoranda.Event ev = EventsScheduler.getFirstScheduledEvent();
+
+        JOptionPane.showMessageDialog(null, ev.getEndDate().getFullDateString(), titleBar, JOptionPane.INFORMATION_MESSAGE);
+		
+	}
 }
 
 class SLThread extends Thread {
@@ -79,7 +88,7 @@ class SLThread extends Thread {
     public void run() {
         ServerSocket serverSocket = null;
         try {
-        	infoBox("testing notification", "title");
+        	
             serverSocket = new ServerSocket(Start.DEFAULT_PORT);
             serverSocket.accept();
             Start.app.show();
@@ -102,7 +111,8 @@ class SLThread extends Thread {
     
     
     public static void infoBox(String infoMessage, String titleBar)
-    {
-        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    {                net.sf.memoranda.Event ev = EventsScheduler.getFirstScheduledEvent();
+
+        JOptionPane.showMessageDialog(null, ev.getEndDate().getFullDateString(), titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 }

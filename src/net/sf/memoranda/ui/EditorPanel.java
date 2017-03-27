@@ -30,6 +30,7 @@ import net.sf.memoranda.History;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.CurrentNote;
+import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.ui.htmleditor.HTMLEditor;
 import net.sf.memoranda.util.Util;
 import net.sf.memoranda.util.Context;
@@ -457,8 +458,9 @@ public class EditorPanel extends JPanel {
 		if (file.exists())
 		{
 			new HTMLFileImport(file, editor);
-		}
+		   
 
+		}
 	}
 
 	void noteSaveAsHtml(String path)

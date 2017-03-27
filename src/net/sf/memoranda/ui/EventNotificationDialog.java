@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import net.sf.memoranda.EventsScheduler;
+import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Local;
 
@@ -38,6 +40,8 @@ public class EventNotificationDialog extends JFrame {
 
   public EventNotificationDialog(String title, String time, String text) {
     super();
+
+	 
     this.setTitle("Memoranda Notification");
     try {
       jbInit();
@@ -58,9 +62,12 @@ public class EventNotificationDialog extends JFrame {
     //jButton1.requestFocus();
   }
 
-  public EventNotificationDialog() {
-    this("", "", "");
+  
+  public EventNotificationDialog(){
+	  this("","","");
   }
+  
+  
   void jbInit() throws Exception {
     this.setResizable(false);
     this.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("resources/icons/jnotes16.png")).getImage());

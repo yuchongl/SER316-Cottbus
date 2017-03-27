@@ -43,5 +43,9 @@ public interface Event {
     String getTimeString();
     
 	boolean getWorkingDays();
+
+	void getDueDate(Event ev);
+
+	
     
 }
