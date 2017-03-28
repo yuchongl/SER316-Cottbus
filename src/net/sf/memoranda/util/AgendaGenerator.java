@@ -244,7 +244,7 @@ public class AgendaGenerator {
 	static String generateEvents(CalendarDate date) {
 		String s = "<td width=\"34%\" valign=\"top\">" + "<a href=\"memoranda:events\"><h1>" + Local.getString("Events")
 				+ "</h1></a>\n"
-				+ "<table width=\"100%\" valign=\"top\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#FFFFF6\">\n";
+				+ "<table width=\"80%\" valign=\"top\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#FFFFF6\">\n";
 		Vector v = (Vector) EventsManager.getEventsForDate(date);
 		int n = 0;
 		for (Iterator i = v.iterator(); i.hasNext();) {
