@@ -135,9 +135,12 @@ public class JNCalendarPanel extends JPanel {
     //dayForwardAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, KeyEvent.ALT_MASK));
     todayAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_MASK));
     
-    monthsCB.setRequestFocusEnabled(false);
-    monthsCB.setMaximumRowCount(12);
-    monthsCB.setPreferredSize(new Dimension(50 , 20));
+    monthsCB.setRequestFocusEnabled(true);
+    monthsCB.setMaximumRowCount(6);
+    monthsCB.setPreferredSize(new Dimension(90 , 30));
+    monthsCB.setMinimumSize(new Dimension(90, 30));
+    monthsCB.setMaximumSize(new Dimension(90, 30));
+    
     border1 = BorderFactory.createEmptyBorder(0,0,5,0);
     border2 = BorderFactory.createEmptyBorder();
     this.setLayout(new BorderLayout());
@@ -145,9 +148,9 @@ public class JNCalendarPanel extends JPanel {
     
     navigationBar2.setFloatable(false);
     monthForwardBPanel.setAlignmentX((float) 0.0);
-    monthForwardBPanel.setMinimumSize(new Dimension(40, 24));
+    monthForwardBPanel.setMinimumSize(new Dimension(24, 24));
     monthForwardBPanel.setOpaque(false);
-    monthForwardBPanel.setPreferredSize(new Dimension(40, 24));
+    monthForwardBPanel.setPreferredSize(new Dimension(24, 24));
     
     
     monthForwardB.setAction(weekForwardAction);
@@ -224,26 +227,26 @@ public class JNCalendarPanel extends JPanel {
     dayBackB.setText("");
     dayBackB.setToolTipText(Local.getString("One day back"));
     
-    yearSpin.setPreferredSize(new Dimension(50, 20));
+    yearSpin.setPreferredSize(new Dimension(80, 20));
     yearSpin.setRequestFocusEnabled(false);
 
     yearSpin.setEditor(yearSpinner);
-    navbPanel.setMinimumSize(new Dimension(202, 30));
+    navbPanel.setMinimumSize(new Dimension(155, 30));
     navbPanel.setOpaque(false);
     navbPanel.setPreferredSize(new Dimension(155, 30));
-    navb2Panel.setMinimumSize(new Dimension(202, 30));
+    navb2Panel.setMinimumSize(new Dimension(155, 30));
     navb2Panel.setOpaque(false);
     navb2Panel.setPreferredSize(new Dimension(155, 30));
     jnCalendar.getTableHeader().setFont(new java.awt.Font("Dialog", 1, 10));
     jnCalendar.setFont(new java.awt.Font("Dialog", 0, 10));
-    jnCalendar.setGridColor(Color.lightGray);
+    jnCalendar.setGridColor(Color.DARK_GRAY);
     jnCalendarPanel.setLayout(borderLayout5);
 
     navb2Panel.setLayout(borderLayout4);
 
     todayBPanel.setMinimumSize(new Dimension(68, 24));
     todayBPanel.setOpaque(false);
-    todayBPanel.setPreferredSize(new Dimension(51, 24));
+    todayBPanel.setPreferredSize(new Dimension(68, 24));
     this.add(navigationBar, BorderLayout.NORTH);
     navigationBar.add(navbPanel, null);
     navbPanel.add(dayBackBPanel, BorderLayout.WEST);
@@ -257,7 +260,7 @@ public class JNCalendarPanel extends JPanel {
     mntyPanel.add(yearSpin,  BorderLayout.EAST);
 
     this.add(jnCalendarPanel,  BorderLayout.AFTER_LAST_LINE);
-    jnCalendar.getTableHeader().setPreferredSize(new Dimension(300, 20));
+    jnCalendar.getTableHeader().setPreferredSize(new Dimension(100, 20));
 
     jnCalendarPanel.add(jnCalendar.getTableHeader(), BorderLayout.NORTH);
     jnCalendarPanel.add(jnCalendar, BorderLayout.CENTER);

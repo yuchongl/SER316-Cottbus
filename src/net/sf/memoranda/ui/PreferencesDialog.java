@@ -9,6 +9,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
+import net.sf.memoranda.util.AgendaGenerator;
 
 /*$Id: PreferencesDialog.java,v 1.16 2006/06/28 22:58:31 alexeya Exp $*/
 public class PreferencesDialog extends JDialog {
@@ -42,15 +43,9 @@ public class PreferencesDialog extends JDialog {
 
 	ButtonGroup lfGroup = new ButtonGroup();
 
-	//JRadioButton lfSystemRB = new JRadioButton();
-
-	//JRadioButton lfJavaRB = new JRadioButton();
-
-	//JRadioButton lfCustomRB = new JRadioButton();
 
 	JLabel classNameLabel = new JLabel();
 
-	//JTextField lfClassName = new JTextField();
 
 	JLabel jLabel4 = new JLabel();
 
@@ -102,6 +97,8 @@ public class PreferencesDialog extends JDialog {
 	
 	JRadioButton themeOP2RB = new JRadioButton();
 	
+	JRadioButton classicThemeRB = new JRadioButton();
+	
 	JPanel soundPanel = new JPanel();
 	
 	JCheckBox enableSoundCB = new JCheckBox();
@@ -149,13 +146,13 @@ public class PreferencesDialog extends JDialog {
 	JLabel monoFontLabel = new JLabel();
 	JLabel baseFontSizeLabel = new JLabel();
 	
-	
 	static String optionSelected;
 
 	public PreferencesDialog(Frame frame, String optSelec) {
 		super(frame, Local.getString("Preferences"), true);
 		try {
 			jbInit(optSelec);
+			
 		} catch (Exception ex) {
 			new ExceptionDialog(ex);
 		}
@@ -173,40 +170,56 @@ public class PreferencesDialog extends JDialog {
 		titledBorderTheme = new TitledBorder(BorderFactory.createEtchedBorder(
 				Color.white, new Color(156, 156, 158)), Local
 				.getString("Theme"));
+		
 		this.setResizable(false);
+
 		// Build Tab1
 		jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLabel1.setText(Local.getString("Window minimize action:"));
 		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
+	    gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 10, 0, 15);
+	    gbc.insets = new Insets(10, 10, 0, 15);
 		gbc.anchor = GridBagConstraints.EAST;
-		
+	
 		gridLayoutTheme.setRows(8);
 		PanelThemeMain.setLayout(gridLayoutTheme);
 		PanelThemeMain.setBorder(titledBorderTheme);
-		themeDefaultRB.setText(Local.getString("Default"));
-		/*soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				soundDefaultRB_actionPerformed(e);
-			}
-		});*/
 		
-		themeOP1RB.setText(Local.getString("COMING SOON"));
-		/*soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				soundDefaultRB_actionPerformed(e);
-			}
-		});*/
 		
-		themeOP2RB.setText(Local.getString("COMING SOON"));
-		/*soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
+		themeDefaultRB.setText(Local.getString("Default (JTatto)"));
+		themeDefaultRB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				soundDefaultRB_actionPerformed(e);
+				Configuration.put("THEME_SETTING", "DEFAULT");
+				themeDefaultRB.setSelected(true);
 			}
-		});*/
+		});
 		
+		themeOP1RB.setText(Local.getString("Nimbus"));
+		themeOP1RB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Configuration.put("THEME_SETTING", "Nimbus");
+				themeOP1RB.setSelected(true);
+			}
+		});
+		
+		
+		themeOP2RB.setText(Local.getString("Metal"));
+		themeOP2RB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Configuration.put("THEME_SETTING", "METAL");
+				themeOP2RB.setSelected(true);
+			}
+		});
+		
+		classicThemeRB.setText(Local.getString("Classic"));
+		classicThemeRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Configuration.put("THEME_SETTING", "CLASSIC");
+				classicThemeRB.setSelected(true);
+			}
+		});
+			
 		enableSoundCB.setText(Local.getString("Enable sound notifications"));
 		enableSoundCB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -220,6 +233,7 @@ public class PreferencesDialog extends JDialog {
 				soundFileBrowseB_actionPerformed(e);
 			}
 		});
+		
 		gridLayout1.setRows(4);
 		jPanel1.setBorder(titledBorder1);
 		jPanel1.setLayout(gridLayout1);
@@ -245,13 +259,16 @@ public class PreferencesDialog extends JDialog {
 				soundCustomRB_actionPerformed(e);
 			}
 		});
+		
 		jPanelTheme2.setLayout(borderLayoutTheme);
 		PanelThemeMain.add(themeDefaultRB, null);
 		PanelThemeMain.add(themeOP1RB, null);
 		PanelThemeMain.add(themeOP2RB, null);
+		PanelThemeMain.add(classicThemeRB, null);
 		this.themeGroup.add(themeDefaultRB);
 		this.themeGroup.add(themeOP1RB);
 		this.themeGroup.add(themeOP2RB);
+		this.themeGroup.add(classicThemeRB);
 		
 		jPanel2.setLayout(borderLayout2);
 		soundPanel.add(jPanel2, BorderLayout.CENTER);
@@ -330,65 +347,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(closeHideRB, gbc);
-		jLabel3.setHorizontalAlignment(SwingConstants.RIGHT);
-		//jLabel3.setText(Local.getString("Look and feel:"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(2, 10, 0, 15);
-		gbc.anchor = GridBagConstraints.EAST;
-		GeneralPanel.add(jLabel3, gbc);
-
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-
-		/*gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 5;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfSystemRB, gbc);*/
-
-		/*gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 6;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfJavaRB, gbc);*/
-		/*lfGroup.add(lfCustomRB);
-		lfCustomRB.setText(Local.getString("Custom"));
-		lfCustomRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lfCustomRB_actionPerformed(e);
-			}
-		});*/
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 7;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		///GeneralPanel.add(lfCustomRB, gbc);
 		
-		//classNameLabel.setEnabled(false);
-		//classNameLabel.setText(Local.getString("L&F class name:"));
-		
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 8;
-		gbc.insets = new Insets(2, 20, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(classNameLabel, gbc);
-		//lfClassName.setEnabled(false);
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 9;
-		gbc.insets = new Insets(7, 20, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		//GeneralPanel.add(lfClassName, gbc);
 		jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLabel4.setText(Local.getString("Startup:"));
 		gbc = new GridBagConstraints();
@@ -594,12 +553,41 @@ public class PreferencesDialog extends JDialog {
 		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		soundPanel.add(enableSoundCB, BorderLayout.NORTH);
 
+	String theme = Configuration.get("THEME_SETTING").toString();
+		
+		if (theme.equals("DEFAULT")){
+			themeDefaultRB.setSelected(true);
+			themeOP1RB.setSelected(false);
+			themeOP2RB.setSelected(false);
+			classicThemeRB.setSelected(false);
+		}
+		else if (theme.equals("METAL")){
+			themeDefaultRB.setSelected(false);
+			themeOP1RB.setSelected(false);
+			themeOP2RB.setSelected(true);
+			classicThemeRB.setSelected(false);
+		}
+		
+		else if (theme.equals("Nimbus")){
+			themeDefaultRB.setSelected(false);
+			themeOP1RB.setSelected(true);
+			themeOP2RB.setSelected(false);
+			classicThemeRB.setSelected(false);
+		}
+		else if (theme.equals("CLASSIC")){
+			themeDefaultRB.setSelected(false);
+			themeOP1RB.setSelected(false);
+			themeOP2RB.setSelected(false);
+			classicThemeRB.setSelected(true);
+			
+		}
 		// set all config-values
 		setValues();
-
+		
 	}
 
 	void setValues() {
+		
 		enL10nChB.setSelected(!Configuration.get("DISABLE_L10N").toString()
 				.equalsIgnoreCase("yes"));
 		enSplashChB.setSelected(!Configuration.get("SHOW_SPLASH").toString()
@@ -610,21 +598,7 @@ public class PreferencesDialog extends JDialog {
 				.toString().equalsIgnoreCase("yes"));
 		firstdow.setSelected(Configuration.get("FIRST_DAY_OF_WEEK").toString()
 				.equalsIgnoreCase("mon"));
-
-		/* enableCustomLF(false);
-		String lf = Configuration.get("LOOK_AND_FEEL").toString();
-		if (lf.equalsIgnoreCase("system"))
-			lfSystemRB.setSelected(true);
-		else if (lf.equalsIgnoreCase("default"))
-			lfJavaRB.setSelected(true);
-		else if (lf.length() > 0) {
-			lfCustomRB.setSelected(true);
-			enableCustomLF(true);
-			lfClassName.setText(lf);
-		} else
-			lfJavaRB.setSelected(true);
-
-		*/
+		
 		askConfirmChB.setSelected(!Configuration.get("ASK_ON_EXIT").toString()
 				.equalsIgnoreCase("no"));
 		String onclose = Configuration.get("ON_CLOSE").toString();
@@ -665,18 +639,7 @@ public class PreferencesDialog extends JDialog {
 			this.enableCustomSound(true);
 		}
 		this.enableSound(enableSnd);
-		
-		if (Configuration.get("THEME_SETTING").equals("")) {
-			Configuration.put("THEME_SETTING", "DEFAULT");
-		}
-		
-
-		if(Configuration.get("THEME_SETTING").toString().equals("DEFAULT")){
-			this.themeDefaultRB.setSelected(true);
-			this.themeOP1RB.setSelected(false);
-			this.themeOP2RB.setSelected(false);
-		}
-		
+	
 		antialiasChB.setSelected(Configuration.get("ANTIALIAS_TEXT")
 				.toString().equalsIgnoreCase("yes"));
 		if (Configuration.get("NORMAL_FONT").toString().length() >0)
@@ -695,6 +658,7 @@ public class PreferencesDialog extends JDialog {
 			baseFontSize.setValue(Integer.decode(Configuration.get("BASE_FONT_SIZE").toString()));
 		else
 			baseFontSize.setValue(new Integer(16));
+		
 	}
 
 	void apply() {
@@ -735,40 +699,8 @@ public class PreferencesDialog extends JDialog {
 
 		Configuration.put("ON_MINIMIZE", "normal");
 
-		/*String lf = Configuration.get("LOOK_AND_FEEL").toString();
-		String newlf = "";
+		changeTheme();
 
-		if (this.lfSystemRB.isSelected())
-			newlf = "system";
-		else if (this.lfJavaRB.isSelected())
-			newlf = "default";
-		else if (this.lfCustomRB.isSelected())
-			newlf = this.lfClassName.getText();
-
-	/*	if (!lf.equalsIgnoreCase(newlf)) {
-			Configuration.put("LOOK_AND_FEEL", newlf);
-			try {
-				if (Configuration.get("LOOK_AND_FEEL").equals("system"))
-					UIManager.setLookAndFeel(UIManager
-							.getSystemLookAndFeelClassName());
-				else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
-					UIManager.setLookAndFeel(UIManager
-							.getCrossPlatformLookAndFeelClassName());
-				else if (Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
-					UIManager.setLookAndFeel(Configuration.get("LOOK_AND_FEEL")
-							.toString());
-
-				SwingUtilities.updateComponentTreeUI(App.getFrame());
-
-			} catch (Exception e) {
-				Configuration.put("LOOK_AND_FEEL", lf);
-				new ExceptionDialog(
-						e,
-						"Error when initializing a pluggable look-and-feel. Default LF will be used.",
-						"Make sure that specified look-and-feel library classes are on the CLASSPATH.");
-			}
-		}
-*/
 		if (!this.enableSoundCB.isSelected())
 			Configuration.put("NOTIFY_SOUND", "DISABLED");
 		else if (this.soundDefaultRB.isSelected())
@@ -784,6 +716,7 @@ public class PreferencesDialog extends JDialog {
 		else
 			Configuration.put("ANTIALIAS_TEXT", "no");
 		
+
 		Configuration.put("NORMAL_FONT", normalFontCB.getSelectedItem());
 		Configuration.put("HEADER_FONT", headerFontCB.getSelectedItem());
 		Configuration.put("MONO_FONT", monoFontCB.getSelectedItem());
@@ -793,18 +726,36 @@ public class PreferencesDialog extends JDialog {
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.editor.repaint();
 		
 		Configuration.saveConfig();
+	}
+
+	void changeTheme(){
+
+		try {
+			if (themeDefaultRB.isSelected()){
+	    		UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+			}
+			
+			else if (themeOP2RB.isSelected()){
+				UIManager.setLookAndFeel(
+						"com.sun.java.swing.plaf.gtk.GTKLookAndFeel");	
+	    		}
+			else if (themeOP1RB.isSelected()){
+    			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+    		}
+			
+			else if (classicThemeRB.isSelected()){
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    		}
+	    		SwingUtilities.updateComponentTreeUI(App.getFrame());
+
+			} catch (Exception excp) {
+				new ExceptionDialog(
+						excp,
+						"Error when initializing a pluggable look-and-feel. Default LF will be used.",
+						"Make sure that specified look-and-feel library classes are on the CLASSPATH.");
+			}
 		
 	}
-
-	void enableCustomLF(boolean is) {
-		this.classNameLabel.setEnabled(is);
-		//this.lfClassName.setEnabled(is);
-	}
-	
-	void enableThemes(boolean is){
-		this.themeDefaultRB.setEnabled(is);
-	}
-
 	void enableCustomSound(boolean is) {
 		this.soundFile.setEnabled(is);
 		this.soundFileBrowseB.setEnabled(is);
@@ -852,18 +803,6 @@ public class PreferencesDialog extends JDialog {
 		// this.askConfirmChB.setEnabled(false);
 	}
 
-	void lfSystemRB_actionPerformed(ActionEvent e) {
-		this.enableCustomLF(false);
-	}
-
-	void lfJavaRB_actionPerformed(ActionEvent e) {
-		this.enableCustomLF(false);
-	}
-
-	void lfCustomRB_actionPerformed(ActionEvent e) {
-		this.enableCustomLF(true);
-	}
-
 	void enSystrayChB_actionPerformed(ActionEvent e) {
 
 	}
@@ -879,7 +818,6 @@ public class PreferencesDialog extends JDialog {
 	void enableSoundCB_actionPerformed(ActionEvent e) {
 		enableSound(enableSoundCB.isSelected());
 	}
-	
 	
 
 	void soundFileBrowseB_actionPerformed(ActionEvent e) {

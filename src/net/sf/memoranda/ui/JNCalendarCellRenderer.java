@@ -85,7 +85,7 @@ public class JNCalendarCellRenderer extends javax.swing.table.DefaultTableCellRe
 
 		// set background color
 		if (currentPanel == null)
-			label.setBackground(Color.WHITE);
+			label.setBackground(Color.LIGHT_GRAY);
 		
 		else if (currentPanel.equals("TASKS") && (t != null) && 
 			(d.inPeriod(t.getStartDate(), t.getEndDate()))) 

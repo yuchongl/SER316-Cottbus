@@ -9,6 +9,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalTheme;
+import javax.swing.plaf.metal.OceanTheme;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
@@ -64,17 +68,20 @@ public class App {
 		System.out.println(VERSION_INFO);
 		System.out.println(Configuration.get("LOOK_AND_FEEL"));
 		try {
-			if (Configuration.get("LOOK_AND_FEEL").equals("system"))
+			if (Configuration.get("THEME_SETTING").equals("METAL")){
 				UIManager.setLookAndFeel(
-					UIManager.getSystemLookAndFeelClassName());
-			else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
+						"javax.swing.plaf.metal.MetalLookAndFeel");		
+			}
+			else if (Configuration.get("THEME_SETTING").equals("DEFAULT")){
 				UIManager.setLookAndFeel(
-					UIManager.getCrossPlatformLookAndFeelClassName());					
-			else if (
-				Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
-				UIManager.setLookAndFeel(
-					Configuration.get("LOOK_AND_FEEL").toString());
-
+						"com.jtattoo.plaf.smart.SmartLookAndFeel");	
+			}
+			else if (Configuration.get("THEME_SETTING").equals("Nimbus")){
+				UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");	
+			}
+			else if (Configuration.get("THEME_SETTING").equals("CLASSIC")){
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());	
+			}
 		} catch (Exception e) {		    
 			new ExceptionDialog(e, "Error when initializing a pluggable look-and-feel. Default LF will be used.", "Make sure that specified look-and-feel library classes are on the CLASSPATH.");
 		}

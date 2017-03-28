@@ -51,17 +51,18 @@ public class AgendaPanel extends JPanel {
 	JToolBar toolBar = new JToolBar();
 	JButton historyForwardB = new JButton();
 	JButton export = new JButton();
-	JEditorPane viewer = new JEditorPane("text/html", "");
+	static JEditorPane viewer = new JEditorPane("text/html", "");
 	String[] priorities = { "Muy Alta", "Alta", "Media", "Baja", "Muy Baja" };
-	JScrollPane scrollPane = new JScrollPane();
+	static JScrollPane scrollPane = new JScrollPane();
 
 	DailyItemsPanel parentPanel = null;
 
 	// JPopupMenu agendaPPMenu = new JPopupMenu();
 	// JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
 
-	Collection<String> expandedTasks;
-	String gotoTask = null;
+	static Collection<String> expandedTasks;
+	static String gotoTask = null;
+	
 
 	boolean isActive = true;
 
@@ -312,7 +313,7 @@ public class AgendaPanel extends JPanel {
 		historyForwardB.setText("");
 
 		this.setLayout(borderLayout1);
-		scrollPane.getViewport().setBackground(Color.white);
+		scrollPane.getViewport().setBackground(new Color(128, 128, 128));
 
 		scrollPane.getViewport().add(viewer, null);
 		this.add(scrollPane, BorderLayout.CENTER);
@@ -353,7 +354,7 @@ public class AgendaPanel extends JPanel {
 
 	}
 
-	public void refresh(CalendarDate date) {
+	public static void refresh(CalendarDate date) {
 		viewer.setText(AgendaGenerator.getAgenda(date, expandedTasks));
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

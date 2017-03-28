@@ -42,7 +42,7 @@ public class ProjectDialog extends JDialog {
     CalendarFrame endCalFrame = new CalendarFrame();
     CalendarFrame startCalFrame = new CalendarFrame();
     GridBagConstraints gbc;
-    JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JLabel header = new JLabel();
     JPanel centerPanel = new JPanel(new GridBagLayout());
     JLabel titleLabel = new JLabel();

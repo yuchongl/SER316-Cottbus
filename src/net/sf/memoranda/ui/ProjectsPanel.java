@@ -137,8 +137,8 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 
 		curProjectTitle.setFont(new java.awt.Font("Dialog", 1, 11));
 		curProjectTitle.setForeground(new Color(64, 70, 128));
-		curProjectTitle.setMaximumSize(new Dimension(32767, 22));
-		curProjectTitle.setPreferredSize(new Dimension(32767, 22));
+		curProjectTitle.setMaximumSize(new Dimension(200, 22));
+		curProjectTitle.setPreferredSize(new Dimension(300, 22));
 		curProjectTitle.setText(CurrentProject.get().getTitle());
 		curProjectTitle.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -223,7 +223,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 					"resources/icons/ppopen.png")));
 		buttonsPanel.add(ppOpenB, null);
 		buttonsPanel.add(component1, null);
-		this.add(topBar, BorderLayout.NORTH);
+		this.add(topBar, BorderLayout.SOUTH);
 		this.add(prjTablePanel, BorderLayout.CENTER);
 		topBar.add(toolbarPanel, null);
 		toolbarPanel.add(buttonsPanel, BorderLayout.EAST);

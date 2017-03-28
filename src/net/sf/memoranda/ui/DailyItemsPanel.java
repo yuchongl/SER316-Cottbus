@@ -112,8 +112,8 @@ public class DailyItemsPanel extends JPanel {
         }
     }
     void jbInit() throws Exception {
-        border1 = BorderFactory.createEtchedBorder(Color.white, Color.gray);
-        border2 = BorderFactory.createEtchedBorder(Color.white, new Color(161, 161, 161));
+        border1 = BorderFactory.createEtchedBorder(Color.white, Color.GRAY);
+        border2 = BorderFactory.createEtchedBorder(Color.white, new Color(128, 128, 128));
         this.setLayout(borderLayout1);
         splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setBorder(null);
@@ -122,19 +122,19 @@ public class DailyItemsPanel extends JPanel {
         //calendar.setMinimumSize(new Dimension(200, 170));
         mainPanel.setLayout(borderLayout3);
         editorsPanel.setLayout(cardLayout1);
-        statusPanel.setBackground(Color.black);
-        statusPanel.setForeground(Color.white);
-        statusPanel.setMinimumSize(new Dimension(14, 24));
-        statusPanel.setPreferredSize(new Dimension(14, 24));
+        statusPanel.setBackground(new Color(128, 128, 128));
+        statusPanel.setForeground(Color.gray);
+        statusPanel.setMinimumSize(new Dimension(400, 50));
+        statusPanel.setPreferredSize(new Dimension(400, 50));
         statusPanel.setLayout(borderLayout4);
         currentDateLabel.setFont(new java.awt.Font("Dialog", 0, 16));
         currentDateLabel.setForeground(Color.white);
         currentDateLabel.setText(CurrentDate.get().getFullDateString());
         borderLayout4.setHgap(4);
-        controlPanel.setBackground(new Color(230, 230, 230));
+        controlPanel.setBackground(new Color(128, 128, 128));
         controlPanel.setBorder(border2);
-        controlPanel.setMinimumSize(new Dimension(20, 170));
-        controlPanel.setPreferredSize(new Dimension(205, 170));
+        controlPanel.setMinimumSize(new Dimension(100, 10));
+        controlPanel.setPreferredSize(new Dimension(1100, 100));
         //controlPanel.setMaximumSize(new Dimension(206, 170));
         //controlPanel.setSize(controlPanel.getMaximumSize());
         calendar.setFont(new java.awt.Font("Dialog", 0, 11));
@@ -144,9 +144,9 @@ public class DailyItemsPanel extends JPanel {
         toggleToolBar.setFloatable(false);
         cmainPanel.setLayout(borderLayout5);
         cmainPanel.setBackground(SystemColor.desktop);
-        cmainPanel.setMinimumSize(new Dimension(0, 168));
+        cmainPanel.setMinimumSize(new Dimension(-200, 168));
         cmainPanel.setOpaque(false);
-        toggleButton.setMaximumSize(new Dimension(32767, 32767));
+        toggleButton.setMaximumSize(new Dimension(367, 367));
         toggleButton.setMinimumSize(new Dimension(16, 16));
         toggleButton.setOpaque(false);
         toggleButton.setPreferredSize(new Dimension(16, 16));
@@ -197,7 +197,7 @@ public class DailyItemsPanel extends JPanel {
         cmainPanel.add(calendar, BorderLayout.NORTH);
 
         mainPanel.add(statusPanel, BorderLayout.NORTH);
-        statusPanel.add(currentDateLabel, BorderLayout.CENTER);
+        statusPanel.add(currentDateLabel, BorderLayout.NORTH);
         statusPanel.add(indicatorsPanel, BorderLayout.EAST);
 
         mainPanel.add(editorsPanel, BorderLayout.CENTER);
@@ -207,9 +207,9 @@ public class DailyItemsPanel extends JPanel {
         editorsPanel.add(tasksPanel, "TASKS");
         editorsPanel.add(editorPanel, "NOTES");
         
-        splitPane.add(mainPanel, JSplitPane.RIGHT);
-        splitPane.add(controlPanel, JSplitPane.LEFT);
-        controlPanel.add(toggleToolBar, BorderLayout.SOUTH);
+        splitPane.add(mainPanel, JSplitPane.LEFT);
+        splitPane.add(controlPanel, JSplitPane.RIGHT);
+      //  controlPanel.add(toggleToolBar, BorderLayout.NORTH);
         toggleToolBar.add(toggleButton, null);
 
         splitPane.setDividerLocation((int) controlPanel.getPreferredSize().getWidth());
@@ -471,6 +471,10 @@ public class DailyItemsPanel extends JPanel {
         cardLayout2.show(mainTabsPanel, pan + "TAB");
 		calendar.jnCalendar.updateUI();
 		CurrentPanel=pan;
+    }
+    
+    public void refreshPanel(){
+    	
     }
 
 	public String getCurrentPanel() {

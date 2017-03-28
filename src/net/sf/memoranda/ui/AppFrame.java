@@ -2,6 +2,7 @@ package net.sf.memoranda.ui;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -37,6 +40,7 @@ import javax.swing.text.html.HTMLDocument;
 
 import net.sf.memoranda.CurrentNote;
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.History;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
@@ -87,7 +91,7 @@ public class AppFrame extends JFrame {
     JMenu jMenuEdit = new JMenu();
     JMenu jMenuFormat = new JMenu();
     JMenu jMenuInsert = new JMenu();
-    
+    JMenu jSticker = new JMenu();
     JMenu jPreference = new JMenu();
     
     
@@ -206,6 +210,11 @@ public class AppFrame extends JFrame {
     		// .setDocument(CurrentStorage.get().openNote(note));
     	}
 
+    
+    JMenuItem jStickerImportSticker = new JMenuItem();
+    JMenuItem jStickerExportSticker = new JMenuItem();
+    JMenuItem jStickerExportStickerHTML = new JMenuItem();
+    JMenuItem jStickerAddSticker = new JMenuItem();
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
     JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
@@ -356,7 +365,7 @@ public class AppFrame extends JFrame {
         jPreference.setText(Local.getString("Preference"));
 
         
-        /*jPreferenceGeneral.setText(Local.getString("General"));
+      /*  jPreferenceGeneral.setText(Local.getString("General"));
         jPreferenceGeneral.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	showPreferences();
@@ -396,21 +405,52 @@ public class AppFrame extends JFrame {
                 jMenuHelpAbout_actionPerformed(e);
             }
         });
-        //jButton3.setIcon(image3);
+        
+		jStickerExportSticker.setText(Local.getString("Export Sticker as .txt"));
+        jStickerExportSticker.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e){
+        		jStickerExportSticker_actionPerformed(e);
+        	}
+        });
+        
+        jStickerExportStickerHTML.setText(Local.getString("Export Sticker as .html"));
+        jStickerExportStickerHTML.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e){
+        		jStickerExportStickerHTML_actionPerformed(e);
+        	}
+        });
+        
+        jStickerAddSticker.setText(Local.getString("Add Sticker"));
+        jStickerAddSticker.setIcon(new ImageIcon(AppFrame.class.getResource(
+                "resources/agenda/addsticker.gif")));
+        jStickerAddSticker.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e){
+        		jStickerAddSticker_actionPerformed(e);
+        	}
+        });
+        
+        
+        jStickerImportSticker.setText(Local.getString("Import Sticker"));
+        jStickerImportSticker.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e){
+        		jStickerImportSticker_actionPerformed(e);
+        	}
+        });
+        
+        jButton3.setIcon(image3);
         jButton3.setToolTipText(Local.getString("Help"));
+        
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-
-        splitPane.setContinuousLayout(true);
+        splitPane.setContinuousLayout(false);
         splitPane.setDividerSize(3);
-        //splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(28);
-        //projectsPanel.setMaximumSize(new Dimension(2147483647, 200));
-        projectsPanel.setMinimumSize(new Dimension(10, 28));
-        projectsPanel.setPreferredSize(new Dimension(10, 28));
-        workPanel.setMinimumSize(new Dimension(734, 300));
-         workPanel.setPreferredSize(new Dimension(1073, 300));
-        splitPane.setDividerLocation(28);
+        splitPane.setBorder(null);
+        projectsPanel.setMinimumSize(new Dimension(20, 1128));
+        projectsPanel.setPreferredSize(new Dimension(20, 1128));
 
+        workPanel.setMinimumSize(new Dimension(1900, 299));
+        workPanel.setPreferredSize(new Dimension(2000, 300));
+        workPanel.setMaximumSize(new Dimension(2001, 301));
+        splitPane.setDividerLocation(20);
         /* jMenuFileNewPrj.setText(Local.getString("New project") + "...");
          jMenuFileNewPrj.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
@@ -430,6 +470,7 @@ public class AppFrame extends JFrame {
         jMenuFileMin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F10,
                 InputEvent.ALT_MASK));
 
+        
         jMenuEdit.setText(Local.getString("Edit"));
 
         jMenuEditUndo.setText(Local.getString("Undo"));
@@ -448,8 +489,8 @@ public class AppFrame extends JFrame {
 
         jMenuEditFind.setText(Local.getString("Find & replace") + "...");
 
-        //jMenuEditPref.setText(Local.getString("Preferences") + "...");
-
+        jSticker.setText(Local.getString("Sticker"));
+        
         jMenuInsert.setText(Local.getString("Insert"));
 
         jMenuInsertImage.setText(Local.getString("Image") + "...");
@@ -563,14 +604,23 @@ public class AppFrame extends JFrame {
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpAbout);
         
+        jSticker.add(jStickerExportSticker);
+        jSticker.add(jStickerExportStickerHTML);
+        jSticker.add(jStickerImportSticker);
+        jSticker.add(jStickerAddSticker);
+
         menuBar.add(jMenuFile);
         menuBar.add(jMenuEdit);
         menuBar.add(jMenuInsert);
         menuBar.add(jMenuFormat);
         menuBar.add(jMenuGo);
         menuBar.add(jPreference);
+        menuBar.add(jSticker);
         menuBar.add(jMenuHelp);
         this.setJMenuBar(menuBar);
+        contentPane.setBackground(Color.BLACK);
+        splitPane.setBackground(Color.BLACK);
+        projectsPanel.setBackground(Color.BLACK);
         //contentPane.add(toolBar, BorderLayout.NORTH);
         contentPane.add(statusBar, BorderLayout.SOUTH);
         contentPane.add(splitPane, BorderLayout.CENTER);
@@ -776,6 +826,51 @@ public class AppFrame extends JFrame {
          dlg.setModal(true);
          dlg.setVisible(true);
     }
+    
+    public void jStickerExportSticker_actionPerformed(ActionEvent e){
+    	final JFrame parent = new JFrame();
+		String name = JOptionPane.showInputDialog(parent,
+				Local.getString("Enter file name to export"), null);
+		new ExportSticker(name).export("txt");
+    }
+    
+    public void jStickerExportStickerHTML_actionPerformed(ActionEvent e){
+    	final JFrame parent = new JFrame();
+		String name = JOptionPane.showInputDialog(parent,
+				Local.getString("Enter file name to export"), null);
+		new ExportSticker(name).export("html");
+    }
+    
+    public void jStickerImportSticker_actionPerformed(ActionEvent e){
+    	final JFrame parent = new JFrame();
+		String name = JOptionPane.showInputDialog(parent,
+				Local.getString("Enter file name to import"), null);
+		new ImportSticker(name).import_file();
+    }
+    
+    public void jStickerAddSticker_actionPerformed(ActionEvent e){
+    	StickerDialog dlg = new StickerDialog(App.getFrame());
+		Dimension frmSize = App.getFrame().getSize();
+		dlg.setSize(new Dimension(300, 380));
+		Point loc = App.getFrame().getLocation();
+		dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
+				(frmSize.height - dlg.getSize().height) / 2 + loc.y);
+		dlg.setVisible(true);
+		if (!dlg.CANCELLED) {
+			String txt = dlg.getStickerText();
+			int sP = dlg.getPriority();
+			txt = txt.replaceAll("\\n", "<br>");
+			txt = "<div style=\"background-color:" + dlg.getStickerColor() + ";font-size:"
+					+ dlg.getStickerTextSize() + ";color:" + dlg.getStickerTextColor() + "; \">" + txt
+					+ "</div>";
+			EventsManager.createSticker(txt, sP);
+			CurrentStorage.get().storeEventsManager();
+		}
+		AgendaPanel.refresh(CurrentDate.get());
+		System.out.println("agregué un sticker");
+    }
+    
+    
 
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {

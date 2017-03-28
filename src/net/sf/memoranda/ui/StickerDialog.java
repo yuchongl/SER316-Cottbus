@@ -91,8 +91,8 @@ public class StickerDialog extends JDialog {
 			Local.getString("NORMAL"),
 			Local.getString("LOW"),
 			Local.getString("LOWEST")};
-	int[] font={10,15,20};
-	String[] fontLabels= {"10px","15px","20px"};
+	int[] font={13,18,23};
+	String[] fontLabels= {"12px","17px","22px"};
 	JComboBox stickerColor = new JComboBox(colorLabels);
 	JComboBox textColor = new JComboBox(colorLabels);
 	JComboBox fontSize = new JComboBox(fontLabels);
@@ -133,9 +133,9 @@ public class StickerDialog extends JDialog {
 			priorityList.setSelectedIndex(sP);
 		else
 			priorityList.setSelectedIndex(2);
-		if(size==10)
+		if(size==13)
 			fontSize.setSelectedIndex(0);
-		else if(size == 20)
+		else if(size == 23)
 			fontSize.setSelectedIndex(2);
 		else fontSize.setSelectedIndex(1);
 	}
@@ -300,11 +300,11 @@ public class StickerDialog extends JDialog {
 		Font f= stickerText.getFont();
 		if (Context.get("TEXT_SIZE") != null) {
 			int h= (fontSize.getSelectedIndex()*5)+10;
-			if (h!=10 && h!=15 && h!=20) h=15;
+			if (h!=13 && h!=18 && h!=23) h=18;
 			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, h));
 		}
 		else{
-			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, 15));
+			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, 18));
 			fontSize.setSelectedIndex(1);
 		}
 		fontSize.addActionListener(new java.awt.event.ActionListener() {
@@ -429,7 +429,7 @@ public class StickerDialog extends JDialog {
 		int i=fontSize.getSelectedIndex();
 		if (i < fontLabels.length){
 			Font f= stickerText.getFont();
-			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, (i*5)+10));
+			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, (i*5)+13));
 		}
 		fontSize.setSelectedIndex(i);
 		Context.put("TEXT_SIZE", new Integer(stickerText.getFont().getSize()));		

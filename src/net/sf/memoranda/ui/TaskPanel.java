@@ -231,7 +231,7 @@ public class TaskPanel extends JPanel {
     // added by rawsushi
 
     this.setLayout(borderLayout1);
-    scrollPane.getViewport().setBackground(Color.white);
+    scrollPane.getViewport().setBackground(Color.gray);
     /*
      * taskTable.setMaximumSize(new Dimension(32767, 32767)); taskTable.setRowHeight(24);
      */
