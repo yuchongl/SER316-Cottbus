@@ -70,7 +70,7 @@ public class App {
 		try {
 			if (Configuration.get("THEME_SETTING").equals("METAL")){
 				UIManager.setLookAndFeel(
-						"javax.swing.plaf.metal.MetalLookAndFeel");		
+						UIManager.getSystemLookAndFeelClassName());		
 			}
 			else if (Configuration.get("THEME_SETTING").equals("DEFAULT")){
 				UIManager.setLookAndFeel(

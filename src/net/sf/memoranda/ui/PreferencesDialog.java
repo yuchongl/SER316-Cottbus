@@ -737,8 +737,7 @@ public class PreferencesDialog extends JDialog {
 			
 			else if (themeOP2RB.isSelected()){
 				UIManager.setLookAndFeel(
-						"com.sun.java.swing.plaf.gtk.GTKLookAndFeel");	
-	    		}
+						UIManager.getSystemLookAndFeelClassName());	    		}
 			else if (themeOP1RB.isSelected()){
     			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
     		}
