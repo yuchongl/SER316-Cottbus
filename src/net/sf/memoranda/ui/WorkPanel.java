@@ -10,8 +10,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -27,6 +25,7 @@ import net.sf.memoranda.util.Local;
  */
 
 /*$Id: WorkPanel.java,v 1.9 2004/04/05 10:05:44 alexeya Exp $*/
+@SuppressWarnings("serial")
 public class WorkPanel extends JPanel {
 	BorderLayout borderLayout1 = new BorderLayout();
 	JToolBar toolBar = new JToolBar();

@@ -36,6 +36,7 @@ import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Util;
 
 /*$Id: EventsPanel.java,v 1.25 2005/02/19 10:06:25 rawsushi Exp $*/
+@SuppressWarnings("serial")
 public class EventsPanel extends JPanel {
     BorderLayout borderLayout1 = new BorderLayout();
     JButton historyBackB = new JButton();

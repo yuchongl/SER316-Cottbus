@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -62,7 +61,6 @@ public class AgendaPanel extends JPanel {
 
 	static Collection<String> expandedTasks;
 	static String gotoTask = null;
-	
 
 	boolean isActive = true;
 
@@ -79,9 +77,9 @@ public class AgendaPanel extends JPanel {
 	public void setActive(boolean isa) {
 		isActive = isa;
 	}
-	
+
 	void jbInit() throws Exception {
-		expandedTasks = new ArrayList();
+		expandedTasks = new ArrayList<String>();
 
 		toolBar.setFloatable(false);
 		viewer.setEditable(false);
@@ -97,12 +95,10 @@ public class AgendaPanel extends JPanel {
 						String id = d.split("#")[1];
 						CurrentProject.set(ProjectManager.getProject(id));
 						parentPanel.taskB_actionPerformed(null);
-					} 
-					else if (d.startsWith("memoranda:project")) {
+					} else if (d.startsWith("memoranda:project")) {
 						String id = d.split("#")[1];
 						CurrentProject.set(ProjectManager.getProject(id));
-					} 
-					else if (d.startsWith("memoranda:removesticker")) {
+					} else if (d.startsWith("memoranda:removesticker")) {
 						String id = d.split("#")[1];
 						StickerConfirmation stc = new StickerConfirmation(App.getFrame());
 						Dimension frmSize = App.getFrame().getSize();
@@ -116,8 +112,7 @@ public class AgendaPanel extends JPanel {
 							CurrentStorage.get().storeEventsManager();
 						}
 						refresh(CurrentDate.get());
-					} 
-					else if (d.startsWith("memoranda:addsticker")) {
+					} else if (d.startsWith("memoranda:addsticker")) {
 						StickerDialog dlg = new StickerDialog(App.getFrame());
 						Dimension frmSize = App.getFrame().getSize();
 						dlg.setSize(new Dimension(300, 380));
@@ -137,20 +132,17 @@ public class AgendaPanel extends JPanel {
 						}
 						refresh(CurrentDate.get());
 						System.out.println("agregué un sticker");
-					}
-					else if (d.startsWith("memoranda:expandsubtasks")) {
+					} else if (d.startsWith("memoranda:expandsubtasks")) {
 						String id = d.split("#")[1];
 						gotoTask = id;
 						expandedTasks.add(id);
 						refresh(CurrentDate.get());
-					} 
-					else if (d.startsWith("memoranda:closesubtasks")) {
+					} else if (d.startsWith("memoranda:closesubtasks")) {
 						String id = d.split("#")[1];
 						gotoTask = id;
 						expandedTasks.remove(id);
 						refresh(CurrentDate.get());
-					} 
-					else if (d.startsWith("memoranda:expandsticker")) {
+					} else if (d.startsWith("memoranda:expandsticker")) {
 						String id = d.split("#")[1];
 						Element pre_sticker = (Element) ((Map<?, ?>) EventsManager.getStickers()).get(id);
 						String sticker = pre_sticker.getValue();
@@ -171,8 +163,7 @@ public class AgendaPanel extends JPanel {
 								(frmSize.height - dlg.getSize().height) / 2 + loc.y);
 						dlg.stickerText.setText(sticker);
 						dlg.setVisible(true);
-					} 
-					else if (d.startsWith("memoranda:editsticker")) {
+					} else if (d.startsWith("memoranda:editsticker")) {
 						String id = d.split("#")[1];
 						Element pre_sticker = (Element) ((Map<?, ?>) EventsManager.getStickers()).get(id);
 						String sticker = pre_sticker.getValue();
@@ -207,24 +198,21 @@ public class AgendaPanel extends JPanel {
 							CurrentStorage.get().storeEventsManager();
 						}
 						refresh(CurrentDate.get());
-					} 
-					else if (d.startsWith("memoranda:exportstickerst")) {
+					} else if (d.startsWith("memoranda:exportstickerst")) {
 						/* Falta agregar el exportar sticker mientras tanto.. */
 						final JFrame parent = new JFrame();
-						String name = JOptionPane.showInputDialog(parent,
-								Local.getString("Entern file name to export"), null);
+						String name = JOptionPane.showInputDialog(parent, Local.getString("Entern file name to export"),
+								null);
 						new ExportSticker(name).export("txt");
 						// JOptionPane.showMessageDialog(null,name);
-					} 
-					else if (d.startsWith("memoranda:exportstickersh")) {
+					} else if (d.startsWith("memoranda:exportstickersh")) {
 						/* Falta agregar el exportar sticker mientras tanto.. */
 						final JFrame parent = new JFrame();
-						String name = JOptionPane.showInputDialog(parent,
-								Local.getString("Entern file name to export"), null);
+						String name = JOptionPane.showInputDialog(parent, Local.getString("Entern file name to export"),
+								null);
 						new ExportSticker(name).export("html");
 						// JOptionPane.showMessageDialog(null,name);
-					} 
-					else if (d.startsWith(priorityUpButton)) {
+					} else if (d.startsWith(priorityUpButton)) {
 						String id = d.split("#")[1];
 						Element pre_sticker = (Element) ((Map<?, ?>) EventsManager.getStickers()).get(id);
 						String sticker = pre_sticker.getValue();
@@ -252,8 +240,7 @@ public class AgendaPanel extends JPanel {
 						EventsManager.removeSticker(id);
 						EventsManager.createSticker(txt, sP);
 						refresh(CurrentDate.get());
-					} 
-					else if (d.startsWith(priorityDownButton)) {
+					} else if (d.startsWith(priorityDownButton)) {
 						String id = d.split("#")[1];
 						Element pre_sticker = (Element) ((Map<?, ?>) EventsManager.getStickers()).get(id);
 						String sticker = pre_sticker.getValue();
@@ -285,8 +272,8 @@ public class AgendaPanel extends JPanel {
 
 					else if (d.startsWith("memoranda:importstickers")) {
 						final JFrame parent = new JFrame();
-						String name = JOptionPane.showInputDialog(parent,
-								Local.getString("Enter file name to import"), null);
+						String name = JOptionPane.showInputDialog(parent, Local.getString("Enter file name to import"),
+								null);
 						new ImportSticker(name).import_file();
 					}
 				}
@@ -369,7 +356,7 @@ public class AgendaPanel extends JPanel {
 		Util.debug("Summary updated.");
 	}
 
-    private String priorityUpButton = "memoranda:priorityUpSticker";
-    private String priorityDownButton = "memoranda:priorityDownSticker";
-    
+	private String priorityUpButton = "memoranda:priorityUpSticker";
+	private String priorityDownButton = "memoranda:priorityDownSticker";
+
 }

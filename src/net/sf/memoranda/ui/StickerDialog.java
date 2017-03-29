@@ -33,6 +33,7 @@ import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.Local;
 
 /*$Id: StickerDialog.java,v 1.5 2004/10/07 21:31:33 ivanrise Exp $*/
+@SuppressWarnings("serial")
 public class StickerDialog extends JDialog {
 	public boolean CANCELLED = true;
 	JPanel panel1 = new JPanel();
@@ -93,10 +94,10 @@ public class StickerDialog extends JDialog {
 			Local.getString("LOWEST")};
 	int[] font={13,18,23};
 	String[] fontLabels= {"12px","17px","22px"};
-	JComboBox stickerColor = new JComboBox(colorLabels);
-	JComboBox textColor = new JComboBox(colorLabels);
-	JComboBox fontSize = new JComboBox(fontLabels);
-	JComboBox priorityList = new JComboBox(priorities);
+	JComboBox<?> stickerColor = new JComboBox<Object>(colorLabels);
+	JComboBox<?> textColor = new JComboBox<Object>(colorLabels);
+	JComboBox<?> fontSize = new JComboBox<Object>(fontLabels);
+	JComboBox<?> priorityList = new JComboBox<Object>(priorities);
 	
 
 	public StickerDialog(Frame frame) {
@@ -301,10 +302,10 @@ public class StickerDialog extends JDialog {
 		if (Context.get("TEXT_SIZE") != null) {
 			int h= (fontSize.getSelectedIndex()*5)+10;
 			if (h!=13 && h!=18 && h!=23) h=18;
-			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, h));
+			stickerText.setFont(new Font(f.getFontName(), Font.PLAIN, h));
 		}
 		else{
-			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, 18));
+			stickerText.setFont(new Font(f.getFontName(), Font.PLAIN, 18));
 			fontSize.setSelectedIndex(1);
 		}
 		fontSize.addActionListener(new java.awt.event.ActionListener() {
@@ -429,18 +430,18 @@ public class StickerDialog extends JDialog {
 		int i=fontSize.getSelectedIndex();
 		if (i < fontLabels.length){
 			Font f= stickerText.getFont();
-			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, (i*5)+13));
+			stickerText.setFont(new Font(f.getFontName(), Font.PLAIN, (i*5)+13));
 		}
 		fontSize.setSelectedIndex(i);
 		Context.put("TEXT_SIZE", new Integer(stickerText.getFont().getSize()));		
 		}
-	class ComboBoxRenderer extends JLabel implements ListCellRenderer {
+	class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
 		public ComboBoxRenderer() {
 			setOpaque(true);
 
 		}
 		public Component getListCellRendererComponent(
-			JList list,
+			JList<?> list,
 			Object value,
 			int index,
 			boolean isSelected,
@@ -462,13 +463,13 @@ public class StickerDialog extends JDialog {
 			return this;
 		}
 	}
-	class ComboBoxRenderer2 extends JLabel implements ListCellRenderer {
+	class ComboBoxRenderer2 extends JLabel implements ListCellRenderer<Object> {
 		public ComboBoxRenderer2() {
 			setOpaque(true);
 
 		}
 		public Component getListCellRendererComponent(
-			JList list,
+			JList<?> list,
 			Object value,
 			int index,
 			boolean isSelected,

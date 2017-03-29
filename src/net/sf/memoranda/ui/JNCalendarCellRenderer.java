@@ -24,6 +24,7 @@ import net.sf.memoranda.date.CalendarDate;
  *
  */
 /*$Id: JNCalendarCellRenderer.java,v 1.5 2004/10/11 08:48:20 alexeya Exp $*/
+@SuppressWarnings("serial")
 public class JNCalendarCellRenderer extends javax.swing.table.DefaultTableCellRenderer {
     private CalendarDate d = null;
     boolean disabled = false;
