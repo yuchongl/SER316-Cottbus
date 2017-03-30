@@ -30,6 +30,8 @@ public class EventNotificationDialog extends JFrame {
   JPanel panel1 = new JPanel();
   BorderLayout borderLayout1 = new BorderLayout();
   JButton jButton1 = new JButton();
+  JButton jButton2 = new JButton();
+ 
   Border border1;
   Border border2;
   Border border3;
@@ -56,14 +58,14 @@ public class EventNotificationDialog extends JFrame {
             "resources/icons/event48.png")));
     textLabel.setText("You have a task due soon: " + text);
     textLabel2.setText("Extend Due Date");
-    this.setSize(300,200);
+    this.setSize(500, 220);
     this.setLocationRelativeTo(null);
     
     
     this.setVisible(true);    
     this.toFront();
     this.requestFocus();
-    //jButton1.requestFocus();
+   
   }
 
   
@@ -83,10 +85,16 @@ public class EventNotificationDialog extends JFrame {
     panel1.setBackground(new Color(0, 255, 255));
     
     jButton1.setText(Local.getString("Dismiss Notification"));
+    jButton2.setText(Local.getString("Extend Due Date"));
+    jButton2.setBounds(100, 400, 95, 30);
     jButton1.setBounds(150, 415, 95, 30);
-    jButton1.setPreferredSize(new Dimension(95, 30));
+    jButton2.setPreferredSize(new Dimension(150, 30));
+    jButton1.setPreferredSize(new Dimension(150, 30));
     jButton1.setBackground(new Color(69, 125, 186));
+    jButton2.setBackground(new Color(69 , 125, 186));
+    jButton2.setForeground(Color.white);
     jButton1.setForeground(Color.white);
+    jButton1.setDefaultCapable(true);
     jButton1.setDefaultCapable(true);
     jButton1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -98,12 +106,14 @@ public class EventNotificationDialog extends JFrame {
     panel1.setPreferredSize(new Dimension(300, 200));
     timeLabel.setFont(new java.awt.Font("Dialog", 0, 20));
     timeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    textLabel.setFont(new java.awt.Font("Dialog", 0 ,20));
     textLabel.setHorizontalAlignment(SwingConstants.CENTER);
     getContentPane().add(panel1);
     textLabel2.setHorizontalAlignment(SwingConstants.CENTER);
     getContentPane().add(panel1);
     panel1.add(jPanel1,  BorderLayout.SOUTH);
     jPanel1.add(jButton1, null);
+    jPanel1.add(jButton2, null);
     jPanel1.setBackground(new Color(0, 255, 255));
     panel1.add(textLabel2, BorderLayout.CENTER);
     panel1.add(textLabel, BorderLayout.CENTER);
