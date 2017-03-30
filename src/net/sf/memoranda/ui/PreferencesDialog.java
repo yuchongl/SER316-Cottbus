@@ -15,7 +15,7 @@ import java.awt.event.*;
 public class PreferencesDialog extends JDialog {
 	JPanel topPanel = new JPanel(new BorderLayout());
 
-	JTabbedPane tabbedPanel = new JTabbedPane();
+	public JTabbedPane tabbedPanel = new JTabbedPane();
 
 	JPanel GeneralPanel = new JPanel(new GridBagLayout());
 
@@ -89,13 +89,13 @@ public class PreferencesDialog extends JDialog {
 
 	GridLayout gridLayoutTheme = new GridLayout();
 
-	JRadioButton themeDefaultRB = new JRadioButton();
+	public JRadioButton themeDefaultRB = new JRadioButton();
 
-	JRadioButton themeOP1RB = new JRadioButton();
+	public JRadioButton themeOP1RB = new JRadioButton();
 
-	JRadioButton themeOP2RB = new JRadioButton();
+	public JRadioButton themeOP2RB = new JRadioButton();
 
-	JRadioButton classicThemeRB = new JRadioButton();
+	public JRadioButton classicThemeRB = new JRadioButton();
 
 	JPanel soundPanel = new JPanel();
 
@@ -705,7 +705,7 @@ public class PreferencesDialog extends JDialog {
 		Configuration.saveConfig();
 	}
 
-	void changeTheme() {
+	public void changeTheme() {
 
 		try {
 			if (themeDefaultRB.isSelected()) {

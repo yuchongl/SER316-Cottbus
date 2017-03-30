@@ -204,10 +204,10 @@ public class AppFrame extends JFrame {
 		// .setDocument(CurrentStorage.get().openNote(note));
 	}
 
-	JMenuItem jStickerImportSticker = new JMenuItem();
-	JMenuItem jStickerExportSticker = new JMenuItem();
-	JMenuItem jStickerExportStickerHTML = new JMenuItem();
-	JMenuItem jStickerAddSticker = new JMenuItem();
+	public JMenuItem jStickerImportSticker = new JMenuItem();
+	public JMenuItem jStickerExportSticker = new JMenuItem();
+	public JMenuItem jStickerExportStickerHTML = new JMenuItem();
+	public JMenuItem jStickerAddSticker = new JMenuItem();
 
 	JMenuItem jMenuFileNewPrj = new JMenuItem();
 	JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
