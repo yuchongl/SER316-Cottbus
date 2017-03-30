@@ -1,6 +1,5 @@
 
 package net.sf.memoranda.ui;
-
 import net.sf.memoranda.Project;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CurrentDate;
@@ -8,7 +7,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -25,7 +23,11 @@ import javax.swing.tree.TreeCellRenderer;
  * 
  */
 public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implements TreeCellRenderer, TableCellRenderer {
-    static ImageIcon PR_HIGHEST_ICON = new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	static ImageIcon PR_HIGHEST_ICON = new ImageIcon(net.sf.memoranda.ui.AppFrame.class
             .getResource("resources/icons/pr_highest.png"));
     static ImageIcon PR_HIGH_ICON = new ImageIcon(net.sf.memoranda.ui.AppFrame.class
             .getResource("resources/icons/pr_high.png"));

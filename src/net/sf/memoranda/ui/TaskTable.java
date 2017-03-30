@@ -21,34 +21,20 @@
 package net.sf.memoranda.ui;
 
 import net.sf.memoranda.util.*;
-
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-
 import java.util.EventObject;
-import java.util.Collection;
-import java.util.Vector;
 import java.util.Iterator;
-import java.util.Hashtable;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import javax.swing.tree.*;
-
 import net.sf.memoranda.*;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
@@ -81,7 +67,12 @@ import net.sf.memoranda.ui.treetable.*;
  */
 public class TaskTable extends JTable {
 
-    public static final int TASK_ID = 100;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public static final int TASK_ID = 100;
 
     public static final int TASK = 101;
 
@@ -267,7 +258,11 @@ public class TaskTable extends JTable {
      */
 	 public class TreeTableCellRenderer extends JTree implements // {{{
             TableCellRenderer {
-        /** Last table/tree row asked to renderer. */
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		/** Last table/tree row asked to renderer. */
         protected int visibleRow;
 
         public TreeTableCellRenderer(TreeModel model) {
@@ -399,7 +394,11 @@ public class TaskTable extends JTable {
      */
 	 public class ListToTreeSelectionModelWrapper extends // {{{
             DefaultTreeSelectionModel {
-        /** Set to true when we are updating the ListSelectionModel. */
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		/** Set to true when we are updating the ListSelectionModel. */
         protected boolean updatingListSelectionModel;
 
         public ListToTreeSelectionModelWrapper() {
@@ -496,7 +495,7 @@ public class TaskTable extends JTable {
 	 */
 	 class ExpansionHandler implements TreeExpansionListener { // {{{
 	
-		private java.util.Set expanded = new java.util.HashSet();
+		private java.util.Set<TreePath> expanded = new java.util.HashSet<TreePath>();
 		
 		public void treeExpanded(TreeExpansionEvent e) {
 			expanded.add(e.getPath());
@@ -533,9 +532,9 @@ public class TaskTable extends JTable {
 		 * </p>
 		 */
 		public void expand(JTree tree){
-			Iterator iter = expanded.iterator();
+			Iterator<TreePath> iter = expanded.iterator();
 			while(iter.hasNext()){
-				tree.expandPath( (TreePath) iter.next() );
+				tree.expandPath( iter.next() );
 			}
 			System.out.println(expanded.size());
 		}

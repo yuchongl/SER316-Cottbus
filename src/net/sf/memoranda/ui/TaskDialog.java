@@ -14,7 +14,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,20 +28,21 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-//import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JCheckBox;
-
-import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 
 /*$Id: TaskDialog.java,v 1.25 2005/12/01 08:12:26 alexeya Exp $*/
 public class TaskDialog extends JDialog {
-    JPanel mPanel = new JPanel(new BorderLayout());
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JPanel mPanel = new JPanel(new BorderLayout());
     JPanel areaPanel = new JPanel(new BorderLayout());
     JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JButton cancelB = new JButton();
@@ -90,7 +90,8 @@ public class TaskDialog extends JDialog {
 //    JPanel jPanelNotes = new JPanel(new FlowLayout(FlowLayout.LEFT));
     
     JButton setNotifB = new JButton();
-    JComboBox priorityCB = new JComboBox(priority);
+    @SuppressWarnings("unchecked")
+	JComboBox priorityCB = new JComboBox(priority);
     JLabel jLabel7 = new JLabel();
     // added by rawsushi
     JLabel jLabelEffort = new JLabel();
@@ -223,7 +224,7 @@ public class TaskDialog extends JDialog {
                     return;
                 ignoreStartChanged = true;
                 Date sd = (Date) startDate.getModel().getValue();
-                Date ed = (Date) endDate.getModel().getValue();
+                //Date ed = (Date) endDate.getModel().getValue();
 				
                 startCalFrame.cal.set(new CalendarDate(sd));
                 ignoreStartChanged = false;
