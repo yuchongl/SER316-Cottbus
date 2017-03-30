@@ -35,6 +35,7 @@ public class EventNotificationDialog extends JFrame {
   Border border3;
   JPanel jPanel1 = new JPanel();
   JLabel textLabel = new JLabel();
+  JLabel textLabel2 = new JLabel();
   JLabel timeLabel = new JLabel();
   Border border4;
 
@@ -50,12 +51,15 @@ public class EventNotificationDialog extends JFrame {
     catch(Exception ex) {
       new ExceptionDialog(ex);
     }
-    timeLabel.setText(time);
+    timeLabel.setText("Current time - " + time);
     timeLabel.setIcon(new ImageIcon(net.sf.memoranda.ui.TaskDialog.class.getResource(
             "resources/icons/event48.png")));
-    textLabel.setText(text + " task is due soon.");
+    textLabel.setText("You have a task due soon: " + text);
+    textLabel2.setText("Extend Due Date");
     this.setSize(300,200);
     this.setLocationRelativeTo(null);
+    
+    
     this.setVisible(true);    
     this.toFront();
     this.requestFocus();
@@ -70,15 +74,15 @@ public class EventNotificationDialog extends JFrame {
   
   void jbInit() throws Exception {
     this.setResizable(false);
-    this.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("resources/icons/jnotes16.png")).getImage());
+    this.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("resources/icons/notify.png")).getImage());
     this.getContentPane().setBackground(new Color(251, 197, 63));
     border2 = BorderFactory.createEmptyBorder(0,30,0,30);
     border3 = BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(Color.white,new Color(142, 142, 142)),BorderFactory.createEmptyBorder(0,30,0,30));
     border4 = BorderFactory.createEmptyBorder(10,10,0,10);
     panel1.setLayout(borderLayout1);
-    panel1.setBackground(new Color(251, 197, 63));
+    panel1.setBackground(new Color(0, 255, 255));
     
-    jButton1.setText(Local.getString("Ok"));
+    jButton1.setText(Local.getString("Dismiss Notification"));
     jButton1.setBounds(150, 415, 95, 30);
     jButton1.setPreferredSize(new Dimension(95, 30));
     jButton1.setBackground(new Color(69, 125, 186));
@@ -96,9 +100,12 @@ public class EventNotificationDialog extends JFrame {
     timeLabel.setHorizontalAlignment(SwingConstants.CENTER);
     textLabel.setHorizontalAlignment(SwingConstants.CENTER);
     getContentPane().add(panel1);
+    textLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+    getContentPane().add(panel1);
     panel1.add(jPanel1,  BorderLayout.SOUTH);
     jPanel1.add(jButton1, null);
-    jPanel1.setBackground(new Color(251, 197, 63));
+    jPanel1.setBackground(new Color(0, 255, 255));
+    panel1.add(textLabel2, BorderLayout.CENTER);
     panel1.add(textLabel, BorderLayout.CENTER);
     panel1.add(timeLabel, BorderLayout.NORTH);
     playSoundNotification();
