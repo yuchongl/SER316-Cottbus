@@ -175,10 +175,10 @@ public class EditorPanel extends JPanel {
 
 	void jbInit() throws Exception {
 
-		if (!Configuration.get("DISABLE_L10N").equals("yes"))
+		if (!Configuration.get("DISABLE_L10N").equals("yes")) {
 			net.sf.memoranda.ui.htmleditor.util.Local.setMessages(Local
 					.getMessages());
-
+		}
 		editor = new HTMLEditor();
 
 		this.setLayout(borderLayout1);
@@ -371,14 +371,15 @@ public class EditorPanel extends JPanel {
 		titleBar.add(titleLabel, null);
 		titleBar.add(titleField, null);
 		initCSS();
-		editor.editor.setAntiAlias(Configuration.get("ANTIALIAS_TEXT").toString().equalsIgnoreCase("yes"));
-		// editor.editor.enableInputMethods(false);
-		// editor.editor.getInputContext().selectInputMethod(Locale.getDefault());
-		titleField.addKeyListener(new KeyListener() {
+		editor.editor.setAntiAlias
+		(Configuration.get("ANTIALIAS_TEXT").toString()
+				.equalsIgnoreCase("yes"));
+				titleField.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ENTER)
+				if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
 					editor.editor.requestFocus();
+				}
 			}
 
 			public void keyReleased(KeyEvent arg0) {
@@ -412,17 +413,21 @@ public class EditorPanel extends JPanel {
 		String HEADER_FONT = Configuration.get("HEADER_FONT").toString();
 		String MONO_FONT = Configuration.get("MONO_FONT").toString();
 		String BASE_FONT_SIZE = Configuration.get("BASE_FONT_SIZE").toString();
-		css = css.replaceAll("%NORMAL_FONT%", NORMAL_FONT.length() > 0 ? "\""+NORMAL_FONT+"\""
+		css = css.replaceAll
+				("%NORMAL_FONT%", NORMAL_FONT.length()
+						> 0 ? "\"" + NORMAL_FONT + "\""
 				: "serif");
-		css = css.replaceAll("%HEADER_FONT%", HEADER_FONT.length() > 0 ? "\""+HEADER_FONT+"\""
+		css = css.replaceAll
+				("%HEADER_FONT%", HEADER_FONT.length() 
+						> 0 ? "\"" + HEADER_FONT+"\""
 				: "sans-serif");
-		css = css.replaceAll("%MONO_FONT%", MONO_FONT.length() > 0 ? "\""+MONO_FONT+"\""
+		css = css.replaceAll("%MONO_FONT%", MONO_FONT.length() > 0 ? "\"" + MONO_FONT + "\""
 				: "monospaced");
 		css = css.replaceAll("%BASE_FONT_SIZE%",
 				BASE_FONT_SIZE.length() > 0 ? BASE_FONT_SIZE : "16");		
 		editor.setStyleSheet(new StringReader(css));
 		String usercss = (String) Configuration.get("USER_CSS");
-		if (usercss.length() > 0)
+		if (usercss.length() > 0) 
 			try {
 				// DEBUG
 				System.out.println("***[DEBUG] User css used: " + usercss);
@@ -444,27 +449,22 @@ public class EditorPanel extends JPanel {
 				DateFormat.SHORT, Local.getCurrentLocale()).format(d));
 	}
 
-	public boolean restoreNote()
-	{
+	public boolean restoreNote() {
 		noteLoadHtml(noteFile);
 		return true;
 	}
 
-	void noteLoadHtml(String path)
-	{
+	void noteLoadHtml(String path) {
 		System.out.println("note: load file " + path);
 		// load the saved file
 		File file = new File(path);
-		if (file.exists())
-		{
+		if (file.exists()) {
 			new HTMLFileImport(file, editor);
-		   
-
+		  
 		}
 	}
 
-	void noteSaveAsHtml(String path)
-	{
+	void noteSaveAsHtml(String path) {
 		String template = "";
 		String enc = "UTF-8";
 		File f = new File(path);
@@ -513,23 +513,28 @@ public class EditorPanel extends JPanel {
 		// chooser.addChoosableFileFilter(new
 		// AllFilesFilter(AllFilesFilter.RTF));
 		String lastSel = (String) Context.get("LAST_SELECTED_EXPORT_FILE");
-		if (lastSel != null)
+		if (lastSel != null) {
 			chooser.setCurrentDirectory(new File(lastSel));
+		}
 
 		FileExportDialog dlg = new FileExportDialog(App.getFrame(), Local
 				.getString("Export note"), chooser);
 		String enc = (String) Context.get("EXPORT_FILE_ENCODING");
-		if (enc != null)
+		if (enc != null) {
 			dlg.encCB.setSelectedItem(enc);
+		}
 		String templ = (String) Context.get("EXPORT_TEMPLATE");
-		if (templ != null)
+		if (templ != null) {
 			dlg.templF.setText(templ);
+		}
 		String xhtml = (String) Context.get("EXPORT_XHTML");
-		if ((xhtml != null) && (xhtml.equalsIgnoreCase("YES")))
+		if ((xhtml != null) && (xhtml.equalsIgnoreCase("YES"))) {
 			dlg.xhtmlChB.setSelected(true);
+		}
 		String num = (String) Context.get("EXPORT_NUMENT");
-		if ((num != null) && (num.equalsIgnoreCase("YES")))
+		if ((num != null) && (num.equalsIgnoreCase("YES"))) {
 			dlg.numentChB.setSelected(true);
+		}
 		Dimension dlgSize = new Dimension(550, 475);
 		dlg.setSize(dlgSize);
 		Dimension frmSize = App.getFrame().getSize();
@@ -537,9 +542,9 @@ public class EditorPanel extends JPanel {
 		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
 				(frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.setVisible(true);
-		if (dlg.CANCELLED)
+		if (dlg.CANCELLED) {
 			return;
-
+		}
 		Context.put("LAST_SELECTED_EXPORT_FILE", chooser.getSelectedFile()
 				.getPath());
 		Context.put("EXPORT_FILE_ENCODING", dlg.encCB.getSelectedItem());
@@ -557,8 +562,9 @@ public class EditorPanel extends JPanel {
 		 */
 		int ei = dlg.encCB.getSelectedIndex();
 		enc = null;
-		if (ei == 1)
+		if (ei == 1) {
 			enc = "UTF-8";
+		}
 		File f = chooser.getSelectedFile();
 		new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
 				dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
@@ -572,10 +578,12 @@ public class EditorPanel extends JPanel {
 		// this.editor.editor.setPage(CurrentStorage.get().getNoteURL(note));
 		editor.document = (HTMLDocument) CurrentStorage.get().openNote(note);
 		editor.initEditor();
-		if (note != null)
+		if (note != null) {
 			titleField.setText(note.getTitle());
-		else
+		}
+		else {
 			titleField.setText("");
+		}
 		initialTitle = titleField.getText();
 		/*
 		 * } catch (Exception ex) { new ExceptionDialog(ex); }
@@ -629,18 +637,20 @@ public class EditorPanel extends JPanel {
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
 		chooser.setPreferredSize(new Dimension(550, 375));
 		String lastSel = (String) Context.get("LAST_SELECTED_IMPORT_FILE");
-		if (lastSel != null)
+		if (lastSel != null) {
 			chooser.setCurrentDirectory(new java.io.File(lastSel));
-		if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+		}
+		if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
 			return;
-
+		}
 		Context.put("LAST_SELECTED_IMPORT_FILE", chooser.getSelectedFile()
 				.getPath());
 
 		File f = chooser.getSelectedFile();
 		
-		if (f.exists())
+		if (f.exists()) {
 			new HTMLFileImport(f, editor);
+		}
 	}
 
 	void newB_actionPerformed(ActionEvent e) {

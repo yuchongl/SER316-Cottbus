@@ -44,14 +44,12 @@ public class EventNotificationDialog extends JFrame {
   public EventNotificationDialog(String title, String time, String text) {
     super();
 
-	 
     this.setTitle("Memoranda Notification");
     try {
       jbInit();
       pack();
-    }
-    catch(Exception ex) {
-      new ExceptionDialog(ex);
+    }  catch (Exception ex) {
+    	new ExceptionDialog(ex);
     }
     timeLabel.setText("Current time - " + time);
     timeLabel.setIcon(new ImageIcon(net.sf.memoranda.ui.TaskDialog.class.getResource(
@@ -69,17 +67,22 @@ public class EventNotificationDialog extends JFrame {
   }
 
   
-  public EventNotificationDialog(){
+  public EventNotificationDialog() { 
 	  this("","","");
   }
   
   
   void jbInit() throws Exception {
     this.setResizable(false);
-    this.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("resources/icons/notify.png")).getImage());
+    this.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource
+    		("resources/icons/notify.png")).getImage());
+    
     this.getContentPane().setBackground(new Color(251, 197, 63));
     border2 = BorderFactory.createEmptyBorder(0,30,0,30);
-    border3 = BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(Color.white,new Color(142, 142, 142)),BorderFactory.createEmptyBorder(0,30,0,30));
+    border3 = BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(
+    		Color.white,new Color(142, 142, 142)),BorderFactory.createEmptyBorder
+    		(0,30,0,30));
+    
     border4 = BorderFactory.createEmptyBorder(10,10,0,10);
     panel1.setLayout(borderLayout1);
     panel1.setBackground(new Color(0, 255, 255));
@@ -126,36 +129,39 @@ public class EventNotificationDialog extends JFrame {
   }
   
   private void playSoundNotification() {
-		if (Configuration.get("NOTIFY_SOUND").equals("DISABLED"))
-			return;
-		if (Configuration.get("NOTIFY_SOUND").equals("BEEP")) {
-			java.awt.Toolkit.getDefaultToolkit().beep();
-			return;
-		}
-		if (Configuration.get("NOTIFY_SOUND").equals("")) {
-			Configuration.put("NOTIFY_SOUND", "DEFAULT");
-			Configuration.saveConfig();
-		}
-		URL url;
-		if (Configuration.get("NOTIFY_SOUND").equals("DEFAULT"))
-			url =
-				EventNotificationDialog.class.getResource(
+	if (Configuration.get("NOTIFY_SOUND").equals("DISABLED"))
+		return;
+	if (Configuration.get("NOTIFY_SOUND").equals("BEEP")) {
+		java.awt.Toolkit.getDefaultToolkit().beep();
+		return;
+}
+	if (Configuration.get("NOTIFY_SOUND").equals("")) {
+		Configuration.put("NOTIFY_SOUND", "DEFAULT");
+		Configuration.saveConfig();
+}
+	URL url;
+	if (Configuration.get("NOTIFY_SOUND").equals("DEFAULT"))
+		url =
+			EventNotificationDialog.class.getResource(
 					"resources/beep.wav");
-		else
-			try {
-				url =
-					new File(Configuration.get("NOTIFY_SOUND").toString())
-						.toURL();
-			} catch (Exception ex) {
-				url =
-					EventNotificationDialog.class.getResource(
-						"resources/beep.wav");
-			}
+	else
 		try {
-			AudioClip clip = Applet.newAudioClip(url);
-			clip.play();
-		} catch (Exception ex) {
-			new ExceptionDialog(ex, "Error loading audioclip from "+url, "Check the location and type of audioclip file.");
+			url =
+				new File(Configuration.get("NOTIFY_SOUND").toString())
+				.toURL();
+	} catch (Exception ex) {
+		url =
+			EventNotificationDialog.class.getResource(
+					"resources/beep.wav");
+}
+
+	try {
+		AudioClip clip = Applet.newAudioClip(url);
+		clip.play();
+} catch (Exception ex) {
+	new ExceptionDialog(ex, "Error loading audioclip from "
+			+ url, "Check the location and "
+					+ "type of audioclip file.");
 		}
 	}
 }
