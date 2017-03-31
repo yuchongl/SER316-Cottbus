@@ -11,10 +11,11 @@ import javax.swing.border.*;
 import java.awt.event.*;
 
 /*$Id: PreferencesDialog.java,v 1.16 2006/06/28 22:58:31 alexeya Exp $*/
+@SuppressWarnings("serial")
 public class PreferencesDialog extends JDialog {
 	JPanel topPanel = new JPanel(new BorderLayout());
 
-	JTabbedPane tabbedPanel = new JTabbedPane();
+	public JTabbedPane tabbedPanel = new JTabbedPane();
 
 	JPanel GeneralPanel = new JPanel(new GridBagLayout());
 
@@ -42,15 +43,7 @@ public class PreferencesDialog extends JDialog {
 
 	ButtonGroup lfGroup = new ButtonGroup();
 
-	JRadioButton lfSystemRB = new JRadioButton();
-
-	JRadioButton lfJavaRB = new JRadioButton();
-
-	JRadioButton lfCustomRB = new JRadioButton();
-
 	JLabel classNameLabel = new JLabel();
-
-	JTextField lfClassName = new JTextField();
 
 	JLabel jLabel4 = new JLabel();
 
@@ -81,6 +74,28 @@ public class PreferencesDialog extends JDialog {
 	JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
 
 	JLabel lblExit = new JLabel();
+
+	JPanel PanelThemeMain = new JPanel();
+
+	BorderLayout borderLayoutTheme = new BorderLayout();
+
+	TitledBorder titledBorderTheme;
+
+	ButtonGroup themeGroup = new ButtonGroup();
+
+	JPanel jPanelTheme2 = new JPanel();
+
+	JPanel jPanelTheme3 = new JPanel();
+
+	GridLayout gridLayoutTheme = new GridLayout();
+
+	public JRadioButton themeDefaultRB = new JRadioButton();
+
+	public JRadioButton themeOP1RB = new JRadioButton();
+
+	public JRadioButton themeOP2RB = new JRadioButton();
+
+	public JRadioButton classicThemeRB = new JRadioButton();
 
 	JPanel soundPanel = new JPanel();
 
@@ -115,13 +130,13 @@ public class PreferencesDialog extends JDialog {
 	JRadioButton soundCustomRB = new JRadioButton();
 
 	BorderLayout borderLayout2 = new BorderLayout();
-	
+
 	JPanel editorConfigPanel = new JPanel(new BorderLayout());
 	JPanel econfPanel = new JPanel(new GridLayout(5, 2));
-	Vector fontnames = getFontNames();
-	JComboBox normalFontCB = new JComboBox(fontnames);
-	JComboBox headerFontCB = new JComboBox(fontnames);
-	JComboBox monoFontCB = new JComboBox(fontnames);
+	Vector<String> fontnames = getFontNames();
+	JComboBox<String> normalFontCB = new JComboBox<String>(fontnames);
+	JComboBox<String> headerFontCB = new JComboBox<String>(fontnames);
+	JComboBox<String> monoFontCB = new JComboBox<String>(fontnames);
 	JSpinner baseFontSize = new JSpinner();
 	JCheckBox antialiasChB = new JCheckBox();
 	JLabel normalFontLabel = new JLabel();
@@ -129,24 +144,31 @@ public class PreferencesDialog extends JDialog {
 	JLabel monoFontLabel = new JLabel();
 	JLabel baseFontSizeLabel = new JLabel();
 
-	public PreferencesDialog(Frame frame) {
+	static String optionSelected;
+
+	public PreferencesDialog(Frame frame, String optSelec) {
 		super(frame, Local.getString("Preferences"), true);
 		try {
-			jbInit();
+			jbInit(optSelec);
+
 		} catch (Exception ex) {
 			new ExceptionDialog(ex);
 		}
 	}
 
 	public PreferencesDialog() {
-		this(null);
+		this(null, optionSelected);
 	}
 
-	void jbInit() throws Exception {
-		titledBorder1 = new TitledBorder(BorderFactory.createEtchedBorder(
-				Color.white, new Color(156, 156, 158)), Local
-				.getString("Sound"));
+	void jbInit(String optSelc) throws Exception {
+		titledBorder1 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white, new Color(156, 156, 158)),
+				Local.getString("Sound"));
+
+		titledBorderTheme = new TitledBorder(BorderFactory.createEtchedBorder(Color.white, new Color(156, 156, 158)),
+				Local.getString("Theme"));
+
 		this.setResizable(false);
+
 		// Build Tab1
 		jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLabel1.setText(Local.getString("Window minimize action:"));
@@ -155,6 +177,43 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 10, 0, 15);
 		gbc.anchor = GridBagConstraints.EAST;
+
+		gridLayoutTheme.setRows(8);
+		PanelThemeMain.setLayout(gridLayoutTheme);
+		PanelThemeMain.setBorder(titledBorderTheme);
+
+		themeDefaultRB.setText(Local.getString("Default (JTatto)"));
+		themeDefaultRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Configuration.put("THEME_SETTING", "DEFAULT");
+				themeDefaultRB.setSelected(true);
+			}
+		});
+
+		themeOP1RB.setText(Local.getString("Nimbus"));
+		themeOP1RB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Configuration.put("THEME_SETTING", "Nimbus");
+				themeOP1RB.setSelected(true);
+			}
+		});
+
+		themeOP2RB.setText(Local.getString("Metal"));
+		themeOP2RB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Configuration.put("THEME_SETTING", "METAL");
+				themeOP2RB.setSelected(true);
+			}
+		});
+
+		classicThemeRB.setText(Local.getString("Classic"));
+		classicThemeRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Configuration.put("THEME_SETTING", "CLASSIC");
+				classicThemeRB.setSelected(true);
+			}
+		});
+
 		enableSoundCB.setText(Local.getString("Enable sound notifications"));
 		enableSoundCB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -168,6 +227,7 @@ public class PreferencesDialog extends JDialog {
 				soundFileBrowseB_actionPerformed(e);
 			}
 		});
+
 		gridLayout1.setRows(4);
 		jPanel1.setBorder(titledBorder1);
 		jPanel1.setLayout(gridLayout1);
@@ -178,12 +238,14 @@ public class PreferencesDialog extends JDialog {
 			}
 		});
 		jLabel6.setText(Local.getString("Sound file") + ":");
+
 		soundDefaultRB.setText(Local.getString("Default"));
 		soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				soundDefaultRB_actionPerformed(e);
 			}
 		});
+
 		jPanel3.setLayout(borderLayout3);
 		soundCustomRB.setText(Local.getString("Custom"));
 		soundCustomRB.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +253,17 @@ public class PreferencesDialog extends JDialog {
 				soundCustomRB_actionPerformed(e);
 			}
 		});
+
+		jPanelTheme2.setLayout(borderLayoutTheme);
+		PanelThemeMain.add(themeDefaultRB, null);
+		PanelThemeMain.add(themeOP1RB, null);
+		PanelThemeMain.add(themeOP2RB, null);
+		PanelThemeMain.add(classicThemeRB, null);
+		this.themeGroup.add(themeDefaultRB);
+		this.themeGroup.add(themeOP1RB);
+		this.themeGroup.add(themeOP2RB);
+		this.themeGroup.add(classicThemeRB);
+
 		jPanel2.setLayout(borderLayout2);
 		soundPanel.add(jPanel2, BorderLayout.CENTER);
 		jPanel2.add(jPanel1, BorderLayout.NORTH);
@@ -268,63 +341,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(closeHideRB, gbc);
-		jLabel3.setHorizontalAlignment(SwingConstants.RIGHT);
-		jLabel3.setText(Local.getString("Look and feel:"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(2, 10, 0, 15);
-		gbc.anchor = GridBagConstraints.EAST;
-		GeneralPanel.add(jLabel3, gbc);
 
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 5;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfSystemRB, gbc);
-
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 6;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfJavaRB, gbc);
-		lfGroup.add(lfCustomRB);
-		lfCustomRB.setText(Local.getString("Custom"));
-		lfCustomRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lfCustomRB_actionPerformed(e);
-			}
-		});
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 7;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfCustomRB, gbc);
-		classNameLabel.setEnabled(false);
-		classNameLabel.setText(Local.getString("L&F class name:"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 8;
-		gbc.insets = new Insets(2, 20, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(classNameLabel, gbc);
-		lfClassName.setEnabled(false);
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 9;
-		gbc.insets = new Insets(7, 20, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		GeneralPanel.add(lfClassName, gbc);
 		jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLabel4.setText(Local.getString("Startup:"));
 		gbc = new GridBagConstraints();
@@ -413,7 +430,7 @@ public class PreferencesDialog extends JDialog {
 		rstPanelBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		resourceTypePanel.setBorder(rstPanelBorder);
 		resourcePanel.add(resourceTypePanel, BorderLayout.CENTER);
-		
+
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -432,7 +449,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.anchor = GridBagConstraints.EAST;
 
 		resourcePanel.add(rsBottomPanel, BorderLayout.SOUTH);
-		
+
 		// Build editorConfigPanel
 		normalFontLabel.setText(Local.getString("Normal text font"));
 		normalFontLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -443,7 +460,7 @@ public class PreferencesDialog extends JDialog {
 		baseFontSizeLabel.setText(Local.getString("Base font size"));
 		baseFontSizeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		antialiasChB.setText(Local.getString("Antialias text"));
-		JPanel bfsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); 
+		JPanel bfsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		bfsPanel.add(baseFontSize);
 		econfPanel.add(normalFontLabel);
 		econfPanel.add(normalFontCB);
@@ -454,15 +471,52 @@ public class PreferencesDialog extends JDialog {
 		econfPanel.add(baseFontSizeLabel);
 		econfPanel.add(bfsPanel);
 		econfPanel.add(antialiasChB);
-		econfPanel.setBorder(BorderFactory.createEmptyBorder(10,5,10,10));
-		((GridLayout)econfPanel.getLayout()).setHgap(10);
-		((GridLayout)econfPanel.getLayout()).setVgap(5);
+		econfPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 10));
+		((GridLayout) econfPanel.getLayout()).setHgap(10);
+		((GridLayout) econfPanel.getLayout()).setVgap(5);
 		editorConfigPanel.add(econfPanel, BorderLayout.NORTH);
+
 		// Build TabbedPanel
-		tabbedPanel.add(GeneralPanel, Local.getString("General"));
-		tabbedPanel.add(resourcePanel, Local.getString("Resource types"));
-		tabbedPanel.add(soundPanel, Local.getString("Sound"));
-		tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+		if (optSelc.equals("General")) {
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+		}
+
+		else if (optSelc.equals("Resource Types")) {
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+		}
+
+		else if (optSelc.equals("Theme")) {
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+		}
+
+		else if (optSelc.equals("Sound")) {
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+		}
+
+		else if (optSelc.equals("Editor")) {
+			tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+			tabbedPanel.add(GeneralPanel, Local.getString("General"));
+			tabbedPanel.add(resourcePanel, Local.getString("Resource Types"));
+			tabbedPanel.add(PanelThemeMain, Local.getString("Theme"));
+			tabbedPanel.add(soundPanel, Local.getString("Sound"));
+
+		}
 
 		// Build TopPanel
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
@@ -493,38 +547,46 @@ public class PreferencesDialog extends JDialog {
 		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		soundPanel.add(enableSoundCB, BorderLayout.NORTH);
 
+		String theme = Configuration.get("THEME_SETTING").toString();
+
+		if (theme.equals("DEFAULT")) {
+			themeDefaultRB.setSelected(true);
+			themeOP1RB.setSelected(false);
+			themeOP2RB.setSelected(false);
+			classicThemeRB.setSelected(false);
+		} else if (theme.equals("METAL")) {
+			themeDefaultRB.setSelected(false);
+			themeOP1RB.setSelected(false);
+			themeOP2RB.setSelected(true);
+			classicThemeRB.setSelected(false);
+		}
+
+		else if (theme.equals("Nimbus")) {
+			themeDefaultRB.setSelected(false);
+			themeOP1RB.setSelected(true);
+			themeOP2RB.setSelected(false);
+			classicThemeRB.setSelected(false);
+		} else if (theme.equals("CLASSIC")) {
+			themeDefaultRB.setSelected(false);
+			themeOP1RB.setSelected(false);
+			themeOP2RB.setSelected(false);
+			classicThemeRB.setSelected(true);
+
+		}
 		// set all config-values
 		setValues();
 
 	}
 
 	void setValues() {
-		enL10nChB.setSelected(!Configuration.get("DISABLE_L10N").toString()
-				.equalsIgnoreCase("yes"));
-		enSplashChB.setSelected(!Configuration.get("SHOW_SPLASH").toString()
-				.equalsIgnoreCase("no"));
-		enSystrayChB.setSelected(!Configuration.get("DISABLE_SYSTRAY")
-				.toString().equalsIgnoreCase("yes"));
-		startMinimizedChB.setSelected(Configuration.get("START_MINIMIZED")
-				.toString().equalsIgnoreCase("yes"));
-		firstdow.setSelected(Configuration.get("FIRST_DAY_OF_WEEK").toString()
-				.equalsIgnoreCase("mon"));
 
-		enableCustomLF(false);
-		String lf = Configuration.get("LOOK_AND_FEEL").toString();
-		if (lf.equalsIgnoreCase("system"))
-			lfSystemRB.setSelected(true);
-		else if (lf.equalsIgnoreCase("default"))
-			lfJavaRB.setSelected(true);
-		else if (lf.length() > 0) {
-			lfCustomRB.setSelected(true);
-			enableCustomLF(true);
-			lfClassName.setText(lf);
-		} else
-			lfJavaRB.setSelected(true);
+		enL10nChB.setSelected(!Configuration.get("DISABLE_L10N").toString().equalsIgnoreCase("yes"));
+		enSplashChB.setSelected(!Configuration.get("SHOW_SPLASH").toString().equalsIgnoreCase("no"));
+		enSystrayChB.setSelected(!Configuration.get("DISABLE_SYSTRAY").toString().equalsIgnoreCase("yes"));
+		startMinimizedChB.setSelected(Configuration.get("START_MINIMIZED").toString().equalsIgnoreCase("yes"));
+		firstdow.setSelected(Configuration.get("FIRST_DAY_OF_WEEK").toString().equalsIgnoreCase("mon"));
 
-		askConfirmChB.setSelected(!Configuration.get("ASK_ON_EXIT").toString()
-				.equalsIgnoreCase("no"));
+		askConfirmChB.setSelected(!Configuration.get("ASK_ON_EXIT").toString().equalsIgnoreCase("no"));
 		String onclose = Configuration.get("ON_CLOSE").toString();
 		if (onclose.equals("exit")) {
 			this.closeExitRB.setSelected(true);
@@ -534,53 +596,48 @@ public class PreferencesDialog extends JDialog {
 			// this.askConfirmChB.setEnabled(false);
 		}
 
-		String onmin = Configuration.get("ON_MINIMIZE").toString();
+		Configuration.get("ON_MINIMIZE").toString();
 		this.minTaskbarRB.setSelected(true);
 
 		if (Configuration.get("NOTIFY_SOUND").equals("")) {
 			Configuration.put("NOTIFY_SOUND", "DEFAULT");
 		}
 
-		boolean enableSnd = !Configuration.get("NOTIFY_SOUND").toString()
-				.equalsIgnoreCase("DISABLED");
+		boolean enableSnd = !Configuration.get("NOTIFY_SOUND").toString().equalsIgnoreCase("DISABLED");
 		enableSoundCB.setSelected(enableSnd);
-		if (Configuration.get("NOTIFY_SOUND").toString().equalsIgnoreCase(
-				"DEFAULT")
-				|| Configuration.get("NOTIFY_SOUND").toString()
-						.equalsIgnoreCase("DISABLED")) {
+		if (Configuration.get("NOTIFY_SOUND").toString().equalsIgnoreCase("DEFAULT")
+				|| Configuration.get("NOTIFY_SOUND").toString().equalsIgnoreCase("DISABLED")) {
 			this.soundDefaultRB.setSelected(true);
 			this.enableCustomSound(false);
-		} else if (Configuration.get("NOTIFY_SOUND").toString()
-				.equalsIgnoreCase("BEEP")) {
+		} else if (Configuration.get("NOTIFY_SOUND").toString().equalsIgnoreCase("BEEP")) {
 			this.soundBeepRB.setSelected(true);
 			this.enableCustomSound(false);
 		} else {
 			System.out.println(Configuration.get("NOTIFY_SOUND").toString());
 			this.soundCustomRB.setSelected(true);
-			this.soundFile
-					.setText(Configuration.get("NOTIFY_SOUND").toString());
+			this.soundFile.setText(Configuration.get("NOTIFY_SOUND").toString());
 			this.enableCustomSound(true);
 		}
 		this.enableSound(enableSnd);
-		
-		antialiasChB.setSelected(Configuration.get("ANTIALIAS_TEXT")
-				.toString().equalsIgnoreCase("yes"));
-		if (Configuration.get("NORMAL_FONT").toString().length() >0)
+
+		antialiasChB.setSelected(Configuration.get("ANTIALIAS_TEXT").toString().equalsIgnoreCase("yes"));
+		if (Configuration.get("NORMAL_FONT").toString().length() > 0)
 			normalFontCB.setSelectedItem(Configuration.get("NORMAL_FONT").toString());
 		else
 			normalFontCB.setSelectedItem("serif");
-		if (Configuration.get("HEADER_FONT").toString().length() >0)
+		if (Configuration.get("HEADER_FONT").toString().length() > 0)
 			headerFontCB.setSelectedItem(Configuration.get("HEADER_FONT").toString());
 		else
 			headerFontCB.setSelectedItem("sans-serif");
-		if (Configuration.get("MONO_FONT").toString().length() >0)
+		if (Configuration.get("MONO_FONT").toString().length() > 0)
 			monoFontCB.setSelectedItem(Configuration.get("MONO_FONT").toString());
 		else
 			monoFontCB.setSelectedItem("monospaced");
-		if (Configuration.get("BASE_FONT_SIZE").toString().length() >0)
+		if (Configuration.get("BASE_FONT_SIZE").toString().length() > 0)
 			baseFontSize.setValue(Integer.decode(Configuration.get("BASE_FONT_SIZE").toString()));
 		else
 			baseFontSize.setValue(new Integer(16));
+
 	}
 
 	void apply() {
@@ -621,39 +678,7 @@ public class PreferencesDialog extends JDialog {
 
 		Configuration.put("ON_MINIMIZE", "normal");
 
-		String lf = Configuration.get("LOOK_AND_FEEL").toString();
-		String newlf = "";
-
-		if (this.lfSystemRB.isSelected())
-			newlf = "system";
-		else if (this.lfJavaRB.isSelected())
-			newlf = "default";
-		else if (this.lfCustomRB.isSelected())
-			newlf = this.lfClassName.getText();
-
-		if (!lf.equalsIgnoreCase(newlf)) {
-			Configuration.put("LOOK_AND_FEEL", newlf);
-			try {
-				if (Configuration.get("LOOK_AND_FEEL").equals("system"))
-					UIManager.setLookAndFeel(UIManager
-							.getSystemLookAndFeelClassName());
-				else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
-					UIManager.setLookAndFeel(UIManager
-							.getCrossPlatformLookAndFeelClassName());
-				else if (Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
-					UIManager.setLookAndFeel(Configuration.get("LOOK_AND_FEEL")
-							.toString());
-
-				SwingUtilities.updateComponentTreeUI(App.getFrame());
-
-			} catch (Exception e) {
-				Configuration.put("LOOK_AND_FEEL", lf);
-				new ExceptionDialog(
-						e,
-						"Error when initializing a pluggable look-and-feel. Default LF will be used.",
-						"Make sure that specified look-and-feel library classes are on the CLASSPATH.");
-			}
-		}
+		changeTheme();
 
 		if (!this.enableSoundCB.isSelected())
 			Configuration.put("NOTIFY_SOUND", "DISABLED");
@@ -661,15 +686,14 @@ public class PreferencesDialog extends JDialog {
 			Configuration.put("NOTIFY_SOUND", "DEFAULT");
 		else if (this.soundBeepRB.isSelected())
 			Configuration.put("NOTIFY_SOUND", "BEEP");
-		else if ((this.soundCustomRB.isSelected())
-				&& (this.soundFile.getText().trim().length() > 0))
+		else if ((this.soundCustomRB.isSelected()) && (this.soundFile.getText().trim().length() > 0))
 			Configuration.put("NOTIFY_SOUND", this.soundFile.getText().trim());
 
 		if (antialiasChB.isSelected())
 			Configuration.put("ANTIALIAS_TEXT", "yes");
 		else
 			Configuration.put("ANTIALIAS_TEXT", "no");
-		
+
 		Configuration.put("NORMAL_FONT", normalFontCB.getSelectedItem());
 		Configuration.put("HEADER_FONT", headerFontCB.getSelectedItem());
 		Configuration.put("MONO_FONT", monoFontCB.getSelectedItem());
@@ -677,14 +701,33 @@ public class PreferencesDialog extends JDialog {
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.editor.editor.setAntiAlias(antialiasChB.isSelected());
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.initCSS();
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.editor.repaint();
-		
+
 		Configuration.saveConfig();
-		
 	}
 
-	void enableCustomLF(boolean is) {
-		this.classNameLabel.setEnabled(is);
-		this.lfClassName.setEnabled(is);
+	public void changeTheme() {
+
+		try {
+			if (themeDefaultRB.isSelected()) {
+				UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+			}
+
+			else if (themeOP2RB.isSelected()) {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} else if (themeOP1RB.isSelected()) {
+				UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			}
+
+			else if (classicThemeRB.isSelected()) {
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			}
+			SwingUtilities.updateComponentTreeUI(App.getFrame());
+
+		} catch (Exception excp) {
+			new ExceptionDialog(excp, "Error when initializing a pluggable look-and-feel. Default LF will be used.",
+					"Make sure that specified look-and-feel library classes are on the CLASSPATH.");
+		}
+
 	}
 
 	void enableCustomSound(boolean is) {
@@ -734,18 +777,6 @@ public class PreferencesDialog extends JDialog {
 		// this.askConfirmChB.setEnabled(false);
 	}
 
-	void lfSystemRB_actionPerformed(ActionEvent e) {
-		this.enableCustomLF(false);
-	}
-
-	void lfJavaRB_actionPerformed(ActionEvent e) {
-		this.enableCustomLF(false);
-	}
-
-	void lfCustomRB_actionPerformed(ActionEvent e) {
-		this.enableCustomLF(true);
-	}
-
 	void enSystrayChB_actionPerformed(ActionEvent e) {
 
 	}
@@ -764,27 +795,17 @@ public class PreferencesDialog extends JDialog {
 
 	void soundFileBrowseB_actionPerformed(ActionEvent e) {
 		// Fix until Sun's JVM supports more locales...
-		UIManager.put("FileChooser.lookInLabelText", Local
-				.getString("Look in:"));
-		UIManager.put("FileChooser.upFolderToolTipText", Local
-				.getString("Up One Level"));
-		UIManager.put("FileChooser.newFolderToolTipText", Local
-				.getString("Create New Folder"));
-		UIManager.put("FileChooser.listViewButtonToolTipText", Local
-				.getString("List"));
-		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-				.getString("Details"));
-		UIManager.put("FileChooser.fileNameLabelText", Local
-				.getString("File Name:"));
-		UIManager.put("FileChooser.filesOfTypeLabelText", Local
-				.getString("Files of Type:"));
+		UIManager.put("FileChooser.lookInLabelText", Local.getString("Look in:"));
+		UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
+		UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
+		UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
+		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
+		UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
+		UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
 		UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-		UIManager.put("FileChooser.openButtonToolTipText", Local
-				.getString("Open selected file"));
-		UIManager
-				.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-		UIManager.put("FileChooser.cancelButtonToolTipText", Local
-				.getString("Cancel"));
+		UIManager.put("FileChooser.openButtonToolTipText", Local.getString("Open selected file"));
+		UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
+		UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileHidingEnabled(false);
@@ -808,17 +829,16 @@ public class PreferencesDialog extends JDialog {
 	void soundCustomRB_actionPerformed(ActionEvent e) {
 		this.enableCustomSound(true);
 	}
-	
-	Vector getFontNames() {
-		GraphicsEnvironment gEnv = 
-        	GraphicsEnvironment.getLocalGraphicsEnvironment();
-        String envfonts[] = gEnv.getAvailableFontFamilyNames();
-        Vector fonts = new Vector();
-        fonts.add("serif");
-        fonts.add("sans-serif");
-        fonts.add("monospaced");
-        for (int i = 0; i < envfonts.length; i++)
-            fonts.add(envfonts[i]);
+
+	Vector<String> getFontNames() {
+		GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		String envfonts[] = gEnv.getAvailableFontFamilyNames();
+		Vector<String> fonts = new Vector<String>();
+		fonts.add("serif");
+		fonts.add("sans-serif");
+		fonts.add("monospaced");
+		for (int i = 0; i < envfonts.length; i++)
+			fonts.add(envfonts[i]);
 		return fonts;
 	}
 }
