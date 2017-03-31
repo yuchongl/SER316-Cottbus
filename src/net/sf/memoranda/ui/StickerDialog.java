@@ -257,7 +257,7 @@ public class StickerDialog extends JDialog {
 				stickerColor.setSelectedIndex(10);
 		}
 		else{
-			stickerText.setBackground(Color.YELLOW);
+			stickerText.setBackground(Color.BLUE);
 			stickerColor.setSelectedIndex(0);
 		}
 		stickerText.setWrapStyleWord(true);

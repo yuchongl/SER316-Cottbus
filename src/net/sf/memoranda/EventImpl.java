@@ -145,4 +145,10 @@ public class EventImpl implements Event, Comparable {
 		return (getHour() * 60 + getMinute()) - (event.getHour() * 60 + event.getMinute());
 	}
 
+
+	@Override
+	public void getDueDate(Event ev) {
+		
+	}
+
 }

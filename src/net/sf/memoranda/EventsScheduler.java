@@ -6,17 +6,15 @@
  * @author Alex V. Alishevskikh, alex@openmechanics.net
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
+
 package net.sf.memoranda;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-/**
- *
- */
-/*$Id: EventsScheduler.java,v 1.4 2004/01/30 12:17:41 alexeya Exp $*/
 public class EventsScheduler {
 
     static Vector _timers = new Vector();
@@ -25,14 +23,14 @@ public class EventsScheduler {
     static Timer changeDateTimer = new Timer();
 
     static {
-        addListener(new DefaultEventNotifier());            
+    addListener(new DefaultEventNotifier());            
     }
 
     public static void init() {
-        cancelAll();
-        //changeDateTimer.cancel();
+    cancelAll();
+    
         Vector events = (Vector)EventsManager.getActiveEvents();
-        _timers = new Vector();
+    _timers = new Vector();
         /*DEBUG*/System.out.println("----------");
         for (int i = 0; i < events.size(); i++) {
             Event ev = (Event)events.get(i);
@@ -66,18 +64,23 @@ public class EventsScheduler {
     
     public static Vector getScheduledEvents() {
         Vector v = new Vector();
-        for (int i = 0; i < _timers.size(); i++) 
+        for (int i = 0; i < _timers.size(); i++) {
             v.add(((EventTimer)_timers.get(i)).getEvent());
+            }
+        
         return v;
     }
     
     public static Event getFirstScheduledEvent() {
-        if (!isEventScheduled()) return null;
+        if (!isEventScheduled()) {
+        	return null;
+        }
         Event e1 = ((EventTimer)_timers.get(0)).getEvent();
         for (int i = 1; i < _timers.size(); i++) { 
             Event ev = ((EventTimer)_timers.get(i)).getEvent();
-            if (ev.getTime().before(e1.getTime()))
+            if (ev.getTime().before(e1.getTime())) {
                 e1 = ev;
+            }
         }
         return e1;
     }
@@ -92,13 +95,15 @@ public class EventsScheduler {
     }
         
     private static void notifyListeners(Event ev) {
-        for (int i = 0; i < _listeners.size(); i++)
+        for (int i = 0; i < _listeners.size(); i++) {
             ((EventNotificationListener)_listeners.get(i)).eventIsOccured(ev);
+        }
     }
 
     private static void notifyChanged() {
-        for (int i = 0; i < _listeners.size(); i++)
+        for (int i = 0; i < _listeners.size(); i++) {
             ((EventNotificationListener)_listeners.get(i)).eventsChanged();
+        }
     }
 
     private static Date getMidnight() {
@@ -124,7 +129,7 @@ public class EventsScheduler {
             _timer.cancel();
             _timers.remove(_timer);
             notifyListeners(_timer.getEvent());
-            notifyChanged();
+      notifyChanged();
         }
     }
     
@@ -133,13 +138,11 @@ public class EventsScheduler {
         
         public EventTimer(Event ev) {
             super();
-            _event = ev;
+      _event = ev;
         }
         
         public Event getEvent() {
-            return _event;
+      return _event;
         }
     }
-
-
 }

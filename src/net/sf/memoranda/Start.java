@@ -6,18 +6,23 @@
  * @author Alex V. Alishevskikh, alex@openmechanics.net
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
+
 package net.sf.memoranda;
+
+import net.sf.memoranda.ui.EventNotificationDialog;
+
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 import net.sf.memoranda.ui.*;
 import net.sf.memoranda.util.Configuration;
 
-/**
- *
- */
-/*$Id: Start.java,v 1.7 2004/11/22 10:02:37 alexeya Exp $*/
 public class Start {
     
     static App app = null;
@@ -56,15 +61,27 @@ public class Start {
                 // e.printStackTrace();
             }
             new SLThread().start();
+          
+
         }
         
         //System.out.println(EventsScheduler.isEventScheduled());
         if ((args.length == 0) || (!args[0].equals("-m"))) {
             app = new App(true);
         }
-        else
+        else {
             app = new App(false);
+        }
     }
+
+	private static void infoBox(String infoMessage, String titleBar) {
+		net.sf.memoranda.Event ev = EventsScheduler.getFirstScheduledEvent();
+
+        JOptionPane.showMessageDialog(null,
+        		ev.getEndDate().getFullDateString()
+        		, titleBar, JOptionPane.INFORMATION_MESSAGE);
+		
+	}
 }
 
 class SLThread extends Thread {
@@ -72,17 +89,35 @@ class SLThread extends Thread {
     public void run() {
         ServerSocket serverSocket = null;
         try {
+        	
             serverSocket = new ServerSocket(Start.DEFAULT_PORT);
             serverSocket.accept();
             Start.app.show();
             serverSocket.close();
             new SLThread().start();
             
+            
+            
+            
+            
+            
         } catch (Exception e) {
             System.err.println("Port:"+Start.DEFAULT_PORT);
             e.printStackTrace();
-            new ExceptionDialog(e, "Cannot create a socket connection on localhost:"+Start.DEFAULT_PORT,
-            "Make sure that other software does not use the port "+Start.DEFAULT_PORT+" and examine your security settings.");
+            new ExceptionDialog
+            (e, "Cannot create a socket connection on localhost:" + 
+            Start.DEFAULT_PORT,
+            "Make sure that other software does not use the port " + 
+            Start.DEFAULT_PORT+" and examine your security settings.");
         }
+    }
+    
+    
+    
+    public static void infoBox(String infoMessage, String titleBar) {
+    	net.sf.memoranda.Event ev = EventsScheduler.getFirstScheduledEvent();
+    	JOptionPane.showMessageDialog(null,
+    			ev.getEndDate().getFullDateString(),
+    			titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 }
