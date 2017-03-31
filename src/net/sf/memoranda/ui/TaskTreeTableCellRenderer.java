@@ -1,6 +1,5 @@
 
 package net.sf.memoranda.ui;
-
 import net.sf.memoranda.Project;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CurrentDate;
@@ -8,7 +7,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -25,7 +23,11 @@ import javax.swing.tree.TreeCellRenderer;
  * 
  */
 public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implements TreeCellRenderer, TableCellRenderer {
-    static ImageIcon PR_HIGHEST_ICON = new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	static ImageIcon PR_HIGHEST_ICON = new ImageIcon(net.sf.memoranda.ui.AppFrame.class
             .getResource("resources/icons/pr_highest.png"));
     static ImageIcon PR_HIGH_ICON = new ImageIcon(net.sf.memoranda.ui.AppFrame.class
             .getResource("resources/icons/pr_high.png"));
@@ -108,7 +110,7 @@ public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implement
             return label;
         }
         // if( column_name.equals("% " + Local.getString("done")) ){
-        if (column == 6) {
+        if (column == 7) {
             return getProgressCellRenderer(t, selected, hasFocus, column);
         }
         // if( column_name.equals("") ){
@@ -117,12 +119,12 @@ public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implement
         }
         // if( column_name.equals(Local.getString("Start date")) ||
         // column_name.equals(Local.getString("Due date")) ){
-        if ((column == 2) || (column == 3)) {
+        if ((column == 3) || (column == 4)) {
             label.setText(dateFormat.format((Date) value));
             return label;
         }
         // if( column_name.equals( Local.getString("Status") ) ){
-        if (column == 5) {
+        if (column == 6) {
             label.setText(value.toString());
             label.setForeground(getColorForTaskStatus(t, false));
             return label;

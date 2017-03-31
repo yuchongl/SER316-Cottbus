@@ -14,7 +14,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,20 +28,21 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-//import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JCheckBox;
-
-import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 
 /*$Id: TaskDialog.java,v 1.25 2005/12/01 08:12:26 alexeya Exp $*/
 public class TaskDialog extends JDialog {
-    JPanel mPanel = new JPanel(new BorderLayout());
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JPanel mPanel = new JPanel(new BorderLayout());
     JPanel areaPanel = new JPanel(new BorderLayout());
     JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JButton cancelB = new JButton();
@@ -90,7 +90,8 @@ public class TaskDialog extends JDialog {
 //    JPanel jPanelNotes = new JPanel(new FlowLayout(FlowLayout.LEFT));
     
     JButton setNotifB = new JButton();
-    JComboBox priorityCB = new JComboBox(priority);
+    @SuppressWarnings("unchecked")
+	JComboBox priorityCB = new JComboBox(priority);
     JLabel jLabel7 = new JLabel();
     // added by rawsushi
     JLabel jLabelEffort = new JLabel();
@@ -100,12 +101,6 @@ public class TaskDialog extends JDialog {
 	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	JLabel jLabelProgress = new JLabel();
 	JSpinner progress = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
-	
-	//Forbid to set dates outside the bounds
-	CalendarDate startDateMin = CurrentProject.get().getStartDate();
-	CalendarDate startDateMax = CurrentProject.get().getEndDate();
-	CalendarDate endDateMin = startDateMin;
-	CalendarDate endDateMax = startDateMax;
     
     public TaskDialog(Frame frame, String title) {
         super(frame, title, true);
@@ -229,19 +224,8 @@ public class TaskDialog extends JDialog {
                     return;
                 ignoreStartChanged = true;
                 Date sd = (Date) startDate.getModel().getValue();
-                Date ed = (Date) endDate.getModel().getValue();
-                if (sd.after(ed) && chkEndDate.isSelected()) {
-                    startDate.getModel().setValue(ed);
-                    sd = ed;
-                }
-				if ((startDateMax != null) && sd.after(startDateMax.getDate())) {
-					startDate.getModel().setValue(startDateMax.getDate());
-                    sd = startDateMax.getDate();
-				}
-                if ((startDateMin != null) && sd.before(startDateMin.getDate())) {
-                    startDate.getModel().setValue(startDateMin.getDate());
-                    sd = startDateMin.getDate();
-                }
+                //Date ed = (Date) endDate.getModel().getValue();
+				
                 startCalFrame.cal.set(new CalendarDate(sd));
                 ignoreStartChanged = false;
             }
@@ -286,14 +270,7 @@ public class TaskDialog extends JDialog {
                     endDate.getModel().setValue(ed);
                     ed = sd;
                 }
-				if ((endDateMax != null) && ed.after(endDateMax.getDate())) {
-					endDate.getModel().setValue(endDateMax.getDate());
-                    ed = endDateMax.getDate();
-				}
-                if ((endDateMin != null) && ed.before(endDateMin.getDate())) {
-                    endDate.getModel().setValue(endDateMin.getDate());
-                    ed = endDateMin.getDate();
-                }
+				
 				endCalFrame.cal.set(new CalendarDate(ed));
                 ignoreEndChanged = false;
             }
@@ -388,15 +365,6 @@ public class TaskDialog extends JDialog {
 			this.endDate.getModel().setValue(d.getDate());
 	}
 	
-	public void setStartDateLimit(CalendarDate min, CalendarDate max) {
-		this.startDateMin = min;
-		this.startDateMax = max;
-	}
-	
-	public void setEndDateLimit(CalendarDate min, CalendarDate max) {
-		this.endDateMin = min;
-		this.endDateMax = max;
-	}
 	
     void okB_actionPerformed(ActionEvent e) {
 	CANCELLED = false;
