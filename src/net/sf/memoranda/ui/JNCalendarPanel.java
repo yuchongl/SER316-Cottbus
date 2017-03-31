@@ -40,357 +40,356 @@ import net.sf.memoranda.util.Local;
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
-/*$Id: JNCalendarPanel.java,v 1.9 2004/04/05 10:05:44 alexeya Exp $*/
+/* $Id: JNCalendarPanel.java,v 1.9 2004/04/05 10:05:44 alexeya Exp $ */
+@SuppressWarnings("serial")
 public class JNCalendarPanel extends JPanel {
 
-  CalendarDate _date = CurrentDate.get();
-  JToolBar navigationBar = new JToolBar();
-  JToolBar navigationBar2 = new JToolBar();
-  JPanel mntyPanel = new JPanel(new BorderLayout());
-  JPanel navbPanel = new JPanel(new BorderLayout());
-  JPanel navb2Panel = new JPanel(new BorderLayout());   //Daniel Perez
-  JButton dayForwardB = new JButton();
-  JPanel dayForwardBPanel = new JPanel();
-  JButton monthForwardB = new JButton();					//Daniel Perez
-  JPanel monthForwardBPanel = new JPanel();				//Daniel Perez
-  JButton todayB = new JButton();
-  JPanel todayBPanel = new JPanel();
-  JPanel dayBackBPanel = new JPanel();
-  JButton dayBackB = new JButton();
-  JPanel monthBackPanel = new JPanel();					//Daniel Perez
-  JButton monthBackB = new JButton();					//Daniel Perez
-  JComboBox monthsCB = new JComboBox(Local.getMonthNames());
-  BorderLayout borderLayout4 = new BorderLayout();
-  JNCalendar jnCalendar = new JNCalendar(CurrentDate.get());
-  JPanel jnCalendarPanel = new JPanel();
-  BorderLayout borderLayout5 = new BorderLayout();
-  BorderLayout borderLayout6 = new BorderLayout();
-  JSpinner yearSpin = new JSpinner(new SpinnerNumberModel(jnCalendar.get().getYear(), 1980, 2999, 1));
-  JSpinner.NumberEditor yearSpinner = new JSpinner.NumberEditor(yearSpin, "####");
+	CalendarDate _date = CurrentDate.get();
+	JToolBar navigationBar = new JToolBar();
+	JToolBar navigationBar2 = new JToolBar();
+	JPanel mntyPanel = new JPanel(new BorderLayout());
+	JPanel navbPanel = new JPanel(new BorderLayout());
+	JPanel navb2Panel = new JPanel(new BorderLayout()); // Daniel Perez
+	JButton dayForwardB = new JButton();
+	JPanel dayForwardBPanel = new JPanel();
+	JButton monthForwardB = new JButton(); // Daniel Perez
+	JPanel monthForwardBPanel = new JPanel(); // Daniel Perez
+	JButton todayB = new JButton();
+	JPanel todayBPanel = new JPanel();
+	JPanel dayBackBPanel = new JPanel();
+	JButton dayBackB = new JButton();
+	JPanel monthBackPanel = new JPanel(); // Daniel Perez
+	JButton monthBackB = new JButton(); // Daniel Perez
+	JComboBox<?> monthsCB = new JComboBox<Object>(Local.getMonthNames());
+	BorderLayout borderLayout4 = new BorderLayout();
+	JNCalendar jnCalendar = new JNCalendar(CurrentDate.get());
+	JPanel jnCalendarPanel = new JPanel();
+	BorderLayout borderLayout5 = new BorderLayout();
+	BorderLayout borderLayout6 = new BorderLayout();
+	JSpinner yearSpin = new JSpinner(new SpinnerNumberModel(jnCalendar.get().getYear(), 1980, 2999, 1));
+	JSpinner.NumberEditor yearSpinner = new JSpinner.NumberEditor(yearSpin, "####");
 
-  boolean ignoreChange = false;
+	boolean ignoreChange = false;
 
-  private Vector selectionListeners = new Vector();
+	private Vector<ActionListener> selectionListeners = new Vector<ActionListener>();
 
-  Border border1;
-  Border border2;
+	Border border1;
+	Border border2;
 
-  public JNCalendarPanel() {
-    try {
-      jbInit();
-    }
-    catch(Exception ex) {
-      new ExceptionDialog(ex);
-    }
-  }
+	public JNCalendarPanel() {
+		try {
+			jbInit();
+		} catch (Exception ex) {
+			new ExceptionDialog(ex);
+		}
+	}
 
-  public Action dayBackAction =
-        new AbstractAction(
-            "Go one day back",
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back16.png"))) {
-        public void actionPerformed(ActionEvent e) {
-            dayBackB_actionPerformed(e);
-        }
-  };
-  
-  public Action dayForwardAction =
-        new AbstractAction(
-            "Go one day forward",
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward16.png"))) {
-        public void actionPerformed(ActionEvent e) {
-            dayForwardB_actionPerformed(e);
-        }
-  };
-  
+	public Action dayBackAction = new AbstractAction("Go one day back",
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back16.png"))) {
+		public void actionPerformed(ActionEvent e) {
+			dayBackB_actionPerformed(e);
+		}
+	};
 
-  public Action weekBackAction =
-        new AbstractAction(
-            "Go one week back",
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back16.png"))) {
-        public void actionPerformed(ActionEvent e) {
-            monthBackB_actionPerformed(e);
-        }
-  };
-  
-  public Action weekForwardAction =
-        new AbstractAction(
-            "Go one week forward",
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward16.png"))) {
-        public void actionPerformed(ActionEvent e) {
-            monthForwardB_actionPerformed(e);
-        }
-  };
-  
-  public Action todayAction =
-        new AbstractAction(
-            "Go to today",
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/today16.png"))) {
-        public void actionPerformed(ActionEvent e) {
-            todayB_actionPerformed(e);
-        }
-  };
-      
-  void jbInit() throws Exception {
-    //dayBackAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, KeyEvent.ALT_MASK));
-    //dayForwardAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, KeyEvent.ALT_MASK));
-    todayAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_MASK));
-    
-    monthsCB.setRequestFocusEnabled(false);
-    monthsCB.setMaximumRowCount(12);
-    monthsCB.setPreferredSize(new Dimension(50 , 20));
-    border1 = BorderFactory.createEmptyBorder(0,0,5,0);
-    border2 = BorderFactory.createEmptyBorder();
-    this.setLayout(new BorderLayout());
-    navigationBar.setFloatable(false);
-    
-    navigationBar2.setFloatable(false);
-    monthForwardBPanel.setAlignmentX((float) 0.0);
-    monthForwardBPanel.setMinimumSize(new Dimension(40, 24));
-    monthForwardBPanel.setOpaque(false);
-    monthForwardBPanel.setPreferredSize(new Dimension(40, 24));
-    
-    
-    monthForwardB.setAction(weekForwardAction);
-    monthForwardB.setMinimumSize(new Dimension(24, 24));
-    monthForwardB.setOpaque(false);
-    monthForwardB.setPreferredSize(new Dimension(24, 24));
-    monthForwardB.setRequestFocusEnabled(false);
-    monthForwardB.setBorderPainted(false);
-    monthForwardB.setFocusPainted(false);
-    monthForwardB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward.png")));
-    monthForwardB.setText("");
-    monthForwardB.setToolTipText(Local.getString("One week forward"));
-    
-    
-    dayForwardB.setAction(dayForwardAction);
-    dayForwardB.setMinimumSize(new Dimension(24, 24));
-    dayForwardB.setOpaque(false);
-    dayForwardB.setPreferredSize(new Dimension(24, 24));
-    dayForwardB.setRequestFocusEnabled(false);
-    dayForwardB.setBorderPainted(false);
-    dayForwardB.setFocusPainted(false);
-    dayForwardB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward.png")));
-    dayForwardB.setText("");
-    dayForwardB.setToolTipText(Local.getString("One day forward"));
-    
-    dayForwardBPanel.setAlignmentX((float) 0.0);
-    dayForwardBPanel.setMinimumSize(new Dimension(40, 24));
-    dayForwardBPanel.setOpaque(false);
-    dayForwardBPanel.setPreferredSize(new Dimension(40, 24));
-    
-    todayB.setAction(todayAction);
-    todayB.setMinimumSize(new Dimension(24, 24));
-    todayB.setOpaque(false);
-    todayB.setPreferredSize(new Dimension(24, 24));
-    todayB.setRequestFocusEnabled(false);
-    todayB.setBorderPainted(false);
-    todayB.setFocusPainted(false);
-    todayB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/today.png")));
-    todayB.setText("");
-    todayB.setToolTipText(Local.getString("To today"));
-   
-    monthBackPanel.setAlignmentX((float) 1.5);
-    monthBackPanel.setMinimumSize(new Dimension(40, 24));
-    monthBackPanel.setOpaque(false);
-    monthBackPanel.setPreferredSize(new Dimension(40, 24));
-    
-    monthBackB.setAction(weekBackAction);
-    monthBackB.setMinimumSize(new Dimension(24, 24));
-    monthBackB.setOpaque(false);
-    monthBackB.setPreferredSize(new Dimension(24, 24));
-    monthBackB.setRequestFocusEnabled(false);
-    monthBackB.setToolTipText("");
-    monthBackB.setBorderPainted(false);
-    monthBackB.setFocusPainted(false);
-    monthBackB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back.png")));
-    monthBackB.setText("");
-    monthBackB.setToolTipText(Local.getString("One week back"));
-    
-    
-    dayBackBPanel.setAlignmentX((float) 1.5);
-    dayBackBPanel.setMinimumSize(new Dimension(40, 24));
-    dayBackBPanel.setOpaque(false);
-    dayBackBPanel.setPreferredSize(new Dimension(40, 24));
-    
-    dayBackB.setAction(dayBackAction);
-    dayBackB.setMinimumSize(new Dimension(24, 24));
-    dayBackB.setOpaque(false);
-    dayBackB.setPreferredSize(new Dimension(24, 24));
-    dayBackB.setRequestFocusEnabled(false);
-    dayBackB.setToolTipText("");
-    dayBackB.setBorderPainted(false);
-    dayBackB.setFocusPainted(false);
-    dayBackB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back.png")));
-    dayBackB.setText("");
-    dayBackB.setToolTipText(Local.getString("One day back"));
-    
-    yearSpin.setPreferredSize(new Dimension(50, 20));
-    yearSpin.setRequestFocusEnabled(false);
+	public Action dayForwardAction = new AbstractAction("Go one day forward",
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward16.png"))) {
+		public void actionPerformed(ActionEvent e) {
+			dayForwardB_actionPerformed(e);
+		}
+	};
 
-    yearSpin.setEditor(yearSpinner);
-    navbPanel.setMinimumSize(new Dimension(202, 30));
-    navbPanel.setOpaque(false);
-    navbPanel.setPreferredSize(new Dimension(155, 30));
-    navb2Panel.setMinimumSize(new Dimension(202, 30));
-    navb2Panel.setOpaque(false);
-    navb2Panel.setPreferredSize(new Dimension(155, 30));
-    jnCalendar.getTableHeader().setFont(new java.awt.Font("Dialog", 1, 10));
-    jnCalendar.setFont(new java.awt.Font("Dialog", 0, 10));
-    jnCalendar.setGridColor(Color.lightGray);
-    jnCalendarPanel.setLayout(borderLayout5);
+	public Action weekBackAction = new AbstractAction("Go one week back",
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back16.png"))) {
+		public void actionPerformed(ActionEvent e) {
+			monthBackB_actionPerformed(e);
+		}
+	};
 
-    navb2Panel.setLayout(borderLayout4);
+	public Action weekForwardAction = new AbstractAction("Go one week forward",
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward16.png"))) {
+		public void actionPerformed(ActionEvent e) {
+			monthForwardB_actionPerformed(e);
+		}
+	};
 
-    todayBPanel.setMinimumSize(new Dimension(68, 24));
-    todayBPanel.setOpaque(false);
-    todayBPanel.setPreferredSize(new Dimension(51, 24));
-    this.add(navigationBar, BorderLayout.NORTH);
-    navigationBar.add(navbPanel, null);
-    navbPanel.add(dayBackBPanel, BorderLayout.WEST);
-    dayBackBPanel.add(dayBackB, null);    
-    navbPanel.add(dayForwardBPanel, BorderLayout.EAST);
-    dayForwardBPanel.add(dayForwardB, null);
-    navbPanel.add(todayBPanel, BorderLayout.CENTER);
-    todayBPanel.add(todayB, null);
-    this.add(mntyPanel,  BorderLayout.AFTER_LINE_ENDS);
-    mntyPanel.add(monthsCB, BorderLayout.WEST);
-    mntyPanel.add(yearSpin,  BorderLayout.EAST);
+	public Action todayAction = new AbstractAction("Go to today",
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/today16.png"))) {
+		public void actionPerformed(ActionEvent e) {
+			todayB_actionPerformed(e);
+		}
+	};
 
-    this.add(jnCalendarPanel,  BorderLayout.AFTER_LAST_LINE);
-    jnCalendar.getTableHeader().setPreferredSize(new Dimension(300, 20));
+	void jbInit() throws Exception {
+		// dayBackAction.putValue(Action.ACCELERATOR_KEY,
+		// KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, KeyEvent.ALT_MASK));
+		// dayForwardAction.putValue(Action.ACCELERATOR_KEY,
+		// KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, KeyEvent.ALT_MASK));
+		todayAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_MASK));
 
-    jnCalendarPanel.add(jnCalendar.getTableHeader(), BorderLayout.NORTH);
-    jnCalendarPanel.add(jnCalendar, BorderLayout.CENTER);
-    
-    this.add(navigationBar2, BorderLayout.CENTER);
-    navigationBar2.add(monthBackPanel, BorderLayout.EAST);
-    monthBackPanel.add(monthBackB, null);    
-    navigationBar2.add(monthForwardBPanel, BorderLayout.WEST);
-    monthForwardBPanel.add(monthForwardB, null);
-    jnCalendar.addSelectionListener(new ActionListener()  {
-        
-    	public void actionPerformed(ActionEvent e) {
-        setCurrentDateDay(jnCalendar.get(), jnCalendar.get().getDay());
-      }
-    });
-    /*CurrentDate.addChangeListener(new ActionListener()  {
-      public void actionPerformed(ActionEvent e) {
-        _date = CurrentDate.get();
-        refreshView();
-      }
-    });*/
-    monthsCB.setFont(new java.awt.Font("Dialog", 0, 11));
+		monthsCB.setRequestFocusEnabled(true);
+		monthsCB.setMaximumRowCount(6);
+		monthsCB.setPreferredSize(new Dimension(90, 30));
+		monthsCB.setMinimumSize(new Dimension(90, 30));
+		monthsCB.setMaximumSize(new Dimension(90, 30));
 
-    monthsCB.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        monthsCB_actionPerformed(e);
-      }
-    });
+		border1 = BorderFactory.createEmptyBorder(0, 0, 5, 0);
+		border2 = BorderFactory.createEmptyBorder();
+		this.setLayout(new BorderLayout());
+		navigationBar.setFloatable(false);
 
-    yearSpin.addChangeListener(new ChangeListener() {
-      public void stateChanged(ChangeEvent e) {
-        yearSpin_actionPerformed();
-      }
-    });
-    CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {}
-            public void projectWasChanged() {
-                jnCalendar.updateUI();
-            }
-        });
+		navigationBar2.setFloatable(false);
+		monthForwardBPanel.setAlignmentX((float) 0.0);
+		monthForwardBPanel.setMinimumSize(new Dimension(24, 24));
+		monthForwardBPanel.setOpaque(false);
+		monthForwardBPanel.setPreferredSize(new Dimension(24, 24));
 
+		monthForwardB.setAction(weekForwardAction);
+		monthForwardB.setMinimumSize(new Dimension(24, 24));
+		monthForwardB.setOpaque(false);
+		monthForwardB.setPreferredSize(new Dimension(24, 24));
+		monthForwardB.setRequestFocusEnabled(false);
+		monthForwardB.setBorderPainted(false);
+		monthForwardB.setFocusPainted(false);
+		monthForwardB
+				.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward.png")));
+		monthForwardB.setText("");
+		monthForwardB.setToolTipText(Local.getString("One week forward"));
 
-    refreshView();
-    yearSpin.setBorder(border2);
-    
-  }
+		dayForwardB.setAction(dayForwardAction);
+		dayForwardB.setMinimumSize(new Dimension(24, 24));
+		dayForwardB.setOpaque(false);
+		dayForwardB.setPreferredSize(new Dimension(24, 24));
+		dayForwardB.setRequestFocusEnabled(false);
+		dayForwardB.setBorderPainted(false);
+		dayForwardB.setFocusPainted(false);
+		dayForwardB
+				.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/forward.png")));
+		dayForwardB.setText("");
+		dayForwardB.setToolTipText(Local.getString("One day forward"));
 
-  public void set(CalendarDate date) {
-    _date = date;
-    refreshView();
-  }
+		dayForwardBPanel.setAlignmentX((float) 0.0);
+		dayForwardBPanel.setMinimumSize(new Dimension(40, 24));
+		dayForwardBPanel.setOpaque(false);
+		dayForwardBPanel.setPreferredSize(new Dimension(40, 24));
 
-  public CalendarDate get() {
-    return _date;
-  }
+		todayB.setAction(todayAction);
+		todayB.setMinimumSize(new Dimension(24, 24));
+		todayB.setOpaque(false);
+		todayB.setPreferredSize(new Dimension(24, 24));
+		todayB.setRequestFocusEnabled(false);
+		todayB.setBorderPainted(false);
+		todayB.setFocusPainted(false);
+		todayB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/today.png")));
+		todayB.setText("");
+		todayB.setToolTipText(Local.getString("To today"));
 
-  public void addSelectionListener(ActionListener al) {
-        selectionListeners.add(al);
-    }
+		monthBackPanel.setAlignmentX((float) 1.5);
+		monthBackPanel.setMinimumSize(new Dimension(40, 24));
+		monthBackPanel.setOpaque(false);
+		monthBackPanel.setPreferredSize(new Dimension(40, 24));
 
-  private void notifyListeners() {
-        for (Enumeration en = selectionListeners.elements(); en.hasMoreElements();)
-             ((ActionListener) en.nextElement()).actionPerformed(new ActionEvent(this, 0, "Calendar event"));
-  }
+		monthBackB.setAction(weekBackAction);
+		monthBackB.setMinimumSize(new Dimension(24, 24));
+		monthBackB.setOpaque(false);
+		monthBackB.setPreferredSize(new Dimension(24, 24));
+		monthBackB.setRequestFocusEnabled(false);
+		monthBackB.setToolTipText("");
+		monthBackB.setBorderPainted(false);
+		monthBackB.setFocusPainted(false);
+		monthBackB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back.png")));
+		monthBackB.setText("");
+		monthBackB.setToolTipText(Local.getString("One week back"));
 
-  private void setCurrentDateDay(CalendarDate dt, int d) {
-    if (ignoreChange) return;
-    if (_date.equals(dt)) return;
-    _date = new CalendarDate(d, _date.getMonth(), _date.getYear());
-    notifyListeners();
-  }
+		dayBackBPanel.setAlignmentX((float) 1.5);
+		dayBackBPanel.setMinimumSize(new Dimension(40, 24));
+		dayBackBPanel.setOpaque(false);
+		dayBackBPanel.setPreferredSize(new Dimension(40, 24));
 
-  private void refreshView() {
-    ignoreChange = true;
-    jnCalendar.set(_date);
-    monthsCB.setSelectedIndex(new Integer(_date.getMonth()));
-    yearSpin.setValue(new Integer(_date.getYear()));
-    ignoreChange = false;
-  }
+		dayBackB.setAction(dayBackAction);
+		dayBackB.setMinimumSize(new Dimension(24, 24));
+		dayBackB.setOpaque(false);
+		dayBackB.setPreferredSize(new Dimension(24, 24));
+		dayBackB.setRequestFocusEnabled(false);
+		dayBackB.setToolTipText("");
+		dayBackB.setBorderPainted(false);
+		dayBackB.setFocusPainted(false);
+		dayBackB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/back.png")));
+		dayBackB.setText("");
+		dayBackB.setToolTipText(Local.getString("One day back"));
 
-  void monthsCB_actionPerformed(ActionEvent e) {
-    if (ignoreChange) return;
-    _date = new CalendarDate(_date.getDay(), monthsCB.getSelectedIndex(), _date.getYear());
-    jnCalendar.set(_date);
-    notifyListeners();
-  }
+		yearSpin.setPreferredSize(new Dimension(80, 20));
+		yearSpin.setRequestFocusEnabled(false);
 
-  void yearSpin_actionPerformed() {
-    if (ignoreChange) return;
-    _date = new CalendarDate(_date.getDay(), _date.getMonth(), ((Integer)yearSpin.getValue()).intValue());
-    jnCalendar.set(_date);
-    notifyListeners();
-  }
+		yearSpin.setEditor(yearSpinner);
+		navbPanel.setMinimumSize(new Dimension(155, 30));
+		navbPanel.setOpaque(false);
+		navbPanel.setPreferredSize(new Dimension(155, 30));
+		navb2Panel.setMinimumSize(new Dimension(155, 30));
+		navb2Panel.setOpaque(false);
+		navb2Panel.setPreferredSize(new Dimension(155, 30));
+		jnCalendar.getTableHeader().setFont(new java.awt.Font("Dialog", 1, 10));
+		jnCalendar.setFont(new java.awt.Font("Dialog", 0, 10));
+		jnCalendar.setGridColor(Color.DARK_GRAY);
+		jnCalendarPanel.setLayout(borderLayout5);
 
-  void dayBackB_actionPerformed(ActionEvent e) {
-    Calendar cal = _date.getCalendar();
-    cal.add(Calendar.DATE, -1); cal.getTime();
-    _date = new CalendarDate(cal);
-    refreshView();
-    notifyListeners();
-  }
-  
-  void monthBackB_actionPerformed(ActionEvent e) {
-	    Calendar cal = _date.getCalendar();
-	    cal.add(Calendar.DATE, -30); cal.getTime();
-	    _date = new CalendarDate(cal);
-	    refreshView();
-	    notifyListeners();
-	  }
+		navb2Panel.setLayout(borderLayout4);
 
-  void todayB_actionPerformed(ActionEvent e) {
-    _date = CalendarDate.today();
-    refreshView();
-    notifyListeners();
-  }
+		todayBPanel.setMinimumSize(new Dimension(68, 24));
+		todayBPanel.setOpaque(false);
+		todayBPanel.setPreferredSize(new Dimension(68, 24));
+		this.add(navigationBar, BorderLayout.NORTH);
+		navigationBar.add(navbPanel, null);
+		navbPanel.add(dayBackBPanel, BorderLayout.WEST);
+		dayBackBPanel.add(dayBackB, null);
+		navbPanel.add(dayForwardBPanel, BorderLayout.EAST);
+		dayForwardBPanel.add(dayForwardB, null);
+		navbPanel.add(todayBPanel, BorderLayout.CENTER);
+		todayBPanel.add(todayB, null);
+		this.add(mntyPanel, BorderLayout.AFTER_LINE_ENDS);
+		mntyPanel.add(monthsCB, BorderLayout.WEST);
+		mntyPanel.add(yearSpin, BorderLayout.EAST);
 
-  void monthForwardB_actionPerformed(ActionEvent e) {
+		this.add(jnCalendarPanel, BorderLayout.AFTER_LAST_LINE);
+		jnCalendar.getTableHeader().setPreferredSize(new Dimension(100, 20));
 
-	    Calendar cal = _date.getCalendar();
-	    cal.add(Calendar.DATE, 30); cal.getTime();
-	    _date = new CalendarDate(cal);
-	    refreshView();
-	    notifyListeners();
-	  }
-  
-  void dayForwardB_actionPerformed(ActionEvent e) {
-    Calendar cal = _date.getCalendar();
-    cal.add(Calendar.DATE, 1); cal.getTime();
-    _date = new CalendarDate(cal);
-    refreshView();
-    notifyListeners();
-  }
+		jnCalendarPanel.add(jnCalendar.getTableHeader(), BorderLayout.NORTH);
+		jnCalendarPanel.add(jnCalendar, BorderLayout.CENTER);
 
+		this.add(navigationBar2, BorderLayout.CENTER);
+		navigationBar2.add(monthBackPanel, BorderLayout.EAST);
+		monthBackPanel.add(monthBackB, null);
+		navigationBar2.add(monthForwardBPanel, BorderLayout.WEST);
+		monthForwardBPanel.add(monthForwardB, null);
+		jnCalendar.addSelectionListener(new ActionListener() {
 
+			public void actionPerformed(ActionEvent e) {
+				setCurrentDateDay(jnCalendar.get(), jnCalendar.get().getDay());
+			}
+		});
+		/*
+		 * CurrentDate.addChangeListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) { _date = CurrentDate.get();
+		 * refreshView(); } });
+		 */
+		monthsCB.setFont(new java.awt.Font("Dialog", 0, 11));
+
+		monthsCB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				monthsCB_actionPerformed(e);
+			}
+		});
+
+		yearSpin.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				yearSpin_actionPerformed();
+			}
+		});
+		CurrentProject.addProjectListener(new ProjectListener() {
+			public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {
+			}
+
+			public void projectWasChanged() {
+				jnCalendar.updateUI();
+			}
+		});
+
+		refreshView();
+		yearSpin.setBorder(border2);
+
+	}
+
+	public void set(CalendarDate date) {
+		_date = date;
+		refreshView();
+	}
+
+	public CalendarDate get() {
+		return _date;
+	}
+
+	public void addSelectionListener(ActionListener al) {
+		selectionListeners.add(al);
+	}
+
+	private void notifyListeners() {
+		for (Enumeration<ActionListener> en = selectionListeners.elements(); en.hasMoreElements();)
+			((ActionListener) en.nextElement()).actionPerformed(new ActionEvent(this, 0, "Calendar event"));
+	}
+
+	private void setCurrentDateDay(CalendarDate dt, int d) {
+		if (ignoreChange)
+			return;
+		if (_date.equals(dt))
+			return;
+		_date = new CalendarDate(d, _date.getMonth(), _date.getYear());
+		notifyListeners();
+	}
+
+	private void refreshView() {
+		ignoreChange = true;
+		jnCalendar.set(_date);
+		monthsCB.setSelectedIndex(new Integer(_date.getMonth()));
+		yearSpin.setValue(new Integer(_date.getYear()));
+		ignoreChange = false;
+	}
+
+	void monthsCB_actionPerformed(ActionEvent e) {
+		if (ignoreChange)
+			return;
+		_date = new CalendarDate(_date.getDay(), monthsCB.getSelectedIndex(), _date.getYear());
+		jnCalendar.set(_date);
+		notifyListeners();
+	}
+
+	void yearSpin_actionPerformed() {
+		if (ignoreChange)
+			return;
+		_date = new CalendarDate(_date.getDay(), _date.getMonth(), ((Integer) yearSpin.getValue()).intValue());
+		jnCalendar.set(_date);
+		notifyListeners();
+	}
+
+	void dayBackB_actionPerformed(ActionEvent e) {
+		Calendar cal = _date.getCalendar();
+		cal.add(Calendar.DATE, -1);
+		cal.getTime();
+		_date = new CalendarDate(cal);
+		refreshView();
+		notifyListeners();
+	}
+
+	void monthBackB_actionPerformed(ActionEvent e) {
+		Calendar cal = _date.getCalendar();
+		cal.add(Calendar.DATE, -30);
+		cal.getTime();
+		_date = new CalendarDate(cal);
+		refreshView();
+		notifyListeners();
+	}
+
+	void todayB_actionPerformed(ActionEvent e) {
+		_date = CalendarDate.today();
+		refreshView();
+		notifyListeners();
+	}
+
+	void monthForwardB_actionPerformed(ActionEvent e) {
+
+		Calendar cal = _date.getCalendar();
+		cal.add(Calendar.DATE, 30);
+		cal.getTime();
+		_date = new CalendarDate(cal);
+		refreshView();
+		notifyListeners();
+	}
+
+	void dayForwardB_actionPerformed(ActionEvent e) {
+		Calendar cal = _date.getCalendar();
+		cal.add(Calendar.DATE, 1);
+		cal.getTime();
+		_date = new CalendarDate(cal);
+		refreshView();
+		notifyListeners();
+	}
 
 }

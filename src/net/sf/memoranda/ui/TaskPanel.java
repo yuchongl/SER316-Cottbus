@@ -43,7 +43,6 @@ import net.sf.memoranda.util.Util;
 
 /*$Id: TaskPanel.java,v 1.27 2007/01/17 20:49:12 killerjoe Exp $*/
 public class TaskPanel extends JPanel {
-
 	private static final long serialVersionUID = 1L;
 	BorderLayout borderLayout1 = new BorderLayout();
 	JButton historyBackB = new JButton();
@@ -195,7 +194,7 @@ public class TaskPanel extends JPanel {
 		toggleShowActiveOnly_actionPerformed(null);
 
 		this.setLayout(borderLayout1);
-		scrollPane.getViewport().setBackground(Color.white);
+		scrollPane.getViewport().setBackground(Color.gray);
 		/*
 		 * taskTable.setMaximumSize(new Dimension(32767, 32767));
 		 * taskTable.setRowHeight(24);
@@ -654,7 +653,8 @@ public class TaskPanel extends JPanel {
 		taskTable.tableChanged();
 	}
 
-	void listSubTasks_actionPerformed(ActionEvent ev) {
+
+  void listSubTasks_actionPerformed(ActionEvent ev) {
 		// taskTable.setCurrentRootTask(parentTaskId);
 		taskTable.tableChanged();
 	}
