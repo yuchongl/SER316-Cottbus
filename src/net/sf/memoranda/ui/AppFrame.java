@@ -967,6 +967,7 @@ public class AppFrame extends JFrame {
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.XHTML));
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
 
+
 		String lastSel = (String) Context.get("LAST_SELECTED_EXPORT_FILE");
 		if (lastSel != null)
 			chooser.setCurrentDirectory(new File(lastSel));

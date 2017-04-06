@@ -38,6 +38,7 @@ import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.HTMLFileExport;
 import net.sf.memoranda.util.HTMLFileImport;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.TXTFileImport;
 import net.sf.memoranda.util.Configuration;
 
 /*$Id: EditorPanel.java,v 1.21 2006/06/28 22:58:31 alexeya Exp $*/
@@ -635,6 +636,7 @@ public class EditorPanel extends JPanel {
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
+		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.TXT));
 		chooser.setPreferredSize(new Dimension(550, 375));
 		String lastSel = (String) Context.get("LAST_SELECTED_IMPORT_FILE");
 		if (lastSel != null) {
@@ -648,8 +650,10 @@ public class EditorPanel extends JPanel {
 
 		File f = chooser.getSelectedFile();
 		
-		if (f.exists()) {
+		if (f.exists() && AllFilesFilter.getExtension(f).equals("html")) {
 			new HTMLFileImport(f, editor);
+		}else{
+			new TXTFileImport(f, editor);
 		}
 	}
 

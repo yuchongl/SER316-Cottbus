@@ -32,6 +32,7 @@ public class AllFilesFilter extends FileFilter {
     public static final String JAR = "JAR";
     public static final String ICO = "ICO";
     public static final String WAV = "WAV";
+    public static final String TXT = "TXT";
 
     String _type = "";
     /**
@@ -63,6 +64,8 @@ public class AllFilesFilter extends FileFilter {
             return (ext.equals("xhtml") || ext.equals("xml"));
         else if (_type.equals(ICO))
             return (ext.equals("ico") || ext.equals("png"));
+        else if (_type.equals(TXT))
+        	return (ext.equals("txt"));
         return ext.startsWith("htm");
     }
 
@@ -84,10 +87,12 @@ public class AllFilesFilter extends FileFilter {
             return "XHTML files (*.xhtml, *.xml)";
         else if (_type.equals(ICO))
             return Local.getString("Icon") + " " + Local.getString("Files") + " (*.ico, *.png)";
+        else if (_type.equals(TXT))
+        	return "Normal text file (*.txt)";
         return "HTML files (*.html, *.htm)";
     }
 
-    private static String getExtension(File f) {
+    public static String getExtension(File f) {
         String ext = "";
         String s = f.getName();
         int i = s.lastIndexOf('.');
