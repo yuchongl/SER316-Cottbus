@@ -153,19 +153,6 @@ public class AppFrame extends JFrame {
 		}
 	};
 
-	public Action importNotesAction = new AbstractAction(Local.getString("Import multiple notes")) {
-
-		public void actionPerformed(ActionEvent e) {
-			ppImport_actionPerformed(e);
-		}
-	};
-	public Action importOneNoteAction = new AbstractAction(Local.getString("Import one note")) {
-
-		public void actionPerformed(ActionEvent e) {
-			p1Import_actionPerformed(e);
-		}
-	};
-
 	public Action newAction = new AbstractAction(Local.getString("New note"),
 			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/filenew.png"))) {
 		public void actionPerformed(ActionEvent e) {
@@ -214,9 +201,8 @@ public class AppFrame extends JFrame {
 	JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
 	JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
 	JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
-	JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
 
-	JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
+	JMenuItem jMenuFileImportNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.importAction);
 	JMenuItem jMenuFileExportNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.exportAction);
 	JMenuItem jMenuFileMin = new JMenuItem(minimizeAction);
 
@@ -418,7 +404,7 @@ public class AppFrame extends JFrame {
 
 		jMenuFileUnpackPrj.setText(Local.getString("Unpack project") + "...");
 		jMenuFileExportNote.setText(Local.getString("Export current note") + "...");
-		jMenuFileImportNote.setText(Local.getString("Import one note") + "...");
+		jMenuFileImportNote.setText(Local.getString("Import note/notes") + "...");
 		jMenuFilePackPrj.setText(Local.getString("Pack project") + "...");
 		jMenuFileMin.setText(Local.getString("Close the window"));
 		jMenuFileMin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F10, InputEvent.ALT_MASK));
@@ -525,18 +511,17 @@ public class AppFrame extends JFrame {
 
 		toolBar.add(jButton3);
 		jMenuFile.add(jMenuFileNewPrj);
-		jMenuFile.add(jMenuFileNewNote);
 		jMenuFile.addSeparator();
 		jMenuFile.add(jMenuFilePackPrj);
 		jMenuFile.add(jMenuFileUnpackPrj);
 		jMenuFile.addSeparator();
+		jMenuFile.add(jMenuFileNewNote);
 		jMenuFile.add(jMenuFileExportPrj);
 		jMenuFile.add(jMenuFileExportNote);
 		jMenuFile.add(jMenuFileImportNote);
-		jMenuFile.add(jMenuFileImportPrj);
 		jMenuFile.addSeparator();
 		// jMenuFile.add(jMenuEditPref);
-		jMenuFile.addSeparator();
+		//jMenuFile.addSeparator();
 		jMenuFile.add(jMenuFileMin);
 		jMenuFile.addSeparator();
 		jMenuFile.add(jMenuFileExit);
@@ -1005,162 +990,6 @@ public class AppFrame extends JFrame {
 		CurrentProject.save();
 		ProjectExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, dlg.splitChB.isSelected(),
 				true, nument, dlg.titlesAsHeadersChB.isSelected(), false);
-	}
-
-	protected void ppImport_actionPerformed(ActionEvent e) {
-
-		UIManager.put("FileChooser.lookInLabelText", Local.getString("Look in:"));
-		UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
-		UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
-		UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
-		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
-		UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
-		UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
-		UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-		UIManager.put("FileChooser.openButtonToolTipText", Local.getString("Open selected file"));
-		UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-		UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
-
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileHidingEnabled(false);
-		chooser.setDialogTitle(Local.getString("Import notes"));
-		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
-		chooser.setPreferredSize(new Dimension(550, 375));
-
-		File lastSel = null;
-
-		try {
-			lastSel = (java.io.File) Context.get("LAST_SELECTED_NOTE_FILE");
-		} catch (ClassCastException cce) {
-			lastSel = new File(System.getProperty("user.dir") + File.separator);
-		}
-		// ---------------------------------------------------------------------
-
-		if (lastSel != null)
-			chooser.setCurrentDirectory(lastSel);
-		if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
-			return;
-		Context.put("LAST_SELECTED_NOTE_FILE", chooser.getSelectedFile());
-		java.io.File f = chooser.getSelectedFile();
-		HashMap<String, String> notesName = new HashMap<String, String>();
-		HashMap<String, String> notesContent = new HashMap<String, String>();
-		Builder parser = new Builder();
-		String id = "", name = "", content = "";
-		try {
-			Document document = parser.build(f);
-			Element body = document.getRootElement().getFirstChildElement("body");
-			Element names = body.getFirstChildElement("div").getFirstChildElement("ul");
-			Elements namelist = names.getChildElements("li");
-			Element item;
-
-			for (int i = 0; i < namelist.size(); i++) {
-				item = namelist.get(i);
-				id = item.getFirstChildElement("a").getAttributeValue("href").replace("\"", "").replace("#", "");
-				name = item.getValue();
-				notesName.put(id, name);
-			}
-			System.out.println("id: " + id + " name: " + name);
-
-			Elements contlist = body.getChildElements("a");
-			for (int i = 0; i < (contlist.size() - 1); i++) {
-				item = contlist.get(i);
-				id = item.getAttributeValue("name").replace("\"", "");
-				content = item.getFirstChildElement("div").getValue();
-				notesContent.put(id, content);
-			}
-
-			JEditorPane p = new JEditorPane();
-			p.setContentType("text/html");
-			for (Map.Entry<String, String> entry : notesName.entrySet()) {
-				id = entry.getKey();
-				name = entry.getValue().substring(11);
-				content = notesContent.get(id);
-				p.setText(content);
-				HTMLDocument doc = (HTMLDocument) p.getDocument();
-				Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
-				note.setTitle(name);
-				note.setId(Util.generateId());
-				CurrentStorage.get().storeNote(note, doc);
-			}
-			workPanel.dailyItemsPanel.notesControlPane.refresh();
-
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
-	}
-
-	protected void p1Import_actionPerformed(ActionEvent e) {
-
-		UIManager.put("FileChooser.lookInLabelText", Local.getString("Look in:"));
-		UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
-		UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
-		UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
-		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
-		UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
-		UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
-		UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-		UIManager.put("FileChooser.openButtonToolTipText", Local.getString("Open selected file"));
-		UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-		UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
-
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileHidingEnabled(false);
-
-		chooser.setDialogTitle(Local.getString("Import notes"));
-		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
-		chooser.setPreferredSize(new Dimension(550, 375));
-
-		File lastSel = null;
-
-		try {
-			lastSel = (java.io.File) Context.get("LAST_SELECTED_NOTE_FILE");
-		} catch (ClassCastException cce) {
-			lastSel = new File(System.getProperty("user.dir") + File.separator);
-		}
-		// ---------------------------------------------------------------------
-
-		if (lastSel != null)
-			chooser.setCurrentDirectory(lastSel);
-		if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
-			return;
-		Context.put("LAST_SELECTED_NOTE_FILE", chooser.getSelectedFile());
-		java.io.File f = chooser.getSelectedFile();
-		HashMap<String, String> notesName = new HashMap<String, String>();
-		HashMap<String, String> notesContent = new HashMap<String, String>();
-		Builder parser = new Builder();
-		String id = "", name = "", content = "";
-		try {
-			Document document = parser.build(f);
-			content = document.getRootElement().getFirstChildElement("body").getValue();
-			content = content.substring(content.indexOf("\n", content.indexOf("-")));
-			content = content.replace("<p>", "").replace("</p>", "\n");
-			name = f.getName().substring(0, f.getName().lastIndexOf("."));
-			id = Util.generateId();
-			System.out.println(id + " " + name + " " + content);
-			notesName.put(id, name);
-			notesContent.put(id, content);
-			JEditorPane p = new JEditorPane();
-			p.setContentType("text/html");
-
-			for (Map.Entry<String, String> entry : notesName.entrySet()) {
-				id = entry.getKey();
-				System.out.println(id + " " + name + " " + content);
-				p.setText(content);
-				HTMLDocument doc = (HTMLDocument) p.getDocument();
-				Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
-				note.setTitle(name);
-				note.setId(Util.generateId());
-				CurrentStorage.get().storeNote(note, doc);
-			}
-			workPanel.dailyItemsPanel.notesControlPane.refresh();
-
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
 	}
 
 }

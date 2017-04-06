@@ -607,6 +607,7 @@ public class EditorPanel extends JPanel {
 	}
 
 	void importB_actionPerformed(ActionEvent e) {
+		newB_actionPerformed(e);
 		// Fix until Sun's JVM supports more locales...
 		UIManager.put("FileChooser.lookInLabelText", Local
 				.getString("Look in:"));
@@ -637,6 +638,7 @@ public class EditorPanel extends JPanel {
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.TXT));
+		chooser.setMultiSelectionEnabled(true);
 		chooser.setPreferredSize(new Dimension(550, 375));
 		String lastSel = (String) Context.get("LAST_SELECTED_IMPORT_FILE");
 		if (lastSel != null) {
@@ -648,13 +650,17 @@ public class EditorPanel extends JPanel {
 		Context.put("LAST_SELECTED_IMPORT_FILE", chooser.getSelectedFile()
 				.getPath());
 
-		File f = chooser.getSelectedFile();
-		
-		if (f.exists() && AllFilesFilter.getExtension(f).equals("html")) {
-			new HTMLFileImport(f, editor);
-		}else{
-			new TXTFileImport(f, editor);
+		for (int i = 0; i < chooser.getSelectedFiles().length; i++){
+			File f = chooser.getSelectedFiles()[i];
+			
+			if (f.exists() && AllFilesFilter.getExtension(f).equals("html")) {
+				new HTMLFileImport(f, editor);
+			}else{
+				new TXTFileImport(f, editor);
+			}
+			newB_actionPerformed(e);
 		}
+		
 	}
 
 	void newB_actionPerformed(ActionEvent e) {
