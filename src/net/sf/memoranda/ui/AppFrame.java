@@ -90,7 +90,6 @@ public class AppFrame extends JFrame {
 	JMenu jMenuEdit = new JMenu();
 	JMenu jMenuFormat = new JMenu();
 	JMenu jMenuInsert = new JMenu();
-	JMenu jSticker = new JMenu();
 	JMenu jPreference = new JMenu();
 
 	public WorkPanel workPanel = new WorkPanel();
@@ -146,13 +145,6 @@ public class AppFrame extends JFrame {
 		}
 	};
 
-	public Action exportNotesAction = new AbstractAction(Local.getString("Export notes") + "...") {
-
-		public void actionPerformed(ActionEvent e) {
-			ppExport_actionPerformed(e);
-		}
-	};
-
 	public Action newAction = new AbstractAction(Local.getString("New note"),
 			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/filenew.png"))) {
 		public void actionPerformed(ActionEvent e) {
@@ -200,7 +192,6 @@ public class AppFrame extends JFrame {
 	JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
 	JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
 	JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
-	JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
 
 	JMenuItem jMenuFileImportNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.importAction);
 	JMenuItem jMenuFileExportNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.exportAction);
@@ -228,7 +219,6 @@ public class AppFrame extends JFrame {
 	JMenuItem jMenuInsertChar = new JMenuItem(editor.insCharAction);
 	JMenuItem jMenuInsertDate = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.insertDateAction);
 	JMenuItem jMenuInsertTime = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.insertTimeAction);
-	JMenuItem jMenuInsertFile = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.importAction);
 	JMenuItem jMenuInsertFile1 = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
 
 	JMenu jMenuFormatPStyle = new JMenu();
@@ -352,21 +342,21 @@ public class AppFrame extends JFrame {
 			}
 		});
 
-		jStickerExportSticker.setText(Local.getString("Export Sticker as .txt"));
+		jStickerExportSticker.setText(Local.getString("Export sticker as .txt"));
 		jStickerExportSticker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jStickerExportSticker_actionPerformed(e);
 			}
 		});
 
-		jStickerExportStickerHTML.setText(Local.getString("Export Sticker as .html"));
+		jStickerExportStickerHTML.setText(Local.getString("Export sticker as .html"));
 		jStickerExportStickerHTML.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jStickerExportStickerHTML_actionPerformed(e);
 			}
 		});
 
-		jStickerAddSticker.setText(Local.getString("Add Sticker"));
+		jStickerAddSticker.setText(Local.getString("New sticker"));
 		jStickerAddSticker.setIcon(new ImageIcon(AppFrame.class.getResource("resources/agenda/addsticker.gif")));
 		jStickerAddSticker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -374,7 +364,7 @@ public class AppFrame extends JFrame {
 			}
 		});
 
-		jStickerImportSticker.setText(Local.getString("Import Sticker"));
+		jStickerImportSticker.setText(Local.getString("Import sticker"));
 		jStickerImportSticker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jStickerImportSticker_actionPerformed(e);
@@ -396,16 +386,16 @@ public class AppFrame extends JFrame {
 		workPanel.setMaximumSize(new Dimension(2001, 301));
 		splitPane.setDividerLocation(20);
 		/*
-		 * jMenuFileNewPrj.setText(Local.getString("New project") + "...");
+		 * jMenuFileNewPrj.setText(Local.getString("New project"));
 		 * jMenuFileNewPrj.addActionListener(new ActionListener() { public void
 		 * actionPerformed(ActionEvent e) { ProjectDialog.newProject(); } });
 		 */
 		jMenuFileNewPrj.setAction(projectsPanel.newProjectAction);
 
-		jMenuFileUnpackPrj.setText(Local.getString("Unpack project") + "...");
-		jMenuFileExportNote.setText(Local.getString("Export current note") + "...");
-		jMenuFileImportNote.setText(Local.getString("Import note/notes") + "...");
-		jMenuFilePackPrj.setText(Local.getString("Pack project") + "...");
+		jMenuFileUnpackPrj.setText(Local.getString("Unpack project"));
+		jMenuFileExportNote.setText(Local.getString("Export selected note/notes"));
+		jMenuFileImportNote.setText(Local.getString("Import note/notes"));
+		jMenuFilePackPrj.setText(Local.getString("Pack project"));
 		jMenuFileMin.setText(Local.getString("Close the window"));
 		jMenuFileMin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F10, InputEvent.ALT_MASK));
 
@@ -425,17 +415,15 @@ public class AppFrame extends JFrame {
 		jMenuEditPasteSpec.setToolTipText(Local.getString("Paste special"));
 		jMenuEditSelectAll.setText(Local.getString("Select all"));
 
-		jMenuEditFind.setText(Local.getString("Find & replace") + "...");
-
-		jSticker.setText(Local.getString("Sticker"));
+		jMenuEditFind.setText(Local.getString("Find & replace"));
 
 		jMenuInsert.setText(Local.getString("Insert"));
 
-		jMenuInsertImage.setText(Local.getString("Image") + "...");
+		jMenuInsertImage.setText(Local.getString("Image"));
 		jMenuInsertImage.setToolTipText(Local.getString("Insert Image"));
-		jMenuInsertTable.setText(Local.getString("Table") + "...");
+		jMenuInsertTable.setText(Local.getString("Table"));
 		jMenuInsertTable.setToolTipText(Local.getString("Insert Table"));
-		jMenuInsertLink.setText(Local.getString("Hyperlink") + "...");
+		jMenuInsertLink.setText(Local.getString("Hyperlink"));
 		jMenuInsertLink.setToolTipText(Local.getString("Insert Hyperlink"));
 		jMenuInsertList.setText(Local.getString("List"));
 
@@ -449,11 +437,10 @@ public class AppFrame extends JFrame {
 
 		jMenuInsertListOL.setToolTipText(Local.getString("Insert Ordered"));
 
-		jMenuInsertChar.setText(Local.getString("Special character") + "...");
+		jMenuInsertChar.setText(Local.getString("Special character"));
 		jMenuInsertChar.setToolTipText(Local.getString("Insert Special character"));
 		jMenuInsertDate.setText(Local.getString("Current date"));
 		jMenuInsertTime.setText(Local.getString("Current time"));
-		jMenuInsertFile.setText(Local.getString("File") + "...");
 
 		jMenuFormat.setText(Local.getString("Format"));
 		jMenuFormatPStyle.setText(Local.getString("Paragraph style"));
@@ -474,7 +461,7 @@ public class AppFrame extends JFrame {
 		jMenuFormatChCite.setText(Local.getString("Cite"));
 		jMenuFormatChSUP.setText(Local.getString("Superscript"));
 		jMenuFormatChSUB.setText(Local.getString("Subscript"));
-		jMenuFormatChCustom.setText(Local.getString("Custom style") + "...");
+		jMenuFormatChCustom.setText(Local.getString("Custom style"));
 		jMenuFormatChB.setText(Local.getString("Bold"));
 		jMenuFormatChB.setToolTipText(Local.getString("Bold"));
 		jMenuFormatChI.setText(Local.getString("Italic"));
@@ -491,7 +478,7 @@ public class AppFrame extends JFrame {
 		jMenuFormatTable.setText(Local.getString("Table"));
 		jMenuFormatTableInsR.setText(Local.getString("Insert row"));
 		jMenuFormatTableInsC.setText(Local.getString("Insert cell"));
-		jMenuFormatProperties.setText(Local.getString("Object properties") + "...");
+		jMenuFormatProperties.setText(Local.getString("Object properties"));
 		jMenuFormatProperties.setToolTipText(Local.getString("Object properties"));
 
 		jMenuGo.setText(Local.getString("Go"));
@@ -516,12 +503,14 @@ public class AppFrame extends JFrame {
 		jMenuFile.add(jMenuFileUnpackPrj);
 		jMenuFile.addSeparator();
 		jMenuFile.add(jMenuFileNewNote);
-		jMenuFile.add(jMenuFileExportPrj);
 		jMenuFile.add(jMenuFileExportNote);
 		jMenuFile.add(jMenuFileImportNote);
 		jMenuFile.addSeparator();
-		// jMenuFile.add(jMenuEditPref);
-		//jMenuFile.addSeparator();
+		jMenuFile.add(jStickerAddSticker);
+		jMenuFile.add(jStickerExportSticker);
+		jMenuFile.add(jStickerExportStickerHTML);
+		jMenuFile.add(jStickerImportSticker);
+		jMenuFile.addSeparator();
 		jMenuFile.add(jMenuFileMin);
 		jMenuFile.addSeparator();
 		jMenuFile.add(jMenuFileExit);
@@ -538,18 +527,12 @@ public class AppFrame extends JFrame {
 		jMenuHelp.addSeparator();
 		jMenuHelp.add(jMenuHelpAbout);
 
-		jSticker.add(jStickerExportSticker);
-		jSticker.add(jStickerExportStickerHTML);
-		jSticker.add(jStickerImportSticker);
-		jSticker.add(jStickerAddSticker);
-
 		menuBar.add(jMenuFile);
 		menuBar.add(jMenuEdit);
 		menuBar.add(jMenuInsert);
 		menuBar.add(jMenuFormat);
 		menuBar.add(jMenuGo);
 		menuBar.add(jPreference);
-		menuBar.add(jSticker);
 		menuBar.add(jMenuHelp);
 		this.setJMenuBar(menuBar);
 		contentPane.setBackground(Color.BLACK);
@@ -587,7 +570,6 @@ public class AppFrame extends JFrame {
 		jMenuInsert.add(jMenuInsertDate);
 		jMenuInsert.add(jMenuInsertTime);
 		jMenuInsert.addSeparator();
-		jMenuInsert.add(jMenuInsertFile);
 
 		jMenuFormat.add(jMenuFormatPStyle);
 		jMenuFormat.add(jjMenuFormatChStyle);
@@ -928,68 +910,6 @@ public class AppFrame extends JFrame {
 		dlg.pack();
 		dlg.setLocationRelativeTo(this);
 		dlg.setVisible(true);
-	}
-
-	protected void ppExport_actionPerformed(ActionEvent e) {
-		// Fix until Sun's JVM supports more locales...
-		UIManager.put("FileChooser.lookInLabelText", Local.getString("Save in:"));
-		UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
-		UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
-		UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
-		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
-		UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
-		UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
-		UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
-		UIManager.put("FileChooser.saveButtonToolTipText", Local.getString("Save selected file"));
-		UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-		UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
-
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileHidingEnabled(false);
-		chooser.setDialogTitle(Local.getString("Export notes"));
-		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.XHTML));
-		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
-
-
-		String lastSel = (String) Context.get("LAST_SELECTED_EXPORT_FILE");
-		if (lastSel != null)
-			chooser.setCurrentDirectory(new File(lastSel));
-
-		ProjectExportDialog dlg = new ProjectExportDialog(App.getFrame(), Local.getString("Export notes"), chooser);
-		String enc = (String) Context.get("EXPORT_FILE_ENCODING");
-		if (enc != null)
-			dlg.encCB.setSelectedItem(enc);
-		String spl = (String) Context.get("EXPORT_SPLIT_NOTES");
-		if (spl != null)
-			dlg.splitChB.setSelected(spl.equalsIgnoreCase("true"));
-		String ti = (String) Context.get("EXPORT_TITLES_AS_HEADERS");
-		if (ti != null)
-			dlg.titlesAsHeadersChB.setSelected(ti.equalsIgnoreCase("true"));
-		Dimension dlgSize = new Dimension(550, 500);
-		dlg.setSize(dlgSize);
-		Dimension frmSize = App.getFrame().getSize();
-		Point loc = App.getFrame().getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
-		dlg.setVisible(true);
-		if (dlg.CANCELLED)
-			return;
-
-		Context.put("LAST_SELECTED_EXPORT_FILE", chooser.getSelectedFile().getPath());
-		Context.put("EXPORT_SPLIT_NOTES", new Boolean(dlg.splitChB.isSelected()).toString());
-		Context.put("EXPORT_TITLES_AS_HEADERS", new Boolean(dlg.titlesAsHeadersChB.isSelected()).toString());
-
-		int ei = dlg.encCB.getSelectedIndex();
-		enc = null;
-		if (ei == 1)
-			enc = "UTF-8";
-		boolean nument = (ei == 2);
-		chooser.getSelectedFile();
-		boolean xhtml = chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
-		CurrentProject.save();
-		ProjectExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, dlg.splitChB.isSelected(),
-				true, nument, dlg.titlesAsHeadersChB.isSelected(), false);
 	}
 
 }

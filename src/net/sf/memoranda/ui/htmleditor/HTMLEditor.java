@@ -1458,7 +1458,7 @@ public class HTMLEditor extends JPanel {
 			StringReader reader = new StringReader(html);
 			kit.read(reader, doc, location);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 		}
 	}
 

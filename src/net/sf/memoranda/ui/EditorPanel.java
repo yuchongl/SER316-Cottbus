@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicFileChooserUI;
 import javax.swing.text.html.HTMLDocument;
 
 import net.sf.memoranda.History;
@@ -135,7 +136,7 @@ public class EditorPanel extends JPanel {
 	};
 
 	public Action exportAction = new AbstractAction(Local
-			.getString("Export note to file"), new ImageIcon(
+			.getString("Export selected note/notes"), new ImageIcon(
 			net.sf.memoranda.ui.AppFrame.class
 					.getResource("resources/icons/export.png"))) {
 		public void actionPerformed(ActionEvent e) {
@@ -144,7 +145,7 @@ public class EditorPanel extends JPanel {
 	};
 
 	public Action importAction = new AbstractAction(Local
-			.getString("Insert file"), new ImageIcon(
+			.getString("Import note/notes"), new ImageIcon(
 			net.sf.memoranda.ui.AppFrame.class
 					.getResource("resources/icons/import.png"))) {
 		public void actionPerformed(ActionEvent e) {
@@ -199,7 +200,7 @@ public class EditorPanel extends JPanel {
 		importB.setFocusable(false);
 		importB.setPreferredSize(new Dimension(24, 24));
 		importB.setRequestFocusEnabled(false);
-		importB.setToolTipText(Local.getString("Insert file"));
+		importB.setToolTipText(Local.getString("Import note/notes"));
 		importB.setMinimumSize(new Dimension(24, 24));
 		importB.setMaximumSize(new Dimension(24, 24));
 		importB.setText("");
@@ -222,7 +223,7 @@ public class EditorPanel extends JPanel {
 		exportB.setMinimumSize(new Dimension(24, 24));
 		exportB.setPreferredSize(new Dimension(24, 24));
 		exportB.setRequestFocusEnabled(false);
-		exportB.setToolTipText(Local.getString("Export note to file"));
+		exportB.setToolTipText(Local.getString("Export selected note/notes"));
 		exportB.setBorderPainted(false);
 		exportB.setFocusable(false);
 		exportB.setText("");
@@ -505,7 +506,7 @@ public class EditorPanel extends JPanel {
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileHidingEnabled(false);
-		chooser.setDialogTitle(Local.getString("Export note"));
+		chooser.setDialogTitle(Local.getString("Export selected note/notes"));
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser
@@ -519,7 +520,7 @@ public class EditorPanel extends JPanel {
 		}
 
 		FileExportDialog dlg = new FileExportDialog(App.getFrame(), Local
-				.getString("Export note"), chooser);
+				.getString("Export selected note/notes"), chooser);
 		String enc = (String) Context.get("EXPORT_FILE_ENCODING");
 		if (enc != null) {
 			dlg.encCB.setSelectedItem(enc);
@@ -546,8 +547,6 @@ public class EditorPanel extends JPanel {
 		if (dlg.CANCELLED) {
 			return;
 		}
-		Context.put("LAST_SELECTED_EXPORT_FILE", chooser.getSelectedFile()
-				.getPath());
 		Context.put("EXPORT_FILE_ENCODING", dlg.encCB.getSelectedItem());
 		Context.put("EXPORT_NUMENT", dlg.numentChB.isSelected() ? "YES" : "NO");
 		Context.put("EXPORT_XHTML", dlg.xhtmlChB.isSelected() ? "YES" : "NO");
@@ -566,9 +565,30 @@ public class EditorPanel extends JPanel {
 		if (ei == 1) {
 			enc = "UTF-8";
 		}
-		File f = chooser.getSelectedFile();
-		new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
-				dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
+		
+		NotesList nl = parentPanel.notesControlPane.notesListPanel.notesList;
+		
+		BasicFileChooserUI ui = (BasicFileChooserUI)chooser.getUI();
+		String fileName = ui.getFileName();
+		if (nl.getSelectedIndices().length == 0){
+			File f = new File(chooser.getCurrentDirectory(), fileName);
+			new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
+					dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
+		}else if (nl.getSelectedIndices().length == 1){
+			File f = new File(chooser.getCurrentDirectory(), fileName);
+			CurrentNote.set(nl.getNote(nl.getSelectedIndex()), true);
+			new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
+					dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
+		}else{
+			for (int i = 0; i < nl.getSelectedIndices().length; i++){
+				File f = new File(chooser.getCurrentDirectory(), fileName + " (" + (i+1) + ")");
+				CurrentNote.set(nl.getNote(nl.getSelectedIndices()[i]), true);
+				new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
+						dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
+			}
+		}
+		
+		
 	}
 
 	String initialTitle = "";
@@ -633,7 +653,7 @@ public class EditorPanel extends JPanel {
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileHidingEnabled(false);
-		chooser.setDialogTitle(Local.getString("Insert file"));
+		chooser.setDialogTitle(Local.getString("Import note/notes"));
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));

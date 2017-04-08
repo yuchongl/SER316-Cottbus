@@ -58,7 +58,7 @@ public class FileExportDialog extends javax.swing.JDialog {
                 dispose();
             }
         });
-        okB.setEnabled(false);
+        okB.setEnabled(true);
         jPanel2.add(okB);
 
         cancelB.setText(Local.getString("Cancel"));
@@ -76,21 +76,6 @@ public class FileExportDialog extends javax.swing.JDialog {
 
         filePanel.setBorder(new javax.swing.border.EtchedBorder());
         fileChooser.setControlButtonsAreShown(false);
-        fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                chooserActionPerformed();
-                
-            }
-        
-        });
-        /*fileChooser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chooserActionPerformed();
-            }
-        });*/
-        
-        
 
         filePanel.add(fileChooser, java.awt.BorderLayout.CENTER);
 
@@ -163,10 +148,6 @@ public class FileExportDialog extends javax.swing.JDialog {
 
     private void xhtmlChBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xhtmlChBActionPerformed
         // TODO add your handling code here:
-    }
-
-    private void chooserActionPerformed() {//GEN-FIRST:event_chooserActionPerformed
-        okB.setEnabled(fileChooser.getSelectedFile() != null);            
     }
     
     private void browseTemplate() {
