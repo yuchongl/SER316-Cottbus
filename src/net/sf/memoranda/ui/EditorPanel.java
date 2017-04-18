@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.URL;
 import java.text.DateFormat;
 
 import javax.swing.AbstractAction;
@@ -31,7 +30,6 @@ import net.sf.memoranda.History;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.CurrentNote;
-import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.ui.htmleditor.HTMLEditor;
 import net.sf.memoranda.util.Util;
 import net.sf.memoranda.util.Context;
@@ -44,6 +42,11 @@ import net.sf.memoranda.util.Configuration;
 
 /*$Id: EditorPanel.java,v 1.21 2006/06/28 22:58:31 alexeya Exp $*/
 public class EditorPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	BorderLayout borderLayout1 = new BorderLayout();
 
 	JPanel jPanel1 = new JPanel();
@@ -103,19 +106,25 @@ public class EditorPanel extends JPanel {
 		}
 	}
 
-	public Action insertTimeAction = new AbstractAction(Local
-			.getString("Insert current time"), new ImageIcon(
-			net.sf.memoranda.ui.AppFrame.class
-					.getResource("resources/icons/time.png"))) {
+	public Action insertTimeAction = new AbstractAction(Local.getString("Insert current time"),
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/time.png"))) {
+		/**
+						 * 
+						 */
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent e) {
 			insTimeB_actionPerformed(e);
 		}
 	};
 
-	public Action insertDateAction = new AbstractAction(Local
-			.getString("Insert current date"), new ImageIcon(
-			net.sf.memoranda.ui.AppFrame.class
-					.getResource("resources/icons/date.png"))) {
+	public Action insertDateAction = new AbstractAction(Local.getString("Insert current date"),
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/date.png"))) {
+		/**
+						 * 
+						 */
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent e) {
 			insDateB_actionPerformed(e);
 		}
@@ -123,53 +132,68 @@ public class EditorPanel extends JPanel {
 
 	/*
 	 * public Action printAction = new AbstractAction( "Print", new
-	 * ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/print.png"))) {
-	 * public void actionPerformed(ActionEvent e) { doPrint(); } };
+	 * ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource(
+	 * "resources/icons/print.png"))) { public void actionPerformed(ActionEvent
+	 * e) { doPrint(); } };
 	 */
 
 	public Action newAction = new AbstractAction(Local.getString("New note"),
-			new ImageIcon(net.sf.memoranda.ui.AppFrame.class
-					.getResource("resources/icons/filenew.png"))) {
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/filenew.png"))) {
+		/**
+						 * 
+						 */
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent e) {
 			newB_actionPerformed(e);
 		}
 	};
 
-	public Action exportAction = new AbstractAction(Local
-			.getString("Export selected note/notes"), new ImageIcon(
-			net.sf.memoranda.ui.AppFrame.class
-					.getResource("resources/icons/export.png"))) {
+	public Action exportAction = new AbstractAction(Local.getString("Export selected note/notes"),
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/export.png"))) {
+		/**
+						 * 
+						 */
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent e) {
 			exportB_actionPerformed(e);
 		}
 	};
 
-	public Action importAction = new AbstractAction(Local
-			.getString("Import note/notes"), new ImageIcon(
-			net.sf.memoranda.ui.AppFrame.class
-					.getResource("resources/icons/import.png"))) {
+	public Action importAction = new AbstractAction(Local.getString("Import note/notes"),
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/import.png"))) {
+		/**
+						 * 
+						 */
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent e) {
 			importB_actionPerformed(e);
 		}
 	};
 
-	
 	// task 10 add save function
-	public Action saveAction = new AbstractAction(Local
-			.getString("Save note"), new ImageIcon(
-			net.sf.memoranda.ui.AppFrame.class
-					.getResource("resources/icons/import.png"))) {
+	public Action saveAction = new AbstractAction(Local.getString("Save note"),
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/import.png"))) {
+		/**
+						 * 
+						 */
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("save note");
 			noteSaveAsHtml(noteFile);
 		}
 	};
 
+	public Action previewAction = new AbstractAction(Local.getString("Preview note in browser"),
+			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/preview.png"))) {
+		/**
+						 * 
+						 */
+		private static final long serialVersionUID = 1L;
 
-	public Action previewAction = new AbstractAction(Local
-			.getString("Preview note in browser"), new ImageIcon(
-			net.sf.memoranda.ui.AppFrame.class
-					.getResource("resources/icons/preview.png"))) {
 		public void actionPerformed(ActionEvent e) {
 			previewB_actionPerformed(e);
 		}
@@ -178,8 +202,7 @@ public class EditorPanel extends JPanel {
 	void jbInit() throws Exception {
 
 		if (!Configuration.get("DISABLE_L10N").equals("yes")) {
-			net.sf.memoranda.ui.htmleditor.util.Local.setMessages(Local
-					.getMessages());
+			net.sf.memoranda.ui.htmleditor.util.Local.setMessages(Local.getMessages());
 		}
 		editor = new HTMLEditor();
 
@@ -205,7 +228,6 @@ public class EditorPanel extends JPanel {
 		importB.setMaximumSize(new Dimension(24, 24));
 		importB.setText("");
 
-
 		// task 10
 		saveB.setAction(saveAction);
 		saveB.setBorderPainted(false);
@@ -216,7 +238,6 @@ public class EditorPanel extends JPanel {
 		saveB.setMinimumSize(new Dimension(24, 24));
 		saveB.setMaximumSize(new Dimension(24, 24));
 		saveB.setText("");
-
 
 		exportB.setAction(exportAction);
 		exportB.setMaximumSize(new Dimension(24, 24));
@@ -373,10 +394,8 @@ public class EditorPanel extends JPanel {
 		titleBar.add(titleLabel, null);
 		titleBar.add(titleField, null);
 		initCSS();
-		editor.editor.setAntiAlias
-		(Configuration.get("ANTIALIAS_TEXT").toString()
-				.equalsIgnoreCase("yes"));
-				titleField.addKeyListener(new KeyListener() {
+		editor.editor.setAntiAlias(Configuration.get("ANTIALIAS_TEXT").toString().equalsIgnoreCase("yes"));
+		titleField.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent ke) {
 				if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -392,15 +411,14 @@ public class EditorPanel extends JPanel {
 		});
 
 		// init file path
-		//noteFile = JN_DOCPATH + editor.getProject().getID() + File.separator;
-		//System.out.println("path: " + Util.getEnvDir());
+		// noteFile = JN_DOCPATH + editor.getProject().getID() + File.separator;
+		// System.out.println("path: " + Util.getEnvDir());
 		noteFile = Util.getEnvDir() + "saved_note.html";
 	}
 
 	public void initCSS() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(
-				net.sf.memoranda.ui.EditorPanel.class
-						.getResourceAsStream("resources/css/default.css")));
+				net.sf.memoranda.ui.EditorPanel.class.getResourceAsStream("resources/css/default.css")));
 		String css = "";
 		try {
 			String s = br.readLine();
@@ -415,30 +433,21 @@ public class EditorPanel extends JPanel {
 		String HEADER_FONT = Configuration.get("HEADER_FONT").toString();
 		String MONO_FONT = Configuration.get("MONO_FONT").toString();
 		String BASE_FONT_SIZE = Configuration.get("BASE_FONT_SIZE").toString();
-		css = css.replaceAll
-				("%NORMAL_FONT%", NORMAL_FONT.length()
-						> 0 ? "\"" + NORMAL_FONT + "\""
-				: "serif");
-		css = css.replaceAll
-				("%HEADER_FONT%", HEADER_FONT.length() 
-						> 0 ? "\"" + HEADER_FONT+"\""
-				: "sans-serif");
-		css = css.replaceAll("%MONO_FONT%", MONO_FONT.length() > 0 ? "\"" + MONO_FONT + "\""
-				: "monospaced");
-		css = css.replaceAll("%BASE_FONT_SIZE%",
-				BASE_FONT_SIZE.length() > 0 ? BASE_FONT_SIZE : "16");		
+		css = css.replaceAll("%NORMAL_FONT%", NORMAL_FONT.length() > 0 ? "\"" + NORMAL_FONT + "\"" : "serif");
+		css = css.replaceAll("%HEADER_FONT%", HEADER_FONT.length() > 0 ? "\"" + HEADER_FONT + "\"" : "sans-serif");
+		css = css.replaceAll("%MONO_FONT%", MONO_FONT.length() > 0 ? "\"" + MONO_FONT + "\"" : "monospaced");
+		css = css.replaceAll("%BASE_FONT_SIZE%", BASE_FONT_SIZE.length() > 0 ? BASE_FONT_SIZE : "16");
 		editor.setStyleSheet(new StringReader(css));
 		String usercss = (String) Configuration.get("USER_CSS");
-		if (usercss.length() > 0) 
+		if (usercss.length() > 0)
 			try {
 				// DEBUG
 				System.out.println("***[DEBUG] User css used: " + usercss);
-				editor.setStyleSheet(new InputStreamReader(
-						new java.io.FileInputStream(usercss)));
+				editor.setStyleSheet(new InputStreamReader(new java.io.FileInputStream(usercss)));
 			} catch (Exception ex) {
 				System.out.println("***[DEBUG] Failed to open: " + usercss);
 				ex.printStackTrace();
-			}	
+			}
 	}
 
 	void insDateB_actionPerformed(ActionEvent e) {
@@ -447,8 +456,8 @@ public class EditorPanel extends JPanel {
 
 	void insTimeB_actionPerformed(ActionEvent e) {
 		java.util.Date d = new java.util.Date();
-		editor.editor.replaceSelection(DateFormat.getTimeInstance(
-				DateFormat.SHORT, Local.getCurrentLocale()).format(d));
+		editor.editor
+				.replaceSelection(DateFormat.getTimeInstance(DateFormat.SHORT, Local.getCurrentLocale()).format(d));
 	}
 
 	public boolean restoreNote() {
@@ -462,7 +471,7 @@ public class EditorPanel extends JPanel {
 		File file = new File(path);
 		if (file.exists()) {
 			new HTMLFileImport(file, editor);
-		  
+
 		}
 	}
 
@@ -472,8 +481,7 @@ public class EditorPanel extends JPanel {
 		File f = new File(path);
 
 		// save file as HTML
-		new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
-				false, template, true);
+		new HTMLFileExport(f, editor.document, CurrentNote.get(), enc, false, template, true);
 
 		// clear current text
 		this.editor.editor.setText("");
@@ -482,35 +490,24 @@ public class EditorPanel extends JPanel {
 
 	void exportB_actionPerformed(ActionEvent e) {
 		// Fix until Sun's JVM supports more locales...
-		UIManager.put("FileChooser.lookInLabelText", Local
-				.getString("Save in:"));
-		UIManager.put("FileChooser.upFolderToolTipText", Local
-				.getString("Up One Level"));
-		UIManager.put("FileChooser.newFolderToolTipText", Local
-				.getString("Create New Folder"));
-		UIManager.put("FileChooser.listViewButtonToolTipText", Local
-				.getString("List"));
-		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-				.getString("Details"));
-		UIManager.put("FileChooser.fileNameLabelText", Local
-				.getString("File Name:"));
-		UIManager.put("FileChooser.filesOfTypeLabelText", Local
-				.getString("Files of Type:"));
+		UIManager.put("FileChooser.lookInLabelText", Local.getString("Save in:"));
+		UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
+		UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
+		UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
+		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
+		UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
+		UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
 		UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
-		UIManager.put("FileChooser.saveButtonToolTipText", Local
-				.getString("Save selected file"));
-		UIManager
-				.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-		UIManager.put("FileChooser.cancelButtonToolTipText", Local
-				.getString("Cancel"));
+		UIManager.put("FileChooser.saveButtonToolTipText", Local.getString("Save selected file"));
+		UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
+		UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileHidingEnabled(false);
 		chooser.setDialogTitle(Local.getString("Export selected note/notes"));
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser
-				.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.XHTML));
+		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.XHTML));
 		chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
 		// chooser.addChoosableFileFilter(new
 		// AllFilesFilter(AllFilesFilter.RTF));
@@ -519,8 +516,8 @@ public class EditorPanel extends JPanel {
 			chooser.setCurrentDirectory(new File(lastSel));
 		}
 
-		FileExportDialog dlg = new FileExportDialog(App.getFrame(), Local
-				.getString("Export selected note/notes"), chooser);
+		FileExportDialog dlg = new FileExportDialog(App.getFrame(), Local.getString("Export selected note/notes"),
+				chooser);
 		String enc = (String) Context.get("EXPORT_FILE_ENCODING");
 		if (enc != null) {
 			dlg.encCB.setSelectedItem(enc);
@@ -541,8 +538,7 @@ public class EditorPanel extends JPanel {
 		dlg.setSize(dlgSize);
 		Dimension frmSize = App.getFrame().getSize();
 		Point loc = App.getFrame().getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
-				(frmSize.height - dlgSize.height) / 2 + loc.y);
+		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.setVisible(true);
 		if (dlg.CANCELLED) {
 			return;
@@ -565,30 +561,29 @@ public class EditorPanel extends JPanel {
 		if (ei == 1) {
 			enc = "UTF-8";
 		}
-		
+
 		NotesList nl = parentPanel.notesControlPane.notesListPanel.notesList;
-		
-		BasicFileChooserUI ui = (BasicFileChooserUI)chooser.getUI();
+
+		BasicFileChooserUI ui = (BasicFileChooserUI) chooser.getUI();
 		String fileName = ui.getFileName();
-		if (nl.getSelectedIndices().length == 0){
+		if (nl.getSelectedIndices().length == 0) {
 			File f = new File(chooser.getCurrentDirectory(), fileName);
-			new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
-					dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
-		}else if (nl.getSelectedIndices().length == 1){
+			new HTMLFileExport(f, editor.document, CurrentNote.get(), enc, dlg.numentChB.isSelected(), template,
+					dlg.xhtmlChB.isSelected());
+		} else if (nl.getSelectedIndices().length == 1) {
 			File f = new File(chooser.getCurrentDirectory(), fileName);
 			CurrentNote.set(nl.getNote(nl.getSelectedIndex()), true);
-			new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
-					dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
-		}else{
-			for (int i = 0; i < nl.getSelectedIndices().length; i++){
-				File f = new File(chooser.getCurrentDirectory(), fileName + " (" + (i+1) + ")");
+			new HTMLFileExport(f, editor.document, CurrentNote.get(), enc, dlg.numentChB.isSelected(), template,
+					dlg.xhtmlChB.isSelected());
+		} else {
+			for (int i = 0; i < nl.getSelectedIndices().length; i++) {
+				File f = new File(chooser.getCurrentDirectory(), fileName + " (" + (i + 1) + ")");
 				CurrentNote.set(nl.getNote(nl.getSelectedIndices()[i]), true);
-				new HTMLFileExport(f, editor.document, CurrentNote.get(), enc,
-						dlg.numentChB.isSelected(), template, dlg.xhtmlChB.isSelected());
+				new HTMLFileExport(f, editor.document, CurrentNote.get(), enc, dlg.numentChB.isSelected(), template,
+						dlg.xhtmlChB.isSelected());
 			}
 		}
-		
-		
+
 	}
 
 	String initialTitle = "";
@@ -601,8 +596,7 @@ public class EditorPanel extends JPanel {
 		editor.initEditor();
 		if (note != null) {
 			titleField.setText(note.getTitle());
-		}
-		else {
+		} else {
 			titleField.setText("");
 		}
 		initialTitle = titleField.getText();
@@ -622,34 +616,23 @@ public class EditorPanel extends JPanel {
 	}
 
 	public boolean isDocumentChanged() {
-		return editor.isDocumentChanged()
-				|| !titleField.getText().equals(initialTitle);
+		return editor.isDocumentChanged() || !titleField.getText().equals(initialTitle);
 	}
 
 	void importB_actionPerformed(ActionEvent e) {
 		newB_actionPerformed(e);
 		// Fix until Sun's JVM supports more locales...
-		UIManager.put("FileChooser.lookInLabelText", Local
-				.getString("Look in:"));
-		UIManager.put("FileChooser.upFolderToolTipText", Local
-				.getString("Up One Level"));
-		UIManager.put("FileChooser.newFolderToolTipText", Local
-				.getString("Create New Folder"));
-		UIManager.put("FileChooser.listViewButtonToolTipText", Local
-				.getString("List"));
-		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-				.getString("Details"));
-		UIManager.put("FileChooser.fileNameLabelText", Local
-				.getString("File Name:"));
-		UIManager.put("FileChooser.filesOfTypeLabelText", Local
-				.getString("Files of Type:"));
+		UIManager.put("FileChooser.lookInLabelText", Local.getString("Look in:"));
+		UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
+		UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
+		UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
+		UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
+		UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
+		UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
 		UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-		UIManager.put("FileChooser.openButtonToolTipText", Local
-				.getString("Open selected file"));
-		UIManager
-				.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-		UIManager.put("FileChooser.cancelButtonToolTipText", Local
-				.getString("Cancel"));
+		UIManager.put("FileChooser.openButtonToolTipText", Local.getString("Open selected file"));
+		UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
+		UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileHidingEnabled(false);
@@ -667,20 +650,19 @@ public class EditorPanel extends JPanel {
 		if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
 			return;
 		}
-		Context.put("LAST_SELECTED_IMPORT_FILE", chooser.getSelectedFile()
-				.getPath());
+		Context.put("LAST_SELECTED_IMPORT_FILE", chooser.getSelectedFile().getPath());
 
-		for (int i = 0; i < chooser.getSelectedFiles().length; i++){
+		for (int i = 0; i < chooser.getSelectedFiles().length; i++) {
 			File f = chooser.getSelectedFiles()[i];
-			
+
 			if (f.exists() && AllFilesFilter.getExtension(f).equals("html")) {
 				new HTMLFileImport(f, editor);
-			}else{
+			} else {
 				new TXTFileImport(f, editor);
 			}
 			newB_actionPerformed(e);
 		}
-		
+
 	}
 
 	void newB_actionPerformed(ActionEvent e) {
@@ -693,8 +675,7 @@ public class EditorPanel extends JPanel {
 		File f;
 		try {
 			f = Util.getTempFile();
-			new HTMLFileExport(f, editor.document, CurrentNote.get(), "UTF-8",
-					false, null, false);
+			new HTMLFileExport(f, editor.document, CurrentNote.get(), "UTF-8", false, null, false);
 			Util.runBrowser("file:" + f.getAbsolutePath());
 		} catch (IOException ioe) {
 			new ExceptionDialog(ioe, "Cannot create temporary file", null);
