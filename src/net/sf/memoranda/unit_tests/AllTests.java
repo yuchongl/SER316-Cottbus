@@ -5,9 +5,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ResumeTaskTests.class, ShortcutTests.class,
+@SuiteClasses({AllFilesFilterTest.class, ResumeTaskTests.class, ShortcutTests.class,
 		StickyNotesTests.class, TaskCompletionTests.class,
-		TaskDueDateTests.class, PreferencesTest.class, AppFrameTest.class })
+		TaskDueDateTests.class, PreferencesTest.class, AppFrameTest.class, ServerTest.class})
 public class AllTests {
 
 }
