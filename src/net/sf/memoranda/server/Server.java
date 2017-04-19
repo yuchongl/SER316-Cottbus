@@ -55,8 +55,11 @@ public class Server
 			response += "<p>To deserialize the note, use the following code: </p>";
 			response += "<code>NoteStorage ns = new NoteStorage();<br />ns.deserialize(str);</code>";
 			
+			response += "<h3>Note list</h3>";
+			response += "<code class=\"tab\">Example: GET http://104.236.193.225:7501/mem?op=list</code>";
+			
 			response += "</div>";
-			response += "<hr /><small>Yuchong Li, Mar. 26, 2017</small>";
+			response += "<hr /><small>Yuchong Li, Apr. 17, 2017</small>";
 			response += "</html>";
 			
 			t.sendResponseHeaders(200, response.length());
@@ -122,7 +125,19 @@ public class Server
 		
 		public static String op(String op, Map<String, String> args)
 		{	
-			String response = notesOp(op, args);
+			String response = "";
+
+			if(op.equals("list"))
+			{	
+				for (Entry<String, NoteStorage> note : notes.entrySet())
+				{
+					response += note.getKey() + ",";
+				}
+			}
+			else 
+			{
+				response = notesOp(op, args);
+			}
 			
 			return response;
 		}
