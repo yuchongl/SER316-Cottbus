@@ -21,34 +21,20 @@
 package net.sf.memoranda.ui;
 
 import net.sf.memoranda.util.*;
-
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-
 import java.util.EventObject;
-import java.util.Collection;
-import java.util.Vector;
 import java.util.Iterator;
-import java.util.Hashtable;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import javax.swing.tree.*;
-
 import net.sf.memoranda.*;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
@@ -81,7 +67,12 @@ import net.sf.memoranda.ui.treetable.*;
  */
 public class TaskTable extends JTable {
 
-    public static final int TASK_ID = 100;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public static final int TASK_ID = 100;
 
     public static final int TASK = 101;
 
@@ -102,6 +93,7 @@ public class TaskTable extends JTable {
         ListToTreeSelectionModelWrapper selectionWrapper = new ListToTreeSelectionModelWrapper();
         tree.setSelectionModel(selectionWrapper);
         setSelectionModel(selectionWrapper.getListSelectionModel());
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         CurrentDate.addDateListener(new DateListener() {
             public void dateChange(CalendarDate d) {
@@ -176,19 +168,21 @@ public class TaskTable extends JTable {
     }
 
     void initColumnWidths() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             TableColumn column = getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(8);
-            } 
-            else if (i == 1) {
-                column.setPreferredWidth(32767);
-            }
-	    else if( i == 6 ){
-		    column.setPreferredWidth(100);
-		    column.setMinWidth(100);
-	    }
-            else {
+                column.setMaxWidth(8);
+            }else if (i == 1) {
+                column.setPreferredWidth(700);
+                column.setMinWidth(100);
+            }else if (i == 2){
+            	column.setPreferredWidth(800);
+            	column.setMinWidth(100);
+            }else if( i == 7 ){
+            	column.setPreferredWidth(100);
+            	column.setMinWidth(100);
+            } else {
                 column.setMinWidth(67); // 65);
                 column.setPreferredWidth(67); //65);
             }
@@ -197,9 +191,19 @@ public class TaskTable extends JTable {
     
     public void tableChanged() {
 		model.fireUpdateCache();
-		model.fireTreeStructureChanged();
+		//task 98/90 have to call this when the table is empty or else the table won't update
+		//if it is called when the table is not empty, it will reset the selection to 
+		//the first row when a task is edited or created
+		if (getRowCount() <= 0){
+			model.fireTreeStructureChanged();
+		}
 		expansion.expand(tree);
 		updateUI();
+		//task 84 top task selected by default
+		if (getSelectedRow() == -1 && getRowCount() > 0){
+			//selects first task if none are selected 
+			setRowSelectionInterval(0, 0);
+		}
     }
     
     /**
@@ -210,7 +214,7 @@ public class TaskTable extends JTable {
     public void updateUI() {
 		super.updateUI();
 			if (tree != null) { 
-			tree.updateUI();
+				tree.updateUI();
 			}
 
 
@@ -254,7 +258,11 @@ public class TaskTable extends JTable {
      */
 	 public class TreeTableCellRenderer extends JTree implements // {{{
             TableCellRenderer {
-        /** Last table/tree row asked to renderer. */
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		/** Last table/tree row asked to renderer. */
         protected int visibleRow;
 
         public TreeTableCellRenderer(TreeModel model) {
@@ -386,7 +394,11 @@ public class TaskTable extends JTable {
      */
 	 public class ListToTreeSelectionModelWrapper extends // {{{
             DefaultTreeSelectionModel {
-        /** Set to true when we are updating the ListSelectionModel. */
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		/** Set to true when we are updating the ListSelectionModel. */
         protected boolean updatingListSelectionModel;
 
         public ListToTreeSelectionModelWrapper() {
@@ -483,7 +495,7 @@ public class TaskTable extends JTable {
 	 */
 	 class ExpansionHandler implements TreeExpansionListener { // {{{
 	
-		private java.util.Set expanded = new java.util.HashSet();
+		private java.util.Set<TreePath> expanded = new java.util.HashSet<TreePath>();
 		
 		public void treeExpanded(TreeExpansionEvent e) {
 			expanded.add(e.getPath());
@@ -520,9 +532,9 @@ public class TaskTable extends JTable {
 		 * </p>
 		 */
 		public void expand(JTree tree){
-			Iterator iter = expanded.iterator();
+			Iterator<TreePath> iter = expanded.iterator();
 			while(iter.hasNext()){
-				tree.expandPath( (TreePath) iter.next() );
+				tree.expandPath( iter.next() );
 			}
 			System.out.println(expanded.size());
 		}

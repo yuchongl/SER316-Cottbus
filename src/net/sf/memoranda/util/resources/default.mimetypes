@@ -77,12 +77,6 @@
     <ext>tiff</ext>
     <ext>tif</ext>
   </mime-type>
-  <mime-type id="text/html" label="HTML document" >
-    <ext>html</ext>
-    <ext>htm</ext>
-    <app platform="windows" appId="IEXPLORE"/>
-    <app platform="linux" appId="NETSCAPE_LINUX"/>
-  </mime-type>
   <mime-type id="text/plain" label="Plain text" >
     <ext>txt</ext>
     <ext/>

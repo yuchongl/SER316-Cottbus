@@ -36,6 +36,7 @@ import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Util;
 
 /*$Id: EventsPanel.java,v 1.25 2005/02/19 10:06:25 rawsushi Exp $*/
+@SuppressWarnings("serial")
 public class EventsPanel extends JPanel {
     BorderLayout borderLayout1 = new BorderLayout();
     JButton historyBackB = new JButton();
@@ -132,7 +133,7 @@ public class EventsPanel extends JPanel {
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
 
         this.setLayout(borderLayout1);
-        scrollPane.getViewport().setBackground(Color.white);
+        scrollPane.getViewport().setBackground(Color.gray);
         eventsTable.setMaximumSize(new Dimension(32767, 32767));
         eventsTable.setRowHeight(24);
         eventPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
@@ -231,11 +232,9 @@ public class EventsPanel extends JPanel {
                 EventsTable.EVENT);
         
         dlg.timeSpin.getModel().setValue(ev.getTime());
-        /*if (new CalendarDate(ev.getTime()).equals(CalendarDate.today())) 
-            ((SpinnerDateModel)dlg.timeSpin.getModel()).setStart(new Date());
-        else
-        ((SpinnerDateModel)dlg.timeSpin.getModel()).setStart(CalendarDate.today().getDate());
-        ((SpinnerDateModel)dlg.timeSpin.getModel()).setEnd(CalendarDate.tomorrow().getDate());*/    
+        if (new CalendarDate(ev.getTime()).equals(CalendarDate.today())) 
+        	System.out.println(getUIClassID());//notification must go here
+        
         dlg.textField.setText(ev.getText());
         int rep = ev.getRepeat();
         if (rep > 0) {

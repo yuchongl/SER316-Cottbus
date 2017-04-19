@@ -164,7 +164,7 @@ public class TaskListImpl implements TaskList {
     }
 
     public Task getTask(String id) {
-        Util.debug("Getting task " + id);          
+        //Util.debug("Getting task " + id);          
         return new TaskImpl(getTaskElement(id), this);          
     }
     
