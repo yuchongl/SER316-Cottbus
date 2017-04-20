@@ -2,7 +2,11 @@ package net.sf.memoranda.server;
 
 import java.io.Serializable;
 
-public class NoteStorage {
+public class NoteStorage implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3056998260315948070L;
 	private String title;
 	private String content;
 

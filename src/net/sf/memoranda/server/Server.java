@@ -1,23 +1,40 @@
 package net.sf.memoranda.server;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Map.Entry;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-public class Server
+public class Server implements Serializable
 {
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2762594061939776894L;
+
 	public static void main(String[] args) throws Exception {
+		MemHttpHandler memHttpHandler = new MemHttpHandler();
+		
 		HttpServer server = HttpServer.create(new InetSocketAddress(7501), 0);
-		server.createContext("/mem", new MemHttpHandler());
+		server.createContext("/mem", memHttpHandler);
 		server.createContext("/", new DefaultHandler());
 		server.setExecutor(null);
 		server.start();
@@ -72,76 +89,13 @@ public class Server
 	static class MemHttpHandler implements HttpHandler
 	{
 		// storage for notes
-		static HashMap<String, NoteStorage> notes = new HashMap<String, NoteStorage>();
+		static RequestHandler handler = new RequestHandler();
 		
 		/**
 		 * http://localhost:7501/mem?op=notes_op&action=save&title=test&content=test_content
 		 * http://localhost:7501/mem?op=notes_op&action=load&title=test
 		 * */
-		public static String notesOp(String op, Map<String, String> args)
-		{
-			// return if nothing to do with notes
-			if(!op.equals("notes_op"))
-			{
-				return "";
-			}
-			
-			if(args.get("action").equals("save"))
-			{
-				String noteTitle = args.get("title");
-				String noteContent = args.get("content");
-				
-				// create note
-				NoteStorage ns = new NoteStorage();
-				ns.setTitle(noteTitle);
-				ns.setContent(noteContent);
-			
-				// save it to the map
-				notes.put(noteTitle, ns);
-				
-				return "OK";
-			}
-			
-			else if(args.get("action").equals("load"))
-			{
-				String noteTitle = args.get("title");
-				
-				NoteStorage note = notes.get(noteTitle);
-				
-				if(note == null)
-				{
-					return "no such note";
-				}
-				else
-				{
-					return note.serialize();
-				}
-			}
-			else 
-			{
-				return "unknown action";
-			}
-		}
-		
-		public static String op(String op, Map<String, String> args)
-		{	
-			String response = "";
 
-			if(op.equals("list"))
-			{	
-				for (Entry<String, NoteStorage> note : notes.entrySet())
-				{
-					response += note.getKey() + ",";
-				}
-			}
-			else 
-			{
-				response = notesOp(op, args);
-			}
-			
-			return response;
-		}
-		
 		public static Map<String, String> parseQueryString(String query) {
 			Map<String, String> result = new HashMap<>();
 			if (query == null)
@@ -195,11 +149,14 @@ public class Server
 			}
 
 			// send response
-			String response = op(q.get("op"), q);
+			String response = handler.op(q.get("op"), q);
+			
 			t.sendResponseHeaders(200, response.length());
 			OutputStream os = t.getResponseBody();
 			os.write(response.getBytes());
 			os.close();
 		}
+
+	
 	}
 }
