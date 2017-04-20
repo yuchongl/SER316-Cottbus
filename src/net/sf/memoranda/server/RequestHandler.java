@@ -24,13 +24,32 @@ public class RequestHandler extends Observable implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashMap<String, NoteStorage> notes = new HashMap<String, NoteStorage>();
+	public HashMap<String, NoteStorage> notes = new HashMap<String, NoteStorage>();
 	
-	final static String serverPersistencyFile = "server.persistent";
-	
+	public String serverPersistencyFile = "server.persistent";
 	
 	public RequestHandler()
 	{		
+		try
+		{
+			 ObjectInputStream oin = new ObjectInputStream(new FileInputStream(serverPersistencyFile));
+		     Object notesList = oin.readObject();
+		     notes = (HashMap<String, NoteStorage>) notesList;
+		     oin.close();
+		     
+		     System.out.println(serverPersistencyFile + " loaded.");
+		     
+		} catch (Exception e)
+		{
+			System.out.println("error while loading server");
+			e.printStackTrace(System.out);
+		}
+	}
+	
+	public RequestHandler(String file)
+	{		
+		this.serverPersistencyFile = file;
+		
 		try
 		{
 			 ObjectInputStream oin = new ObjectInputStream(new FileInputStream(serverPersistencyFile));
