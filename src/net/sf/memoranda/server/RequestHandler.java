@@ -5,13 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Reader;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
+
+import org.omg.CORBA.portable.InputStream;
 
 public class RequestHandler extends Observable implements Serializable
 {
@@ -25,13 +30,15 @@ public class RequestHandler extends Observable implements Serializable
 	
 	
 	public RequestHandler()
-	{
+	{		
 		try
 		{
 			 ObjectInputStream oin = new ObjectInputStream(new FileInputStream(serverPersistencyFile));
 		     Object notesList = oin.readObject();
 		     notes = (HashMap<String, NoteStorage>) notesList;
 		     oin.close();
+		     
+		     System.out.println(serverPersistencyFile + " loaded.");
 		     
 		} catch (Exception e)
 		{
@@ -72,16 +79,6 @@ public class RequestHandler extends Observable implements Serializable
 			// save it to the map
 			notes.put(noteTitle, ns);
 			
-			// save server object
-			try
-			{
-				saveServer();
-			} catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 			setChanged();
 			notifyObservers(this);
 			
@@ -109,6 +106,22 @@ public class RequestHandler extends Observable implements Serializable
 		}
 	}
 	
+	String prepare()
+	{
+		String response = "";
+		response += "<html>";
+		response += "<h1>manage memoranda server</h1>";
+		response += ResourceReader.read("manage_template.html");
+		response += "<hr />";
+		
+		return response;
+	}
+	
+	private String finish()
+	{
+		return "</html>";
+	}
+	
 	public String op(String op, Map<String, String> args)
 	{	
 		String response = "";
@@ -120,9 +133,55 @@ public class RequestHandler extends Observable implements Serializable
 				response += note.getKey() + ",";
 			}
 		}
+		else if(op.equals("view"))
+		{
+			response = prepare();
+			
+			response += "<h3>Title: " + args.get("title") + "</h3>";
+			response += "<p>";
+			response += notes.get(args.get("title")).getContent();
+			response += "</p>";
+			
+			response += finish();
+		}
+		else if(op.equals("delete"))
+		{
+			response = prepare();
+			
+			response += "delete: " + args.get("title");
+			notes.remove(args.get("title"));
+			
+			response += finish();
+		}
+		else if(op.equals("manage"))
+		{
+			response = prepare();
+			
+			for (Entry<String, NoteStorage> note : notes.entrySet())
+			{
+				response += "<p>";
+				response += "<h3>Title: " + note.getKey() + "</h3>";
+				
+				response += "<a href=\"/mem?op=delete&title=" + note.getKey() + "\">Delete</a>";
+				response += "<a href=\"/mem?op=view&title=" + note.getKey() + "\">View</a>";
+				response += "<br /><br />";
+				response += "</p>";
+			}
+			
+			response += finish();
+		}
 		else 
 		{
 			response = notesOp(op, args);
+		}
+		
+		// save server object
+		try
+		{
+			saveServer();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 		
 		return response;
